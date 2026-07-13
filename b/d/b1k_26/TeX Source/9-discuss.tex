@@ -1,0 +1,18 @@
+\section{Discussion and Limitations}
+\label{sec:discuss}
+We have presented \benchmark, a benchmark for embodied AI and robotics research with realistic simulation of 1000 diverse activities grounded in human needs. \benchmark comprises two elements: \dataset, a semantic knowledge base of everyday activities, and a large-scale 3D model library; \simulator, a simulation environment that provides realistic rendering and physics for rigid/deformable objects, flexible materials and fluids. In our evaluation, we observed that \benchmark is an extremely challenging benchmark: solving these 1,000 activities autonomously is beyond the capability of current state-of-the-art AI algorithms. We studied and attempted to solve a handful of the activities with action primitives in order to gain insights into the most challenging components, providing a starting point for other researchers to work on our benchmark. Similarly, we explored the sources of the sim-real gap by creating a digital twin of a real-world mock apartment, and by performing rigorous evaluation and analysis of policies in both simulation and the real world with a simulated and real mobile manipulator. 
+%We believe the significant engineering effort of bringing forward this diverse and realistic benchmark, and the scientific effort of studying the task difficulty in simulation and real-world could enable and guide future research towards relevant areas.
+%Our ultimate goal is to help robots tackle the challenge of generalization where it matters most to assist humans in their everyday lives.
+% \ruohan{Opportunities brought by B1K ("broader challenges"): test of generalizability.}
+
+%\section{Limitations}
+
+\paragraph{Limitations:} We inherit several limitations from our underlying physics and rendering engine, Nvidia's Omniverse. In \simulator, we trade off rendering speed for visual realism (ray-traced), reaching around 60 fps for a house scene of around 60 objects (v.s. around 100 fps in iGibson 2.0~\cite{li2021ig2}). We are actively working on performance optimization. %Speed issues will be alleviated by the constant progress in hardware.
+Another limitation is that we only include activities that do not require interactions with humans. Realistic simulation of humans (behavior, motion, appearance) is extremely challenging and an open research area. We plan to include simulated humans as technology matures. Finally, there is still room for improvement in \simulator to further facilitate sim2real transfer, such as incorporating noise models of perception and actuation.
+% We plan to incorporate some models of real-world sensor noise that decrease the quality of the virtual sensor signals (e.g., images) to make them more similar to the real ones.
+
+% \ruohan{the limitation of sim2real}
+% \fei{when talking about the sim2real limitation, might be good to mention the detection model and grasping method has only been tested in clean setups, easy classes, no clutters, etc.}
+% All submissions must include a limitations section, explicitly describing limiting assumptions, failure modes, and other limitations of the results and experiments and how these might be addressed in the future. Please include the limitation section in the main paper within the 8-page limit.
+
+

@@ -1,0 +1,53 @@
+\begin{table}[!htbp]
+\begin{center}
+%\resizebox{\textwidth}{!}
+{%
+\scriptsize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ | m{2.5cm} | m{2.7cm} | m{7.5cm} | } 
+\hline
+\textbf{Object model property} & \textbf{Relevant object category property} & \textbf{Description} \\ 
+\hline
+\texttt{Shape} &  & Model of the 3D shape of each link of the object\\ 
+\hline
+\texttt{Weight} &  & Weight of the object \\ 
+\hline
+\texttt{CenterOfMass} &  & Mean position of the matter in the object\\ 
+\hline
+\texttt{MomentOfInertia} &  & Resistance of the object to change its angular velocity\\ 
+\hline
+\texttt{KinematicStructure} &  & Structure of links and joints connecting them in the form of URDF (non-articulated objects are composed of one link)\\ 
+\hline
+\texttt{StableOrientations} &  & A list of stable orientations assuming the object is placed on a flat surface, computed using a 3D geometry library\\ 
+\hline
+\texttt{HeatSourceLink} & \texttt{heatSource} & Virtual (non-colliding) fixed link that generates heat\\
+\hline
+\texttt{FireSourceLink} & \texttt{fireSource} & Virtual (non-colliding) fixed link that generates fire\\
+\hline
+\texttt{CleaningToolLink} & \texttt{cleaningTool} & Fixed link that needs to contact dirt particles for the tool to clean them\\ 
+\hline
+\texttt{WaterSourceLink} &  \texttt{waterSource} & Virtual (non-colliding) fixed link that generates water\\
+\hline
+\texttt{WaterSinkLink} &  \texttt{waterSource} & Virtual (non-colliding) fixed link that absorbs water\\ 
+\hline
+\texttt{TogglingLink} &  \texttt{toggleable} & Virtual (non-colliding) fixed link that changes the toggled state of the object when contacted\\ 
+\hline
+\texttt{SlicingLink} & \texttt{slicingTool} & Fixed link that changes the sliced state of another object if it contacts it with enough force\\ 
+\hline
+\texttt{RelevantJoints} & \texttt{openable} & List of joints that are relevant to indicate whether an object is open\\ 
+\hline
+\texttt{AttachmentKeypoints} & \texttt{assembleable} & List of keypoint locations that will be connected with those of other objects when they are close enough\\ 
+\hline
+\texttt{ClothKeypoints} & \texttt{foldable}, \texttt{unfoldable} & List of keypoint locations are used to determine if the object is folded (if they are close enough) or unfolded (if they are far enough)\\ 
+\hline
+\texttt{ContainerVolume} & \texttt{fillable} & Virtual (non-colliding) fixed link that represents the inner volume of a fillable container.\\ 
+\hline
+\texttt{Type} & \texttt{cloth}, \texttt{deformable}, \texttt{liquid}, \texttt{rope}, \texttt{physicalSubstance}, \texttt{visualSubstance}  & Type of the object, e.g. rigid body, fluid, physical/visual substance, cloth, deformable, which determines how it will be simulated in \simulator \\ 
+\hline
+\end{tabular}
+}
+\vspace{3pt}
+\caption{Permanent object model properties. Adapted from~\cite{li2021ig2}.}
+\label{table:obj_model_prob}
+\end{center}
+\end{table}

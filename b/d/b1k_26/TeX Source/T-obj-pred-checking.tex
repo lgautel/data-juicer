@@ -1,0 +1,79 @@
+\begin{table}[!htbp]
+\begin{center}
+%\resizebox{\textwidth}{!}
+{\scriptsize%
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ | m{0.20\textwidth} | m{0.7\textwidth} | } 
+\hline
+\textbf{Predicate} & \textbf{Description} \\ 
+\hline
+\texttt{InsideOf($o_1$,$o_2$)} & Object $o_1$ is inside of object $o_2$ if we can find two orthogonal axes crossing at $o_1$ center of mass that intersect $o_2$ collision mesh in both directions.\\ 
+\hline
+\texttt{OnTopOf($o_1$,$o_2$)} & Object $o_1$ is on top of object $o_2$ if $o_2 \in \texttt{InSameNegativeVerticalAxisObjs}(o_1) \land o_2 \not\in \texttt{InSamePositiveVerticalAxisObjs}(o_1) \land \texttt{InContactWith}(o_1, o_2)$, where $\texttt{InSamePositive/NegativeVerticalAxisObjs}(o_1)$ is the list of objects in the same positive/negative vertical axis as $o_1$ and $\texttt{InContactWith}(o_1, o_2)$ is whether the two objects are in physical contact.\\ 
+\hline
+\texttt{NextTo($o_1$,$o_2$)} & Object $o_1$ is next to object $o_2$ if $o_2 \in \texttt{InSameHorizontalPlaneObjs}(o_1) \land l2(o_1, o_2) < t_\mathit{NextTo}$, where $\texttt{InSameHorizontalPlaneObjs}(o_1)$ is a list of objects in the same horizontal plane as $o_1$, $l2$ is the L2 distance between the closest points of the two objects, and $t_\mathit{NextTo}$ is a distance threshold that is proportional to the average size of the two objects. \\
+\hline
+\texttt{InContactWith($o_1$,$o_2$)} & Object $o_1$ is in contact with $o_2$ if their surfaces are in contact in at least one point, i.e., $o_2 \in \texttt{InContactObjs}(o_1)$. \\ 
+\hline
+\texttt{ConnectedWith($o_1$,$o_2$)} & Object $o_1$ is connected with $o_2$ if $o_2 \in \texttt{ConnectedObjs}(o_1)$. \\ 
+\hline
+\texttt{Under($o_1$,$o_2$)} & Object $o_1$ is under object $o_2$ if $o_2 \in \texttt{InSamePositiveVerticalAxisObjs}(o_1)$ $\land o_2 \not\in \texttt{InSameNegativeVerticalAxisObjs}(o_1)$.\\
+\hline
+\texttt{OnFloor($o_1$,$o_2$)} & Object $o_1$ is on the room floor $o_2$ if $\texttt{InContactWith}(o_1, o_2)$ and $o_2$ is of \texttt{Room} type. \\ 
+\hline
+\texttt{Open(o)} & Any joints (internal articulated degrees of freedom) of object $o$ are open. Only joints that are relevant to consider an object \texttt{Open} are used in the predicate computation, e.g. the door of a microwave but not the buttons and controls. To select the relevant joints, object models of categories that can be \texttt{Open} undergo an additional annotation that produces a \texttt{RelevantJoints} list. A joint is considered open if its joint state $q$ is 5\% over the lower limit, i.e. $q > 0.05(q_\mathit{UpperLimit} - q_\mathit{LowerLimit}) + q_\mathit{LowerLimit}$. \\
+\hline
+\texttt{Cooked(o)} & The temperature of object $o$ was over the cooked threshold, $T_\mathit{cooked}$, and under the burnt threshold, $T_\mathit{burnt}$, at least once in the history of the simulation episode, i.e., $T_\mathit{cooked} \leq T_o^\mathit{max} < T_\mathit{burnt}$. We annotate the cooked temperature $T_\mathit{cooked}$ for each object category that can be \texttt{Cooked}.\\
+\hline
+\texttt{Burnt(o)} & The temperature of object $o$ was over the burnt threshold, $T_\mathit{burnt}$, at least once in the history of the simulation episode, i.e., $T_o^\mathit{max} \geq T_\mathit{burnt}$. We annotate the burnt temperature $T_\mathit{burnt}$ for each object category that can be \texttt{Burnt}.\\
+\hline
+\texttt{OnFire(o)} & The temperature of object $o$ is above the on-fire threshold, $T_\mathit{onfire}$, i.e., $T_o \leq T_\mathit{onfire}$. We assume as default on-fire temperature $T_\mathit{onfire}=300^\circ C$, a value that can be adapted per object category and model.\\
+\hline
+\texttt{Frozen(o)} & The temperature of object $o$ is under the freezing threshold, $T_\mathit{frozen}$, i.e., $T_o \leq T_\mathit{frozen}$. We assume as default freezing temperature $T_\mathit{frozen}=0^\circ C$, a value that can be adapted per object category and model.\\
+\hline
+\texttt{Heated(o)} & The temperature of object $o$ is above the heated threshold, $T_\mathit{heated}$, i.e., $T_o \leq T_\mathit{heated}$. We assume as default heated temperature $T_\mathit{heated}=75^\circ C$, a value that can be adapted per object category and model.\\
+\hline
+\texttt{Boiled(l)} & The temperature of liquid $l$ is above the boiling point, $T_\mathit{boiled}$, i.e., $T_o \leq T_\mathit{boiled}$. We assume as default boiling point $T_\mathit{boiling}=100^\circ C$, a value that can be adapted per object category and model.\\
+\hline
+\texttt{Soaked(o, l)} & The soaked level $w$ of the liquid $l$ for the object $o$ is over a threshold, $w_\mathit{soaked}$, i.e., $w \geq w_\mathit{soaked}$. The default value for the threshold is $w_\mathit{soaked}=50$, (the object is soaked if it absorbs more than $50$ liquid particles), a value that can be adapted per object category and model and per liquid type.\\
+\hline
+
+\texttt{Filled(o, l)} & Object $o$ is filled by liquid $l$ if the number of particles of $l$ that is inside the \texttt{ContainerVolume} of $o$ is above a certain threshold percentage of the total volume. The default value for the threshold is $w_\mathit{filled}=0.5$. \\
+\hline
+\texttt{Covered(o, s)} & For \texttt{visualSubstance} $s$, check if the covered level $c$ of $s$ for the object $o$ is over a threshold, $c_\mathit{covered}$, i.e., $c \geq c_\mathit{covered}$; for \texttt{physicalSubstance} $s$, check if the number of particles of $s$ that are in contact with the object $o$ is over the same threshold. The default value for the threshold is $c_\mathit{covered}=50$ (50 substance particles), a value that can be adapted per object category and model, and per substance.\\
+\hline
+% \texttt{Dusty(o)} &  The  dustiness level $d$ of the object $o$ is over a threshold, $d_\mathit{dusty}$, i.e., $d > d_\mathit{dusty}$. The default value for the threshold is $d_\mathit{dusty}=0.5$, (half of the dust particles have been cleaned), a value that can be adapted per object category and model.\\
+% \hline
+% \texttt{Stained(o)} &   The  stain level $s$ of the object $o$ is over a threshold, $s_\mathit{stained}$, i.e., $s > s_\mathit{stained}$. The default value for the threshold is $s_\mathit{stained}=0.5$, (half of the stain particles have been cleaned), a value that can be adapted per object category and model.\\
+% \hline
+\texttt{ToggledOn(o)} & Object $o$ is toggled on or off. It is a direct query of the object's extended state $\mathit{TS}$, the toggled state.\\ 
+\hline
+\texttt{Sliced(o)} & Object $o$ is sliced or not. It is a direct access of the object's extended state $\mathit{SS}$, the sliced state.\\
+\hline
+\texttt{Broken(o)} & Object $o$ is broken or not. It is a direct access of the object's extended state $\mathit{BS}$, the broken state.\\
+\hline
+\texttt{Folded(o)} & Object $o$ is folded if its corresponding \texttt{ClothKeypoints} are sufficiently close to each other.\\
+\hline
+\texttt{Unfolded(o)} & Object $o$ is unfolded if its corresponding \texttt{ClothKeypoints} are sufficiently far from each other.\\
+\hline
+\texttt{Assembled(o)} & Object $o$ is assembled if all of its parts have been correctly connected: every pair of parts $p_i$ and $p_j$ are connected (or not) with each other (i.e. $\texttt{IsConnected}(p_i, p_j)$) in a specific way defined by each object model.\\
+\hline
+\texttt{Hung($o_1$,$o_2$)} & Object $o_1$ is hung onto object $o_2$ if they are connected, $\texttt{IsConnected}(o_1, o_2)$.\\
+\hline
+\texttt{Blended($o_1$ ... $o_n$)} & Objects $o_1$ to $o_n$ are blended if they are in contact with each other, i.e. $\texttt{InContactWith}(o_i, o_j)$ for all pairs.\\
+\hline
+\texttt{InFoVOfAgent(o)} & Object $o$ is in the field of view of the agent, i.e., at least one pixel of the image acquired by the agent's onboard sensors corresponds to the surface of $o$.\\
+\hline
+\texttt{InHandOfAgent(o)} & Object $o$ is grasped by the agent's hands (i.e. assistive grasping is activated on that object).\\
+\hline
+\texttt{InReachOfAgent(o)} & Object $o$ is within $d_\mathit{reach}=2$ meters away from the agent.\\
+\hline
+\texttt{InSameRoomAsAgent(o)} & Object $o$ is located in the same room as the agent.\\
+\hline
+\end{tabular}
+}
+\vspace{3pt}
+\caption{\textbf{Logical Predicates:} Description of the checking functions. Adapted from~\cite{li2021ig2}.}
+\label{table:obj_pred_checking}
+\end{center}
+\end{table}

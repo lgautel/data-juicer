@@ -1,0 +1,95 @@
+\afterpage{
+\clearpage
+
+\begin{table}[H]
+\centering
+\caption{(two pages) Statistics and information for each of 50 scenes in B1K: scene type, name, number of objects, unique synsets and rooms, room types, and example activities }
+\label{tab:model_scene}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|m{0.8cm}|m{4cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{5cm}|m{5cm}|}
+\hline
+Scene Type
+& Scene Name                            & Obj. Cnt.    & Syn. Cnt.    & Rm. Cnt.   & Room Types                                                                                                                                       & Example Activities                                                                                                                                                                                                                 \\ \hline
+\multirow{15}{*}{\rotatebox[origin=c]{90}{\textbf{BEHAVIOR-100 Houses}}}
+& Beechwood\_0\_int                     & 136          & 32           & 8          & \texttt{bathroom}, \texttt{corridor}, \texttt{dining\_room}, \texttt{entryway}, \texttt{kitchen}, \texttt{living\_room}, \texttt{private\_office}, \texttt{utility\_room}                                                & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Beechwood\_1\_int                     & 129          & 21           & 9          & \texttt{bathroom}, bedroom, childs\_room, closet, \texttt{corridor}, playroom, television\_room                                                                    & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Benevolence\_0\_int                   & 21           & 10           & 4          & \texttt{bathroom}, \texttt{corridor}, empty\_room, \texttt{entryway}                                                                                                        & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Benevolence\_1\_int                   & 74           & 22           & 5          & \texttt{corridor}, \texttt{dining\_room}, \texttt{kitchen}, \texttt{living\_room}, storage\_room                                                                                     & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Benevolence\_2\_int                   & 63           & 23           & 5          & \texttt{bathroom}, bedroom, \texttt{corridor}                                                                                                                      & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Ihlen\_0\_int                         & 68           & 21           & 7          & \texttt{bathroom}, \texttt{corridor}, \texttt{dining\_room}, garage, \texttt{living\_room}, storage\_room                                                                            & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Ihlen\_1\_int                         & 147          & 27           & 9          & \texttt{bathroom}, bedroom, \texttt{corridor}, \texttt{dining\_room}, \texttt{kitchen}, \texttt{living\_room}, staircase                                                                      & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Merom\_0\_int                         & 82           & 27           & 6          & \texttt{bathroom}, childs\_room, \texttt{living\_room}, playroom, storage\_room, \texttt{utility\_room}                                                                     & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Merom\_1\_int                         & 123          & 28           & 8          & \texttt{bathroom}, bedroom, childs\_room, \texttt{corridor}, \texttt{dining\_room}, \texttt{kitchen}, \texttt{living\_room}, staircase                                                        & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Pomaria\_0\_int                       & 71           & 22           & 6          & \texttt{bathroom}, bedroom, \texttt{corridor}, \texttt{private\_office}, television\_room                                                                                   & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Pomaria\_1\_int                       & 89           & 24           & 6          & \texttt{bathroom}, \texttt{corridor}, \texttt{kitchen}, \texttt{living\_room}, pantry\_room, \texttt{utility\_room}                                                                           & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Pomaria\_2\_int                       & 42           & 18           & 3          & \texttt{bathroom}, bedroom, \texttt{corridor}                                                                                                                      & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Rs\_int                               & 72           & 32           & 5          & \texttt{bathroom}, bedroom, \texttt{entryway}, \texttt{kitchen}, \texttt{living\_room}                                                                                               & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Wainscott\_0\_int                     & 187          & 35           & 9          & \texttt{bathroom}, bedroom, \texttt{dining\_room}, \texttt{kitchen}, \texttt{living\_room}                                                                                           & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Wainscott\_1\_int                     & 150          & 26           & 10         & \texttt{bathroom}, bedroom, \texttt{corridor}, exercise\_room, playroom, \texttt{private\_office}, \texttt{utility\_room}                                                            & example\_activity, example\_activity, example\_activity      \\ \hline
+\multirow{5}{*}{\rotatebox[origin=c]{90}{\parbox{4cm}{\textbf{BEHAVIOR-100 Houses w/ New Gardens}}}}
+& Beechwood\_0\_garden                  & 335          & 45           & 9          & \texttt{bathroom}, \texttt{corridor}, \texttt{dining\_room}, \texttt{entryway}, garden, \texttt{kitchen}, \texttt{living\_room}, \texttt{private\_office}, \texttt{utility\_room}                                        & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Rs\_garden                            & 185          & 47           & 6          & \texttt{bathroom}, bedroom, \texttt{entryway}, garden, \texttt{kitchen}, \texttt{living\_room}                                                                                       & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Pomaria\_0\_garden                    & 260          & 49           & 7          & \texttt{bathroom}, bedroom, \texttt{corridor}, garden, \texttt{private\_office}, television\_room                                                                           & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Merom\_0\_garden                      & 197          & 51           & 8          & \texttt{bathroom}, childs\_room, garden, \texttt{living\_room}, playroom, sauna, storage\_room, \texttt{utility\_room}                                                      & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& Wainscott\_0\_garden                  & 712          & 61           & 10         & \texttt{bathroom}, bedroom, \texttt{dining\_room}, garden, \texttt{kitchen}, \texttt{living\_room}                                                                                   & example\_activity, example\_activity, example\_activity      \\ \hline
+\multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{New Houses}}}
+& house\_single\_floor                  & 1375         & 137          & 23         & \texttt{bathroom}, bedroom, childs\_room, closet, \texttt{corridor}, \texttt{dining\_room}, empty\_room, \texttt{entryway}, garden, \texttt{kitchen}, \texttt{living\_room}, sauna, \texttt{utility\_room}      & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& house\_double\_floor\_lower           & 304          & 79           & 6          & \texttt{bathroom}, \texttt{corridor}, garage, garden, \texttt{kitchen}, \texttt{living\_room}                                                                                        & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& house\_double\_floor\_upper           & 325          & 78           & 5          & \texttt{bathroom}, bedroom, television\_room                                                                                                              & example\_activity, example\_activity, example\_activity      \\ \hline
+\end{tabular}
+}
+\end{table}
+
+
+
+
+
+
+
+\begin{table}[H]
+\centering
+\caption*{Table~\ref{tab:model_scene}, cont'd.}
+\resizebox{\textwidth}{!}{%
+\setlength\extrarowheight{4pt}
+\begin{tabular}{|m{0.8cm}|m{4cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{5cm}|m{5cm}|}
+\hline
+Scene Type
+& Scene Name                            & Obj. Cnt.    & Syn. Cnt.    & Rm. Cnt.   & Room Types                                                                                                                                       & Example Activities                                                                                                                                                                                                                 \\ \hline
+\multirow{4}{*}{\rotatebox[origin=c]{90}{\textbf{Grocery Stores}}}
+& grocery\_store\_asian                 & 3402         & 79           & 2          & \texttt{bathroom}, grocery\_store                                                                                                                         & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& grocery\_store\_cafe                  & 6994         & 71           & 4          & bar, \texttt{bathroom}, \texttt{dining\_room}, grocery\_store                                                                                                      & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& grocery\_store\_convenience           & 1889         & 82           & 2          & \texttt{bathroom}, grocery\_store                                                                                                                         & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& grocery\_store\_half\_stocked         & 3804         & 51           & 2          & \texttt{bathroom}, grocery\_store                                                                                                                         & example\_activity, example\_activity, example\_activity      \\ \hline
+\multirow{4}{*}{\rotatebox[origin=c]{90}{\textbf{Generic Halls}}}
+& hall\_arch\_wood                      & 78           & 11           & 2          & \texttt{bathroom}, empty\_room                                                                                                                            & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& hall\_train\_station                  & 141          & 15           & 2          & \texttt{bathroom}, empty\_room                                                                                                                            & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& hall\_glass\_ceiling                  & 116          & 20           & 2          & \texttt{bathroom}, empty\_room                                                                                                                            & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& hall\_conference\_large               & 3372         & 26           & 2          & \texttt{bathroom}, conference\_hall                                                                                                                       & example\_activity, example\_activity, example\_activity      \\ \hline
+\multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Hotels}}}
+& hotel\_suite\_large                   & 218          & 51           & 2          & \texttt{bathroom}, bedroom                                                                                                                                & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& hotel\_suite\_small                   & 48           & 28           & 2          & \texttt{bathroom}, bedroom                                                                                                                                & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& hotel\_gym\_spa                       & 322          & 43           & 9          & \texttt{bathroom}, \texttt{corridor}, gym, hammam, locker\_room, sauna, spa                                                                                        & example\_activity, example\_activity, example\_activity      \\ \hline
+\multirow{5}{*}{\rotatebox[origin=c]{90}{\textbf{Offices}}}
+& office\_bike                          & 479          & 49           & 3          & \texttt{bathroom}, break\_room, shared\_office                                                                                                            & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& office\_cubicles\_left                & 787          & 44           & 12         & \texttt{bathroom}, conference\_hall, copy\_room, \texttt{corridor}, lobby, meeting\_room, \texttt{private\_office}, shared\_office                                          & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& office\_cubicles\_right               & 406          & 37           & 11         & \texttt{bathroom}, conference\_hall, copy\_room, \texttt{corridor}, lobby, meeting\_room, \texttt{private\_office}, shared\_office                                          & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& office\_large                         & 1151         & 46           & 24         & \texttt{bathroom}, break\_room, conference\_hall, copy\_room, \texttt{corridor}, lobby, meeting\_room, phone\_room, \texttt{private\_office}, shared\_office                & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& office\_vendor\_machine               & 225          & 45           & 4          & \texttt{bathroom}, break\_room, meeting\_room, shared\_office                                                                                             & example\_activity, example\_activity, example\_activity      \\ \hline
+\multirow{6}{*}{\rotatebox[origin=c]{90}{\textbf{Restaurants}}}
+& restaurant\_asian                     & 1221         & 56           & 3          & \texttt{bathroom}, \texttt{dining\_room}, \texttt{kitchen}                                                                                                                  & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& restaurant\_cafeteria                 & 292          & 45           & 3          & \texttt{bathroom}, \texttt{dining\_room}, \texttt{kitchen}                                                                                                                  & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& restaurant\_diner                     & 174          & 39           & 3          & bar, \texttt{bathroom}, \texttt{dining\_room}                                                                                                                      & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& restaurant\_brunch                    & 1096         & 70           & 4          & bar, \texttt{bathroom}, \texttt{dining\_room}, \texttt{kitchen}                                                                                                             & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& restaurant\_urban                     & 1368         & 90           & 4          & bar, \texttt{bathroom}, \texttt{dining\_room}, \texttt{kitchen}                                                                                                             & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& restaurant\_hotel                     & 1080         & 81           & 4          & \texttt{bathroom}, \texttt{dining\_room}, \texttt{kitchen}, lobby                                                                                                           & example\_activity, example\_activity, example\_activity      \\ \hline
+\multirow{5}{*}{\rotatebox[origin=c]{90}{\textbf{Schools}}}
+& school\_gym                           & 853          & 36           & 7          & \texttt{bathroom}, \texttt{corridor}, gym, locker\_room                                                                                                            & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& school\_geography                     & 556          & 42           & 5          & \texttt{bathroom}, classroom, \texttt{corridor}                                                                                                                    & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& school\_biology                       & 717          & 53           & 4          & \texttt{bathroom}, biology\_lab, \texttt{corridor}                                                                                                                 & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& school\_chemistry                     & 890          & 69           & 4          & \texttt{bathroom}, chemistry\_lab, \texttt{corridor}                                                                                                               & example\_activity, example\_activity, example\_activity      \\ \cline{2-7} 
+& school\_comp\_lab\_infirmary          & 828          & 61           & 6          & \texttt{bathroom}, computer\_lab, \texttt{corridor}, infirmary                                                                                                     & example\_activity, example\_activity, example\_activity      \\ \hline
+\end{tabular}
+}
+\end{table}
+
+}

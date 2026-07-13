@@ -1,0 +1,62 @@
+\section{Scene and Object Models}
+\label{as:modeling}
+In this section, we provide more details about the object and scene models presented in \dataset, including the selection, modeling, and annotation processes.
+
+The survey outlined in Sec.~\ref{sec:survey} provided us with a list of 1000 activities that humans prefer robots to perform. However, these activities are not restricted to a unique type of scene (e.g., houses). We chose scene types necessary to cover the \benchmark activities, including eight scene types: houses (15), houses with gardens (8), hotels (3), offices (5), grocery stores (4), generic halls (4), restaurants (6), and schools (5) (see Table~\ref{tab:model_scene}). These scenes cover activities that require a specific type (e.g., shopping, cooking, restocking) and activities that are generic and could happen in multiple scene types (e.g., cleaning). We also annotated how many activities could be performed on each type to guide us on how many instances of each scene type should we include in \dataset. The main type of scene is still households: we improved 15 household scenes from \oldbenchmark and annotated it further with light sources, new textures, etc. We then acquired additional instances of each scene type from online marketplaces such as TurboSquid~\cite{turbosquid}. 
+
+Several of the available scene models in the marketplaces did not contain all the necessary rooms to perform the natural activities in \benchmark, e.g., restaurants did not include the kitchen, offices did not include the restrooms, or houses did not include the gardens.
+We collected separate models for those and contracted professional 3D designers to connect them.
+
+Scene models were acquired with the necessary object models. However, they were not enough to cover the objects required by the activities in \benchmark. 
+We acquired additional models to support the activities, as provided by the activity annotation process described in Sec.~\ref{as:act_ann}, totaling 9,000+ object models from 1,900+ categories. The diversity of the object categories included in the dataset can be observed in Fig.~\ref{fig:model_object}.
+
+As provided by the 3D vendors, the scene and object models cannot be used directly for the simulation of the 1000 activities in \benchmark in \simulator due to 1) lack of category annotation, 2) lack (or incorrect) of light sources in scenes, 3) incorrect part segmentation, 4) lack of articulation, 5) missing interactive elements like buttons, 6) lack of a unified canonical frame orientation for sampling, and 7) poor physical properties for realistic simulation. We manually cleaned and annotated all scenes and objects to correct these elements.
+
+We will publicly release all the scenes and models to be used by other researchers. The models will be encrypted and only be used within \simulator in order to comply with the rights of the model authors and the vendors' agreement. The documentation of the annotation process as well as source code for the pipeline will similarly be released on our website, allowing users to easily import their own objects and scenes into \simulator for use in \benchmark activities.
+
+\begin{figure}[th!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/models/scene_collage_p1.jpg}
+    \caption{\revision{Part 1 of a scene collage showing views of all 50 scenes.}}
+    %\label{fig:model_scene}
+\end{figure}
+
+\begin{figure}[th!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/models/scene_collage_p2.jpg}
+    \caption{\revision{Part 2 of a scene collage showing views of all 50 scenes.}}
+    %\label{fig:model_scene}
+\end{figure}
+
+\begin{figure}[th!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/models/scene_collage_p3.jpg}
+    \caption{\revision{Part 3 of a scene collage showing views of all 50 scenes.}}
+    %\label{fig:model_scene}
+\end{figure}
+
+\begin{figure}[th!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/models/scene_collage_p4.jpg}
+    \caption{\revision{Part 4 of a scene collage showing views of all 50 scenes.}}
+    %\label{fig:model_scene}
+\end{figure}
+
+\begin{figure}[th!]
+ \centering
+ \includegraphics[width=0.9\textwidth]{figures/models/object_collage_3.jpg}
+ \caption{\revision{A collage of objects included in the \dataset. These objects highlight key features of \simulator such as transparency, articulation, heat simulation, and lighting.}}
+ \label{fig:model_object}
+\end{figure}
+
+\vspace{1.5cm}
+
+\input{T-6-scenes}
+
+
+
+
+% Furthermore, the diversity of the activities in our new environments (such as cleaning in offices, or cooking in restaurants) requires certain types of rooms (e.g. public restrooms and commercial kitchens) to be present in the scenes, which is not typically the case for available models. To support these use cases, 5 public restroom models and 2 commercial kitchen models were separately acquired from Turbosquid, and attached to non-house scenes as necessary, with pairings being made based on visual compatibility. The seamless integration of these partial scenes into the larger scenes also allows the reuse of objects across the scenes while still representing the diversity of such environments. Another important requirement that arose from the survey results was that the participants consistently want robots to help with outdoor activities (e.g. gardening, shoveling snow, etc.), which cannot be simulated in the indoor-only \oldbenchmark scenes. To resolve this, the \dataset contains both entirely new houses that have gardens, as well as augmented versions of \oldbenchmark houses that have gardens attached. These gardens, diverse in terms of both size and features, were also separately acquired from TurboSquid, and were attached to the house scenes by professional architects that were contracted on Upwork. Exterior walls were also added to the previously indoor-only houses, representing a variety of architectural styles that are prevalent globally.
+
+
+% To be imported into \simulator, scene and object models that were acquired from online marketplaces were processed by members of our team through a purpose-built annotation process in Autodesk 3ds Max, designed to correctly label each object's articulations, lights, and other features such as heating and toggling, as well as scene features such as room boundaries. Accurate labeling of canonical orientations and equally-granular categories (as well as whether certain objects should not be randomized) for each object, a critical requirement of the Object Randomization feature supported in \simulator, was also undertaken at this stage. The processed scene files were then run through our automated 3ds Max-to-\simulator pipeline, which exports the objects, their materials (including compatible features such as transparency and self-illumination), their joint configurations, and additional features as well as generating additional metadata (e.g. minimum-value bounding boxes) and checking for physics stability.

@@ -1,0 +1,26 @@
+\section{Related Work: Embodied AI Benchmarks}
+\label{sec:related}
+
+\input{T-3-benchmarks}
+
+% general role of benchmarks in AI research
+% Concrete benchmarks help drive recent advances in AI research by providing an objective lens to track progress, as seen in computer vision~\cite{deng2009imagenet,lin2014microsoft,everingham2010pascal,krishna2017visual,geiger2012we,goyal2017something,sigurdsson2018actor,xiang2017posecnn,martin2021jrdb,caba2015activitynet,gurari2018vizwiz} and NLP~\cite{marcinkiewicz1994building,wang2018glue,rajpurkar2016squad,socher2013recursive,antol2015vqa}. For embodied AI and robotics research, simulation benchmarks~\cite{batra2020rearrangement,weihs2021visual,gan2021threedworld,puig2018virtualhome,shridhar2020alfred,xia2020interactive,yu2020meta,james2019rlbench,savva2019habitat,szot2021habitat} provide lower-cost, faster, and safer training and evaluation. Though simulation provides convenience, real-world robotics challenges await~\cite{kitano1997robocup,wisspeintner2009robocup,iocchi2015robocup,buehler2009darpa,krotkov2017darpa,correll2016analysis,eppner2017lessons,roa2021mobile}, making realism the most common criterion of an embodied AI benchmark's quality. 
+ 
+
+%????
+We provide an extensive comparison between \benchmark, and other embodied AI benchmarks in simulation~\cite{batra2020rearrangement,weihs2021visual,gan2021threedworld,puig2018virtualhome,shridhar2020alfred,xia2020interactive,yu2020meta,james2019rlbench,savva2019habitat,szot2021habitat} in Table~\ref{tab:comparingbenchmarks}. We include a number of factors that contribute to diversity and realism and observe a significant step forward with \benchmark.
+First, no other benchmark grounds their activity set on the needs of lay people.  
+Other benchmarks often target a relatively restricted set of activities, and their simulators are realistic only in the relevant aspects for those tasks. In fact, we often observe a diversity-realism tradeoff. For instance, instruction-following benchmarks such as VirtualHome~\cite{puig2018virtualhome} and ALFRED~\cite{puig2018virtualhome, shridhar2020alfred} are diverse in the number of scenes, objects, and state changes, but offer a limited low-level physical realism. On the other hand, household rearrangement benchmarks such as Habitat 2.0 HAB~\cite{szot2021habitat}, TDW Transport~\cite{gan2021threedworld}, and SAPIEN ManiSkill~\cite{xiang2020sapien,mu2021maniskill} support realistic action execution and accurate physics simulation for rigid bodies, but only include a handful of tasks. Similarly, SoftGym~\cite{lin2020softgym} and RFUniverse~\cite{fu2022rfuniverse} have the closest simulation features and hence realism to \simulator, but they also lack the task diversity needed to support the development of human-centered general robots. %\benchmark achieves a quantum leap improvement in all crucial dimensions for embodied AI benchmarking.
+
+
+%B100 motivated by "addressing diversity in human needs"
+%We argue that addressing the diversity of human needs is at least as important as realism. 
+The most similar benchmark to us is the previous generation \oldbenchmark~\cite{srivastava2021behavior}. \oldbenchmark brought forward several beneficial design choices that we inherit in \benchmark such as the activity sources (ATUS~\cite{atus}), activity definition logic language, and evaluation metrics. However, it fell short in the diversity and realism necessary to support a human-centered embodied AI benchmark in simulation, dimensions where \benchmark achieves unmatched levels.
+While \oldbenchmark comprises 100 activities selected by researchers, our \benchmark increases diversity by one order of magnitude, to 1,000 activities, that are grounded in human needs thanks to our unique survey. 
+%Table, motivated as comparison in diversity and realism
+Furthermore, \oldbenchmark includes only 15 scenes (all houses) and 300+ object categories, while \benchmark increases to 50 scenes (houses, stores, restaurants, offices, etc.) and 1,900+ object categories. In terms of realism, \benchmark extends the simulatable physical states and processes with \simulator: fluids, flexible materials, mixing substances, etc. The realism achieved in rendering by \simulator for \benchmark is also significantly higher than what was possible in \oldbenchmark and other benchmarks (see Fig.~\ref{fig:sim_render}).
+
+
+% There are a few benchmarks that are built upon the principle of developing human-centered AI, in computer vision~\cite{gurari2018vizwiz}, 
+
+

@@ -1,0 +1,78 @@
+\begin{table}[!t]
+\begin{center}
+%\resizebox{\textwidth}{!}
+{\scriptsize%
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ | m{0.20\textwidth} | m{0.7\textwidth} | } 
+\hline
+\textbf{Predicate} & \textbf{Sampling Mechanism} \\ 
+\hline
+\texttt{InsideOf($o_1$,$o_2$)} & Only \texttt{InsideOf($o_1$,$o_2$) = True} can be sampled. $o_1$ is randomly sampled within $o_2$ using a ray-casting mechanism adopted from~\cite{srivastava2021behavior}. $o_1$ is guaranteed to be supported fully by a surface and free of collisions with any other object except $o_2$.\\ 
+\hline
+\texttt{OnTopOf($o_1$,$o_2$)} & Only \texttt{OnTopOf($o_1$,$o_2$) = True} can be sampled. $o_1$ is randomly sampled on top of $o_2$ using a ray-casting mechanism adopted from~\cite{srivastava2021behavior}. $o_1$ is guaranteed to be supported fully by a surface and free of collisions with any other object except $o_2$.\\ 
+\hline
+% \texttt{NextTo($o_1$,$o_2$)} & Not supported at the moment. \\
+% \hline
+% \texttt{InContactWith($o_1$,$o_2$)} & Not supported at the moment. \\ 
+% \hline
+\texttt{ConnectedWith($o_1$,$o_2$)} & Create a rigid joint between the two objects if they are both rigid bodies, or an attachment between them otherwise.\\ 
+\hline
+\texttt{Under($o_1$,$o_2$)} & Only \texttt{Under($o_1$,$o_2$) = True} can be sampled. $o_1$ is randomly sampled on top of the floor region beneath $o_2$ using a ray-casting mechanism adopted from~\cite{srivastava2021behavior}. $o_1$ is guaranteed to be supported fully by a surface and free of collisions with any other object except the floor.\\
+\hline
+\texttt{OnFloor($o_1$,$o_2$)} & Only \texttt{OnFloor($o_1$,$o_2$) = True} can be sampled. $o_1$ is randomly sampled on top of $o_2$, which is the floor of a certain room, using the scene's room segmentation mask. $o_1$ is guaranteed to be supported fully by a surface and free of collisions with any other object except $o_2$.\\ 
+\hline
+\texttt{Open(o)} & To sample an object $o$ with the predicate \texttt{Open(o) = True}, a subset of the object's relevant joints (using the \texttt{RelevantJoints} model property) are selected, and each selected joint is moved to a uniformly random position between the openness threshold and the joint's upper limit. To sample an object $o$ with the predicate \texttt{Open(o) = False}, all of the object's relevant joints (using the \texttt{RelevantJoints} model property) are moved to a uniformly random position between the joint's lower limit and the openness threshold.\\
+\hline
+\texttt{Cooked(o)} & To sample an object $o$ with the predicate \texttt{Cooked(o) = True}, the object's \texttt{MaxTemperature} is updated to $\max(T_o^\mathit{max}, T_\mathit{cooked})$. Similarly, to sample an object $o$ with the predicate \texttt{Cooked(o) = False}, the object's \texttt{MaxTemperature} is updated to $\min(T_o^\mathit{max}, T_\mathit{cooked} - 1)$. \\
+\hline
+\texttt{Burnt(o)} & To sample an object $o$ with the predicate \texttt{Burnt(o) = True}, the object's \texttt{MaxTemperature} is updated to $\max(T_o^\mathit{max}, T_\mathit{burnt})$. Similarly, to sample an object $o$ with the predicate \texttt{Cooked(o) = False}, the object's \texttt{MaxTemperature} is updated to $\min(T_o^\mathit{max}, T_\mathit{burnt} - 1)$.\\
+\hline
+\texttt{OnFire(o)} & To sample an object $o$ with the predicate \texttt{OnFire(o) = True}, the object's \texttt{Temperature} is updated to a uniformly random temperature between $T_\mathit{onfire} + 10$ and $T_\mathit{onfire} + 50$. To sample an object $o$ with the predicate \texttt{OnFire(o) = False}, the object's \texttt{Temperature} is updated to $T_\mathit{onfire} - 1$. \\
+\hline
+\texttt{Frozen(o)} & To sample an object $o$ with the predicate \texttt{Frozen(o) = True}, the object's \texttt{Temperature} is updated to a uniformly random temperature between $T_\mathit{frozen} - 10$ and $T_\mathit{frozen} - 50$. To sample an object $o$ with the predicate \texttt{Frozen(o) = False}, the object's \texttt{Temperature} is updated to $T_\mathit{frozen} + 1$. \\
+\hline
+\texttt{Heated(o)} & To sample an object $o$ with the predicate \texttt{Heated(o) = True}, the object's \texttt{Temperature} is updated to a uniformly random temperature between $T_\mathit{heated} + 10$ and $T_\mathit{heated} + 50$. To sample an object $o$ with the predicate \texttt{Heated(o) = False}, the object's \texttt{Temperature} is updated to $T_\mathit{heated} - 1$. \\
+\hline
+\texttt{Boiled(l)} & To sample a liquid type $l$ with the predicate \texttt{Boiled(l) = True}, the \texttt{Temperature} of all particles of $l$ is updated to a uniformly random temperature between $T_\mathit{boiled} + 10$ and $T_\mathit{boiled} + 50$. To sample a liquid type $l$ with the predicate \texttt{Boiled(o) = False}, the \texttt{Temperature} of all particles of $l$ is updated to $T_\mathit{boiled} - 1$. \\
+\hline
+\texttt{Soaked(o, l)} & To sample an object $o$ and a liquid type $l$ with the predicate \texttt{Soaked(o, l) = True}, the object's \texttt{SoakedLevel} $w$ for $l$ is updated to match the \texttt{Soaked} threshold of $w_\mathit{soaked}$. To sample an object $o$ and a liquid type $l$ with the predicate \texttt{Soaked(o, l) = False}, the object's \texttt{SoakedLevel} $w$ is updated to 0.\\
+\hline
+\texttt{Filled(o, l)} & To sample an object $o$ and a liquid type $l$ with the predicate \texttt{Filled(o, l) = True}, an appropriate number of particles of $l$ are sampled inside the \texttt{ContainerVolume} of $o$ so that they fill up enough of its volume ($\geq w_\mathit{filled}=0.5$). To sample an object $o$ and a liquid type $l$ with the predicate \texttt{Filled(o, l) = False}, all particles of $l$ that are inside the \texttt{ContainerVolume} of $o$ (if any) are removed.\\
+\hline
+\texttt{Covered(o, s)} & To sample an object $o$ and a substance $s$ with \texttt{Covered(o, s) = True}, a fixed number of particles of $s$ are randomly placed on the surface of $o$ using a ray-casting mechanism adopted from~\cite{srivastava2021behavior}. To sample an object $o$  and a \texttt{visualSubstance} $s$ with \texttt{Covered(o, s) = False}, all particles of $s$ is removed from $o$ and the corresponding \texttt{CoveredLevel} is set to 0.\\
+\hline
+% \texttt{Dusty(o)} & To sample an object with \texttt{Dusty(o) = True}, a fixed number (currently 20) of dust particles are randomly placed on the surface of $o$ using the mechanism described in Pose Sampling Algorithm in Sec.~\ref{ss:kinematicsampling}. To sample an object with \texttt{Dusty(o) = False}, all dust particles on the object are removed.\\
+% \hline
+% \texttt{Stained(o)} & To sample an object with \texttt{Stained(o) = True}, a fixed number (currently 20) of stain particles are randomly placed on the surface of $o$ using the mechanism described in Pose Sampling ALgorithm in Sec.~\ref{ss:kinematicsampling}. To sample an object with \texttt{Stained(o) = False}, all stain particles on the object are removed.\\
+% \hline
+\texttt{ToggledOn(o)} & The \texttt{ToggledState} of the object is updated to match the required predicate value. \\ 
+\hline
+\texttt{Sliced(o)} & The \texttt{SlicedState} of the object is updated to match the required predicate value. Also, the whole object are replaced with the two halves, that will be placed at the same location and inherit the extended states from the whole object (e.g. \texttt{Temperature}).\\
+\hline
+\texttt{Broken(o)} & The \texttt{BrokenState} of the object is updated to match the required predicate value. Also, the whole object is broken down into pieces, that will be placed at the same location.\\
+\hline
+% \texttt{Folded(o)} & Not supported at the moment.\\
+% \hline
+% \texttt{Unfolded(o)} & Not supported at the moment.\\
+% \hline
+% \texttt{Assembled(o)} & Not supported at the moment.\\
+% \hline
+% \texttt{Hung($o_1$, $o_2$)} & Not supported at the moment.\\
+% \hline
+% \texttt{Blended($o_1$ ... $o_n$)} & Not supported at the moment. \\
+% \hline
+% \texttt{InFoVOfAgent(o)} & Not supported at the moment. \\
+% \hline
+% \texttt{InHandOfAgent(o)} & Not supported at the moment.\\
+% \hline
+% \texttt{InReachOfAgent(o)} & Not supported at the moment.\\
+% \hline
+% \texttt{InSameRoomAsAgent(o)} & Not supported at the moment.\\
+% \hline
+\end{tabular}
+}
+\vspace{3pt}
+\caption{\textbf{Logical Predicates:} Description of the sampling functions. Adapted from~\cite{li2021ig2}.}
+\label{table:obj_pred_sampling}
+\end{center}
+\end{table}

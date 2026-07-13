@@ -1,0 +1,92 @@
+\section{Creating a Benchmark Grounded in Human Needs: A Survey Study}
+\label{sec:survey}
+
+% Figuring out human needs
+
+% While a significant amount of robotics research aspire to cover human needs, few information can be found about what humans want robots do for them~\cite{}. Since we aim at creating a benchmark that reflects human desires, we cover this lack of information by conducting a survey targeting general U.S. population that asked: \textit{What do you want robots to do for you?} The survey sources 1,990 activities from time-use surveys~\cite{atus,hetus,mtus} and WikiHow articles~\cite{wikihow}. It was conducted on Amazon Mechanical Turk with a total of representative 1412 respondents (see Sec.~\ref{sec:demographics} in our Appendix for demographic information) and 50 responses per activity. 
+
+A significant amount of robotics research aspires to satisfy human needs, but those needs are typically assumed or speculated. Human-centric development requires direct information about what humans want from autonomous agents~\cite{littman2021gathering}. To create a benchmark that reflects these needs, we conduct a survey targeting the general U.S. population that asks: \textit{what do you want robots to do for you?} The survey sources around 2,000 activities from time-use surveys~\cite{atus, hetus, mtus}, which record how people spend their time, and from WikiHow articles~\cite{wikihow}. We conduct the survey on Amazon Mechanical Turk with a total of 1,461 respondents (demographics in Appendix~\ref{sec:demographics}) and fifty 10-point Likert scale responses per activity.
+
+% What are the requirements of a benchmark for that?
+Survey results are summarized in Fig.~\ref{fig:activity_ranking} (left), in which we rank the activities based on their human preference score. The full list of ranked activities can be found on our website. The distribution shows large statistical dispersion (Gini index$=0.158$): humans want robots to perform a wide range of activities, from cleaning chores to cooking large feasts. Tedious tasks like ``scrubbing the bathroom floor'' score the highest, while recreational activities like game-play score the lowest. There are around 200 cleaning activities and over 200 cooking activities, among many other categories.
+
+%Yet some mundane but brief tasks like ``turning on the oven'' still score low, likely because of positive but low utility or more potential for interruption than assistance. Ruohan: I don't think this is true: we see turning on the lights
+% Activities with extrinsic and intrinsic motivation, like clothes shopping, also score low. Ruohan: not always, let's be careful about the claims
+
+\benchmark activities include the 909 activities with the highest human preference scores and 91 activities from \oldbenchmark~\cite{srivastava2021behavior}, which total the top-ranked 1,000 activities. \benchmark sets itself apart from other embodied AI benchmarks by being sourced from time-use surveys and using survey data to prioritize activities considered most important and useful by humans, and by including a tremendously diverse set of activities. % the resulting activity set creates diversity, another important feature for EAI benchmarks.
+
+
+% We source from time-use surveys that documentS how humans spend their time~\cite{atus} and selecting according to human preference scores ensure that the final activities reflects actual human need, setting \benchmark apart from other EAI benchmarks. In addition to the realism requirement by simulation benchmarks for EAI, task definitions and simulation in our benchmark should also yield instantiations of the diversity in human needs.  
+
+% \roberto{@sanjana, todo: add figure of the demographics in Appendix: . [In Appendix] (b) Demographic information of the survey participants to show the results are representative} 
+
+
+% \begin{itemize}
+%     \item Two requirements of such a benchmark:
+%     \begin{itemize}
+%         \item Tasks reflect human preferences for what autonomous agents should do
+%         \item Task specification and simulation yields ecologically plausible instantiations of these human preferences 
+%     \end{itemize}
+%     \item Prior work
+%     \begin{itemize}
+%         \item Diverse task spaces and fine-grained physical simulation, but short, unrealistic tasks - control benchmarks like SoftGym
+%         \item Complex activities, ecologically plausible in some ways, but narrow task space and limited to kinematics, which isn't actually very ecologically plausible
+%         \begin{itemize}
+%             \item Most direct competitors (VRR, Transport, etc.)
+%             \item Cumulative barplot figure
+%         \end{itemize}
+%     \end{itemize}
+%     \begin{itemize}
+%         \item Has the underpinnings of a good benchmark, but doesn't target human preference directly (and neither do any of the others)
+%         \item BEHAVIOR-100 (but only give it a category of its own in text)
+%     \end{itemize}
+%     \item Need human preference
+%     \begin{itemize}
+%         \item Requirement: AI to serve humans, not replace them or grow independently of their needs at all
+%         \item Requirement for Embodied AI benchmark: task space that rewards exactly what humans need 
+%     \end{itemize}
+%     \item How we achieve that 
+%     \begin{itemize}
+%         \item Survey concept [get quantifiable measure of human preference] % main paper - motivator 
+%         \item Considerations [get data from laypeople that is appropriately constrained by the empirical and theoretical limitations of ML decision algos and simulation] % supp
+%         \begin{itemize}
+%             \item Need layperson respondents 
+%             \item Need them to understand what we are asking - ``robot'' is a very overloaded term
+%             \begin{itemize}
+%                 \item Wording pilot
+%             \end{itemize}
+%             \item Need *ranking* - we want way to *choose* our 1K activities 
+%             \begin{itemize}
+%                 \item BWS vs. Likert pilot
+%             \end{itemize}
+%             \item Limitations of the simulator, and how this can be adapted for other simulators 
+%             \begin{itemize}
+%                 \item E.g. multiagent, human-agent interaction, more nonkinematic simulated features  
+%             \end{itemize}
+%         \end{itemize}
+%         \item Data source 
+%         \begin{itemize}
+%             \item *TUS: standard pitch of why they're great 
+%             \item WikiHow: If we think it's necessary, we can say that the slightly off-target distribution of WikiHow doesn't matter because we're doing the survey
+%         \end{itemize}
+%         \item Survey execution details - number of respondents, style of question, etc. [we did quite a big survey indeed] % supp 
+%     \end{itemize}
+%     \item Survey results 
+%     \begin{itemize}
+%         \item Overall spread of scores - results have power 
+%         \item Sampling of different task results 
+%         \begin{itemize}
+%             \item Latent variables underlying these preference results 
+%             item Categories at each general score level - people want "cleaning" done, they don't always want "shopping" done, they rarely want "playing" done 
+%         \end{itemize}
+%         \item Demographics
+%     \end{itemize}
+% \end{itemize}
+
+% Respectful and nuanced way to convince that we're better than others - including B-100
+%   - need to say what's new 
+% Convince of why the survey is needed, because the adversarial reviewer will ask the so what question, esp since other benchmarks don't have 
+% Articulate the difference between them and us - this is a true benchmark, among all the other differences 
+
+% Standalone paper on the social side of survey - esp. with Erik Brynjolfsson 
+% Insight companion paper - negative GPT-3 results 

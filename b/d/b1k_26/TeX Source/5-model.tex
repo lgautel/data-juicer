@@ -1,0 +1,27 @@
+% \subsection{Creating Diverse 3D Scene and Object Models}
+% \label{sec:model}
+
+% On top of the 15 house scenes from \oldbenchmark~\cite{srivastava2021behavior}, we acquired 35 new, fully interactive scenes across diverse scene types such as gardens, offices, restaurants, grocery stores, that are essential for everyday human activities, which is unprecedented compared to other EAI benchmarks (see Table~\ref{tab:comparingbenchmarks}). We also acquired 3,300+ object instaces across 1,200 categories needed for the activities and annotated rich physical (friction, mass, articulation, etc), and semantic properties (category, heat/light/water source location, etc) for each object. Representative scene and object models can be seen in Fig.~\ref{fig:model_vis}, and additional information can be found in Appendix.
+
+% The 1000 activities selected and defined by humans require a diverse set of object and scene models to be performed in simulation. These models have to be as realistic as possible (visually, physically) to aim the development of embodied AI solutions.
+% We acquire scenes and object 3D models from 3D artists covering a diverse set of scene types that are essential for everyday human activities, including apartments, houses, gardens, grocery stores, generic halls, hotels, offices, restaurants, schools, public restrooms, and commercial kitchens (Table~\ref{tab:comparingbenchmarks}).
+% These scenes are fully interactive: we annotate missing articulation and any other physical property. 
+
+% \roberto{in Appendix: all \dataset object models in Fig.~\ref{fig:model_object}.  Fig.~\ref{fig:model_scene}. Table~\ref{tab:model_scene} provides details of each scene.
+% }
+
+% the activity definitions, it is evident that these 1000 diverse activities require a large number of interactive, high quality 3D models for daily scenes and objects. 
+
+% For scene models, we used 15 scenes from \oldbenchmark, and purchased 35 scenes from 3D artists online, covering a diverse set of scene types that are essential for everyday human activities, including apartments, houses, gardens, grocery stores, generic halls, hotels, offices, restaurants, schools, public restrooms, and commercial kitchens (Table~\ref{tab:comparingbenchmarks}). Many of the scenes are large-scale: the number of object types can be as many as 137 (e.g. in a large house scene), and the number of instances as many as 6994 (e.g. in a grocery store scene). For these scenes to be useful for EAI research, they need to be fully \emph{interactive}. We manually process these scenes by segmenting all rooms, walls, floors, and objects properly. Scene modeling results can be visualized in Fig.~\ref{fig:model_vis}, Fig.~\ref{fig:model_scene}. Table~\ref{tab:model_scene} provides details of each scene.  
+
+% %iG: 30/100+, need to check numbers. 
+% For object models, we purchased X object models online. Many of our object models include common daily objects (e.g., IKEA furnitures, daily objects) that can be acquired and used for sim2real experiments (Sec.~\ref{sec:sim2real}). Again, to create full interactive scenes, we manually process these models by: (a) annotating object local coordinate frames; (b) performing moderate vertex reduction to ensure rendering speed while maintaining visual quality; (c) matching the object categories to WordNet synsets in activity definitions. In addition, we conduct additional post-processing for (a) articulated objects: annotating the joint configurations (e.g. joint type, origin, axis, limits); (b) light objects: annotating the light source type, location and intensity; (c) objects with certain states: annotating locations of heat source, water source, toggle button, and so on. %(c) annotating deformable objects \ruohan{@Eric} by ...; (c) annotating whether an object is consisted of particles \ruohan{@Eric}.  
+ 
+
+
+
+
+
+
+
+

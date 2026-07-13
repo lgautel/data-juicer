@@ -1,0 +1,384 @@
+\documentclass{article}
+
+\PassOptionsToPackage{compress}{natbib}
+%\usepackage{corl_2022} % Use this for the initial submission.
+\usepackage[final]{corl_2022} % Uncomment for the camera-ready ``final'' version.
+%\usepackage[preprint]{corl_2022} % Uncomment for pre-prints (e.g., arxiv); This is like ``final'', but will remove the CORL footnote.
+
+
+\usepackage{textcomp}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+%\usepackage{xcolor}         % colors
+% \usepackage[table]{xcolor}    % loads also »colortbl«
+\usepackage{colortbl}
+\usepackage{placeins}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+\usepackage{wrapfig}
+
+% \usepackage{subfigure}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{xspace}
+\usepackage{float}
+\usepackage[export]{adjustbox}
+\usepackage{longtable}
+\usepackage{afterpage}
+
+\usepackage{geometry}
+\usepackage{pdflscape}
+% \usepackage{subfig}
+
+\captionsetup[figure]{font=small,labelfont=small,skip=5pt,belowskip=-10pt}
+\captionsetup[table]{font=small,labelfont=small,skip=5pt,belowskip=-10pt}
+
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\usepackage{fontawesome}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+\usepackage{lipsum}
+
+% \usepackage{tikz}
+\newcommand{\cmark}{\ding{51}}%
+% \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+\usepackage{adjustbox}
+\usepackage{array}
+\newcommand{\xmark}{\ding{53}}%
+\newcolumntype{R}[2]{%
+    >{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
+    l%
+    <{\egroup}%
+}
+\newcommand*\rot{\multicolumn{1}{R{30}{1em}}}
+\newcommand*\rotn{\multicolumn{1}{R{90}{1em}}}
+\newcommand*\rotsp{\multicolumn{3}{R{45}{1em}}}
+\usepackage{rotating}
+\definecolor{forestgreen}{rgb}{0.13, 0.55, 0.13}
+\definecolor{indiagreen}{rgb}{0.07, 0.53, 0.03}
+
+\usepackage[small]{titlesec}
+\titlespacing*{\section}{0pt}{4pt plus 2pt minus 2pt}{2pt plus 1pt minus 1pt}
+\titlespacing*{\subsection}{0pt}{1pt plus 1pt minus 1pt}{0pt plus 1pt minus 1pt}
+\titlespacing*{\paragraph}{0pt}{0pt plus 0pt minus 2pt}{5pt}
+
+\newbox{\bigpicturebox}
+
+\definecolor{MyDarkBlue}{rgb}{0,0.08,1}
+\definecolor{MyDarkGreen}{rgb}{0.02,0.6,0.02}
+\definecolor{MyDarkRed}{rgb}{0.8,0.02,0.02}
+\definecolor{MyDarkOrange}{rgb}{0.40,0.2,0.02}
+\definecolor{MyPurple}{RGB}{111,0,255}
+\definecolor{MyRed}{rgb}{1.0,0.0,0.0}
+\definecolor{MyGold}{rgb}{0.75,0.6,0.12}
+\definecolor{MyDarkgray}{rgb}{0.66, 0.66, 0.66}
+
+
+\newcommand{\benchmark}{BEHAVIOR-1K\xspace}
+\newcommand{\oldbenchmark}{BEHAVIOR-100\xspace}
+\newcommand{\dataset}{\textsc{BEHAVIOR-1K Dataset}\xspace}
+\newcommand{\simulator}{\textsc{OmniGibson}\xspace}
+\newcommand{\bddlfull}{BEHAVIOR Domain Definition Language\xspace} 
+\newcommand{\bddl}{BDDL\xspace} 
+\newcommand{\rlvmc}{RL-VMC\xspace}
+\newcommand{\rlprim}{RL-Prim.\xspace}
+\newcommand{\rlprimhist}{RL-Prim.\-Hist.\xspace}
+
+\renewcommand{\labelitemii}{{\tiny$\bullet$}}
+\renewcommand{\labelitemiii}{{\tiny$\bullet$}}
+
+\newcommand{\roberto}[1]{\textcolor{magenta}{[R:#1]}}
+\newcommand{\ruohan}[1]{\textcolor{red}{[RZ:#1]}}
+\newcommand{\josiah}[1]{\textcolor{blue}{[JW:#1]}}
+\newcommand{\cem}[1]{\textcolor{MyGold}{[Cem: #1]}}
+\newcommand{\eric}[1]{\textcolor{orange}{[Eric:#1]}}
+\newcommand{\fei}[1]{\textcolor{orange}{[Fei:#1]}}
+\newcommand{\chen}[1]{\textcolor{purple}{[Chen:#1]}}
+\newcommand{\todo}[1]{\textcolor{MyDarkRed}{[TODO:#1]}}
+\newcommand{\revision}[1]{\textcolor{black}{#1}}
+
+\renewcommand\ttdefault{cmvtt}
+
+\usepackage[resetlabels,labeled]{multibib}
+\newcites{A}{Appendix References}
+
+\usepackage{xparse}
+\let\oriCiteA\citeA
+
+%% The O{} in this re-definition means "an optional argument
+%% with an empty default value". It is not related to the
+%% "O" prefix in the OP's example. 
+\RenewDocumentCommand{\citeA}{O{} O{} m}{%
+  %% The "A" here *is* the prefix as required by the OP's example
+  \renewcommand{\citenumfont}[1]{A##1}%  
+  \oriCiteA[#1][#2]{#3}%
+  \renewcommand{\citenumfont}[1]{##1}%
+}
+
+
+\title{\benchmark: A Human-Centered, Embodied AI Benchmark with 1,000 Everyday Activities and Realistic Simulation}
+
+% The \author macro works with any number of authors. There are two
+% commands used to separate the names and addresses of multiple
+% authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to
+% break the lines. Using \AND forces a line break at that point. So,
+% if LaTeX puts 3 of 4 authors names on the first line, and the last
+% on the second line, try using \AND instead of \And before the third
+% author name.
+
+% NOTE: authors will be visible only in the camera-ready and preprint versions (i.e., when using the option 'final' or 'preprint'). 
+% 	For the initial submission the authors will be anonymized.
+
+% \author{
+% Chengshu Li*, Ruohan Zhang*, Josiah Wong*, Cem Gokmen*, Sanjana Srivastava*, Roberto Martín-Martín*, Chen Wang*, Gabrael Levine*, Michael Lingelbach, Jiankai Sun, Mona Anvari, Minjune Hwang, Manasi Sharma, Arman Aydin, Dhruva Bansal, Samuel Hunter, Kyu-Young Kim, Alan Lou, Caleb R Matthews, Ivan Villa-Renteria, Jerry Huayang Tang, Claire Tang, Fei Xia, Silvio Savarese, Hyowon Gweon, Karen Liu, Jiajun Wu, Li Fei-Fei \\
+% *:equally contributed
+% }
+
+% \author{%
+% Chengshu Li*$^{\scriptscriptstyle 1}$,
+% Ruohan Zhang*$^{\scriptscriptstyle 1}$,
+% Josiah Wong*$^{\scriptscriptstyle 2}$,
+% Cem Gokmen*$^{\scriptscriptstyle 1}$,
+% \\\textbf{
+% Sanjana Srivastava*$^{\scriptscriptstyle 1}$,
+% Roberto Martín-Martín*$^{\scriptscriptstyle 9,10}$,
+% Chen Wang*$^{\scriptscriptstyle 1}$,
+% Gabrael Levine*$^{\scriptscriptstyle 1}$,
+% }
+% \\\textbf{
+% Michael Lingelbach$^{\scriptscriptstyle 3}$,
+% Jiankai Sun$^{\scriptscriptstyle 4}$, 
+% Mona Anvari$^{\scriptscriptstyle 1}$,
+% Minjune Hwang$^{\scriptscriptstyle 1}$,
+% Manasi Sharma$^{\scriptscriptstyle 1}$,
+% }
+% \\\textbf{
+% Arman Aydin$^{\scriptscriptstyle 1}$,
+% Dhruva Bansal$^{\scriptscriptstyle 1}$,
+% Samuel Hunter$^{\scriptscriptstyle 1}$,
+% Kyu-Young Kim$^{\scriptscriptstyle 1}$,
+% Alan Lou$^{\scriptscriptstyle 5}$,
+% }
+% \\\textbf{
+% Caleb R Matthews$^{\scriptscriptstyle 1}$,
+% Ivan Villa-Renteria$^{\scriptscriptstyle 1}$, 
+% Jerry Huayang Tang$^{\scriptscriptstyle 1}$,
+% Claire Tang$^{\scriptscriptstyle 1}$,
+% Fei Xia$^{\scriptscriptstyle 6}$,
+% }
+% \\\textbf{
+% Silvio Savarese$^{\scriptscriptstyle 1,8,10}$,
+% Hyowon Gweon$^{\scriptscriptstyle 7,8}$,
+% C. Karen Liu$^{\scriptscriptstyle 1,8}$, 
+% Jiajun Wu$^{\scriptscriptstyle 1,8}$, 
+% Li Fei-Fei$^{\scriptscriptstyle 1,8}$
+% }
+% \\\\
+% Department of Computer Science, Stanford University$^{\scriptscriptstyle 1}$
+% \\Department of Mechanical Engineering, Stanford University$^{\scriptscriptstyle 2}$
+% \\Neurosciences IDP, Stanford University$^{\scriptscriptstyle 3}$
+% \\Department of Aeronautics and Astronautics, Stanford University$^{\scriptscriptstyle 4}$
+% \\Institute for Computational and Mathematical Engineering, Stanford University$^{\scriptscriptstyle 5}$
+% \\Department of Electrical Engineering, Stanford University$^{\scriptscriptstyle 6}$
+% \\Department of Psychology, Stanford University$^{\scriptscriptstyle 7}$
+% \\Institute for Human-Centered AI (HAI), Stanford University$^{\scriptscriptstyle 8}$
+% \\Deparment of Computer Science, The University of Texas at Austin$^{\scriptscriptstyle 9}$ \\Salesforce Research$^{\scriptscriptstyle 10}$
+% }
+
+\author{%
+Chengshu Li*$^{\scriptscriptstyle 1}$,
+Ruohan Zhang*$^{\scriptscriptstyle 1}$,
+Josiah Wong*$^{\scriptscriptstyle 2}$,
+\\\textbf{
+Cem Gokmen*$^{\scriptscriptstyle 1}$,
+Sanjana Srivastava*$^{\scriptscriptstyle 1}$,
+Roberto Martín-Martín*$^{\scriptscriptstyle 9}$,
+}
+\\\textbf{
+Chen Wang*$^{\scriptscriptstyle 1}$,
+Gabrael Levine*$^{\scriptscriptstyle 1}$,
+Wensi Ai*$^{\scriptscriptstyle 1}$,
+}
+\\\textbf{
+Benjamin Martinez$^{\scriptscriptstyle 1}$,
+Hang Yin$^{\scriptscriptstyle 1}$,
+Michael Lingelbach$^{\scriptscriptstyle 3}$,
+Minjune Hwang$^{\scriptscriptstyle 1}$,
+}
+\\\textbf{
+Ayano Hiranaka$^{\scriptscriptstyle 1}$,
+Sujay Garlanka$^{\scriptscriptstyle 11}$,
+Arman Aydin$^{\scriptscriptstyle 1}$,
+Sharon Lee$^{\scriptscriptstyle 1}$,
+}
+\\\textbf{
+Jiankai Sun$^{\scriptscriptstyle 4}$, 
+Mona Anvari$^{\scriptscriptstyle 1}$,
+Manasi Sharma$^{\scriptscriptstyle 1}$,
+Dhruva Bansal$^{\scriptscriptstyle 1}$,
+}
+\\\textbf{
+Samuel Hunter$^{\scriptscriptstyle 1}$,
+Kyu-Young Kim$^{\scriptscriptstyle 1}$,
+Alan Lou$^{\scriptscriptstyle 5}$,
+Caleb R Matthews$^{\scriptscriptstyle 1}$,
+}
+\\\textbf{
+Ivan Villa-Renteria$^{\scriptscriptstyle 1}$, 
+Jerry Huayang Tang$^{\scriptscriptstyle 1}$,
+Claire Tang$^{\scriptscriptstyle 1}$,
+Fei Xia$^{\scriptscriptstyle 6}$,
+}
+\\\textbf{
+Yunzhu Li$^{\scriptscriptstyle 10}$,
+Silvio Savarese$^{\scriptscriptstyle 1,8,12}$,
+Hyowon Gweon$^{\scriptscriptstyle 7,8}$,
+}
+\\\textbf{
+C. Karen Liu$^{\scriptscriptstyle 1,8}$, 
+Jiajun Wu$^{\scriptscriptstyle 1,8}$, 
+Li Fei-Fei$^{\scriptscriptstyle 1,8}$
+}
+\\\\
+Department of Computer Science$^{\scriptscriptstyle 1}$, Department of Mechanical Engineering$^{\scriptscriptstyle 2}$
+\\Neurosciences IDP$^{\scriptscriptstyle 3}$, Department of Aeronautics and Astronautics$^{\scriptscriptstyle 4}$
+\\Institute for Computational and Mathematical Engineering$^{\scriptscriptstyle 5}$
+\\Department of Electrical Engineering$^{\scriptscriptstyle 6}$, Department of Psychology$^{\scriptscriptstyle 7}$
+\\Institute for Human-Centered Artificial Intelligence (HAI)$^{\scriptscriptstyle 8}$
+\\Stanford University
+\\
+\\The University of Texas at Austin$^{\scriptscriptstyle 9}$ 
+\\The University of Illinois Urbana-Champaign$^{\scriptscriptstyle 10}$
+\\University of Southern California$^{\scriptscriptstyle 11}$
+\\ Salesforce Research$^{\scriptscriptstyle 12}$
+}
+
+% \author{%
+% Chengshu Li*$^{\scriptscriptstyle 1}$,
+% Ruohan Zhang*$^{\scriptscriptstyle 1}$,
+% Josiah Wong*$^{\scriptscriptstyle 1}$,
+% Cem Gokmen*$^{\scriptscriptstyle 1}$,
+% \\\textbf{
+% Sanjana Srivastava*$^{\scriptscriptstyle 1}$,
+% Roberto Martín-Martín*$^{\scriptscriptstyle 3,4}$,
+% Chen Wang*$^{\scriptscriptstyle 1}$,
+% Gabrael Levine*$^{\scriptscriptstyle 1}$,
+% }
+% \\\textbf{
+% Michael Lingelbach$^{\scriptscriptstyle 1}$,
+% Jiankai Sun$^{\scriptscriptstyle 1}$, 
+% Mona Anvari$^{\scriptscriptstyle 1}$,
+% Minjune Hwang$^{\scriptscriptstyle 1}$,
+% Manasi Sharma$^{\scriptscriptstyle 1}$,
+% }
+% \\\textbf{
+% Arman Aydin$^{\scriptscriptstyle 1}$,
+% Dhruva Bansal$^{\scriptscriptstyle 1}$,
+% Samuel Hunter$^{\scriptscriptstyle 1}$,
+% Kyu-Young Kim$^{\scriptscriptstyle 1}$,
+% Alan Lou$^{\scriptscriptstyle 1}$,
+% }
+% \\\textbf{
+% Caleb R Matthews$^{\scriptscriptstyle 1}$,
+% Ivan Villa-Renteria$^{\scriptscriptstyle 1}$, 
+% Jerry Huayang Tang$^{\scriptscriptstyle 1}$,
+% Claire Tang$^{\scriptscriptstyle 1}$,
+% Fei Xia$^{\scriptscriptstyle 1}$,
+% }
+% \\\textbf{
+% Silvio Savarese$^{\scriptscriptstyle 1,2,4}$,
+% Hyowon Gweon$^{\scriptscriptstyle 1,2}$,
+% C. Karen Liu$^{\scriptscriptstyle 1,2}$, 
+% Jiajun Wu$^{\scriptscriptstyle 1,2}$, 
+% Li Fei-Fei$^{\scriptscriptstyle 1,2}$
+% }
+% \\\\
+% Stanford University$^{\scriptscriptstyle 1}$, Stanford Institute for Human-Centered AI (HAI)$^{\scriptscriptstyle 2}$,
+% \\The University of Texas at Austin$^{\scriptscriptstyle 3}$, Salesforce Research$^{\scriptscriptstyle 4}$
+% }
+
+\begin{document}
+\maketitle
+
+%===============================================================================
+
+\begin{abstract}
+We present \benchmark, a comprehensive simulation benchmark for human-centered robotics.
+\benchmark includes two components, guided and motivated by the results of an extensive survey on `\textit{what do you want robots to do for you?}'. The first is the definition of 1,000 everyday activities, grounded in 50 scenes (houses, gardens, restaurants, offices, etc.) with more than 9,000 objects annotated with rich physical and semantic properties. %organized in a knowledge base, called \dataset. 
+The second is \simulator, a novel simulation environment that supports these activities via realistic physics simulation and rendering of rigid bodies, deformable bodies, and liquids. %Additionally to the kinodynamic states, \simulator also tracks and updates extended object states such as temperature, wetness level, and toggled state, and approximates complex physical processes such as blending substances and cooking food, which is essential to realistically simulate our diverse set of activities.
+%The diversity and realism of \benchmark are guided and motivated by the results of an extensive survey on `\textit{what do you want robots to do for you?}' 
+Our experiments indicate that the activities in \benchmark are long-horizon and dependent on complex manipulation skills, both of which remain a challenge for even state-of-the-art robot learning solutions. To calibrate the simulation-to-reality gap of \benchmark, we provide an initial study on transferring solutions learned with a mobile manipulator in a simulated apartment to its real-world counterpart. % and observe the compounding effect of navigation errors in subsequent parts of the activity.
+We hope that \benchmark's human-grounded nature, diversity, and realism make it valuable for embodied AI and robot learning research.
+Project website: \url{https://behavior.stanford.edu}.
+
+\blfootnote{* indicates equal contribution\newline correspondence to \href{mailto:chengshu@stanford.edu,zharu@stanford.edu,jdwong@stanford.edu,cgokmen@stanford.edu,sanjana2@stanford.edu}{\{chengshu,zharu,jdwong,cgokmen,sanjana2\}@stanford.edu} }
+
+%in benchmarking for robots.
+% This survey exposed the large diversity of human desires and needs, and, together with crowdsourced definitions for the activities, indicated that a benchmark to develop robotic solutions that generalize needs to be diverse.
+\end{abstract}
+
+
+%and absorption processes, thermodynamics, and the simulation of additional state changes like mixing substances and cooking, cleaning and toggling, that are relevant to realistically simulate our diverse set of activities.
+% All simulated states are mapped to logic discrete descriptions to map the logic language of the activity definitions.
+
+% Two or three meaningful keywords should be added here
+\keywords{Embodied AI Benchmark, Everyday Activities, Mobile Manipulation} 
+
+%===============================================================================
+
+\input{1-intro}
+\input{2-survey}
+\input{3-related}
+%\input{3-overview}
+\input{4-activity}
+\input{5-model}
+\input{6-simulation}
+\input{7-baseline}
+\input{8-sim2real}
+\input{9-discuss}
+
+
+%==============
+
+%\clearpage
+% The acknowledgments are automatically included only in the final and preprint versions of the paper.
+\acknowledgments{This work was done in part when Chengshu Li, Josiah Wong, and Michael Lingelbach were interns at Nvidia Research. The work is in part supported by the Stanford Institute for Human-Centered AI (HAI), the Toyota Research Institute (TRI), NSF CCRI \#2120095, NSF RI \#2211258, NSF NRI \#2024247, ONR MURI N00014-22-1-2740, ONR MURI N00014-21-1-2801, Amazon, Bosch, Salesforce, and Samsung. Ruohan Zhang is partially supported by the Wu Tsai Human Performance Alliance Fellowship. Sanjana Srivastava is partially supported by the National Science Foundation Graduate Research Fellowship Program (NSF GRFP).}
+
+
+%===============================================================================
+
+%\clearpage
+% no \bibliographystyle is required, since the corl style is automatically used.
+\bibliography{ref}  % .bib
+
+%\clearpage
+
+\input{appendix}
+
+\end{document}

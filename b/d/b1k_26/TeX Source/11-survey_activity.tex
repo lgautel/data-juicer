@@ -1,0 +1,303 @@
+\section{Survey}
+\label{as:survey}
+
+In this section, we provide further information about the survey presented in Sec.~\ref{sec:survey} that guided our benchmark development. We'll discuss how we selected activities that are part of the survey, the survey design and execution, and the demographic information about the survey participants.
+
+\subsection{Activity Sources} 
+We source activities from a combination of \textit{time-use surveys} and WikiHow~\cite{koupaee2018wikihow}. Time-use surveys are studies that inquire about the daily time use of a population~\cite{atus}, making them a good proxy for daily requirements of embodied intelligence. We combine information from three time-use surveys\textemdash American~\cite{atus}, Harmonized European~\cite{hetus}, and Multinational~\cite{mtus} Time Use Surveys\textemdash and obtain an initial set of 540 activities. 
+The time-use surveys focus on activities that happen with enough frequency and require a significant amount of time. However, there are other activities that are essential for everyday human life, but not reflected in the time-use surveys.
+WikiHow articles include activities that are important for humans where they seek guidance, even if they are not as frequent as the ones included in the time-use surveys. 
+This indicates a great potential to source additional useful and relevant daily activities. 
+We complement the activities from the time use surveys with WikiHow article titles, of which there are 180,000+. These constitute a raw set of activities that are filtered down by feasibility, as explained in the next paragraph. 
+
+\paragraph{Activity filtering for feasibility:} Simulation constrains which activities collected from time-use surveys and WikiHow can actually be used in \benchmark. We used the following criteria based on \simulator and \bddl constraints to filter the activity pool prior to the survey: 
+
+\begin{table}[h]
+    \centering
+    \label{tab:xxxx}
+    \resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|}
+    \hline
+    \textbf{Filtering principle} & 
+    % \textbf{Reason} & 
+    \textbf{Example activity filtered out} \\
+    \hline
+    Activity requires physics or chemistry not supported in simulation & 
+        % Unsimulatable by definition & 
+        \texttt{SteamingClothes}, \texttt{MakingSoap} \\
+    Activity involves creating or consuming media & 
+        %Decision not to simulate media, difficult to represent media content compactly in \bddl &
+        \texttt{ReadingABook} \\
+    Activity requires more than a day in real time & 
+        % Time horizon has potential to be excessive for modern algorithms, and activity is likely to be mostly passive &
+        \texttt{DryingSeedsOvernight} \\
+    Activity requires non-visual perceptual modalities & 
+        % Most simulators, including \simulator, only provide visual signals & 
+        \texttt{SweeteningFood} \\
+    Activity requires geometric configurations too fine-grained for \bddl &
+        % \bddl has only the positional predicates listed in~\ref{tab:supp_preds_table}, making it powerful for expressing general positions but not specific ones & 
+        \texttt{SettingUpANativityScene} \\
+    Activity is predicated on branded items & 
+        % Branding is generally inappropriate for an open-source tool \todo{what's the exact reason here?} & 
+        \texttt{SprayingWindex} \\
+    Activity involves other people or live animals & 
+        % \simulator does not currently support multi-agent use, and current behavior models of both humans and non-human animals are unlikely to be realistic enough to use as ground truth in a benchmark over a long time-horizon and in high-level cognitive activities \\
+        \texttt{AskingForARaise}\\
+    \hline
+\end{tabular}
+}
+\end{table}
+After filtering and eliminating duplicates, and including the activities from~\cite{srivastava2021behavior}, 2,090 activities remain to be surveyed.
+
+% \labelitemii{{\tiny$\bullet$}}
+\subsection{Survey Design} 
+Our survey is structured as follows:
+\vspace{-2mm}
+\begin{itemize}[leftmargin=1.5em]
+    % \item Survey respondent reads instructions, which say ``What activities would you like done by a robot? Let's assume that this robot can do any activity well. For each activity, tell us how much you would like a robot to complete it for you.'', followed by detailed instructions describing the question format and illustrative examples.
+    \item \textbf{Demographic questions} requesting information about the number of people in the household, occupation, general location, and relationship between household work, automation, and livelihood (see Fig.~\ref{fig:activity_survey_demo} for results). 
+    \item \textbf{Activity survey questions} requesting the value of automation of a batch of activities to the respondent. Specifically, this section comprises:
+    \begin{itemize}
+        \item 50 questions, one question per activity 
+        \item Question text: \textit{On a scale of 1 (left) to 10 (right), rate how much you want a robot to do this activity for you.}
+        \item Each response uses an independent Likert score~\cite{likert1932technique} on a scale from 1 (less beneficial) to 10 (most beneficial)
+    \end{itemize}
+\end{itemize}
+
+We piloted alternatives for the survey about two design decisions: 1) question wording, and 2) question format. With respect to the wording for the question, we piloted three alternatives to specify the \textit{agent}: \textit{robot}, \textit{assistant}, and \textit{automation}. Our goal was to study any possible (mis)conceptions about robots that might bias the study. By way of 30 pairwise T-tests and 10 ANOVAS~\cite{stats2013montgomery}, we did not find any statistically significant difference between the results obtained using these three wordings. With respect to the format of the question, we piloted two alternative formats: 10-point Likert, and three-element best-worst scaling. By way of Kendall's tau~\cite{stats2013montgomery}, there was a strong correlation between the rankings determined by Likert scores and standard metrics of best-worst scaling. We, therefore, conclude that either method will give us a similar ranking, and select the more resource-efficient option (Likert). 
+
+\paragraph{Survey collection:}
+We deployed our survey on Amazon Mechanical Turk~\cite{paolacci2010running} and collected 50 unique responses per activity. There were a total of 1,461 different respondents and their average scores ranged from 1.9 to 9.3, showing high diversity. The average score was 5.16. To ensure response quality, we repeated four questions in every survey as an attention check. If responses to a pair of repeats differed by more than two points, we considered it failed. Two or more failures led to rejection. We also rejected survey responses that had no significant variance across their responses to 50 different activities.
+
+% ROBERTO: Commenting out this plot. It is unclear the information that it provides. If we want to include it back, we should fix the ticks in the x axis and include more activities, right now it takes too much space to just show 20 numbers (scores)
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=\textwidth]{figures/survey/evenspace20.pdf}
+%     \caption{Results of the activity preference survey for twenty activities. The activities are evenly spaced throughout the entire ranking of 1,990 activities.}
+%     \label{fig:activity_survey_responses}
+% \end{figure} 
+
+\subsection{Demographic Information}
+\label{sec:demographics}
+
+Fig.~\ref{fig:activity_survey_demo} depicts the results of our demographic questions on the participants of the survey. We observe that most adult age groups have good representation, particularly pre-retirement age groups, and are concentrated in the 30-40 group. Racially, the respondents are around 75\% white, a larger proportion than the U.S. population but similar to the Mechanical Turk proportion~\cite{pew2016mturkdemog}. Other races appear to have proportions similar to but not the same as their presence on both Mechanical Turk and in the general population; this may be due to their overall small numbers in all three~\cite{pew2016mturkdemog}. There is some Native American representation, though not statistically significant. Income-wise, respondents tend to be in the \$30,000-\$150,000 range, particularly in the lower half. 
+
+The participants' gender is distributed by 43.41\% women, 55.50\% men, 0.83\% non-binary, 0.26\% other. Gender representation is not as even as the U.S. population but more so than the Mechanical Turk worker population~\cite{pew2016mturkdemog}. There is a small representation of non-binary individuals. When it comes to disability status, our participants reported 92.56\% no-disability, 5.74\% disability, and 1.70\%
+prefer not to answer. Thus, our survey contained some but limited representation of people with disabilities. This group, together with the elderly, are groups commonly assumed to potentially benefit from robotic efforts; they could be subject to future targeted surveys.
+
+\begin{figure}[t!]
+\centering
+% \begin{subfigure}[t]{0.3\textwidth}
+\includegraphics[width=0.33\textwidth,valign=T]{figures/survey/age.pdf}%
+% \caption{Age}
+% \end{subfigure}
+\hfill%
+% \begin{subfigure}[t]{0.3\textwidth}
+\includegraphics[width=0.33\textwidth,valign=T]{figures/survey/race.pdf}%
+% \caption{Race}
+% \end{subfigure}
+\hfill%
+% \begin{subfigure}[t]{0.30.33\textwidth}
+\includegraphics[width=0.33\textwidth,valign=T]{figures/survey/income.pdf}%
+% \caption{Income}
+% \end{subfigure}
+% \\
+% \begin{subfigure}[t]{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/survey/gender.pdf}
+% \caption{Gender}
+% \end{subfigure}
+% % \hfill
+% \begin{subfigure}[t]{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/survey/disability.pdf}
+% \caption{Disability status}
+% \end{subfigure}
+\caption{\textbf{Demographic distribution of the participants in our survey.} Respondents appear to have similar demographics to the wider U.S. Mechanical Turk worker population~\cite{pew2016mturkdemog}. Not pictured: respondent gender (43.41\% women, 55.50\% men, 0.83\% non-binary, 0.26\% other), disability status (92.56\% no, 5.74\% yes, 1.70\% prefer not to answer).}
+\label{fig:activity_survey_demo}
+\end{figure}
+
+\section{Activity Annotation}
+\label{as:act_ann}
+Obtaining the \bddl definitions for 1,000 activities requires multiple preparatory steps to gather the knowledge needed. This knowledge also becomes part of the~\dataset. The pipeline is outlined in Fig.~\ref{fig:activity_pipeline}. We now detail each annotation other than the survey. Furthermore, quality assessment statistics for these annotations are found in Sec.~\ref{sec:annot_qa}. We see that experienced annotators find our resulting \benchmark knowledge base highly accurate.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/activities/pipeline.pdf}
+    \caption{\textbf{Flow chart of the annotation pipeline:} activity selection, activity article collection, object list extraction, object property and parameter annotation, \bddl annotation.}
+    \label{fig:activity_pipeline}
+\end{figure}
+
+\paragraph{Obtaining list of objects per activity (WikiHow articles, noun phrase extraction, and manual object filtering):} Our activity definition requires first defining a set of objects and properties that the annotators could use to describe an activity. We would like these domains to be natural and ecological, containing all relevant objects that humans may consider necessary for a task. To obtain such an ecologically plausible object space per activity, we parse WikiHow articles. Since WikiHow is a how-to database with a wide following and community as well as expert- and peer-review, the article texts document objects that are used and acted on in an activity. We therefore asked crowdworkers from the Upwork platform to collect articles; for robustness, we had five articles collected for each activity. We used a chunking model~\cite{akbik2018coling} to extract noun phrases from the article text, then we manually filtered the noun phrases into tangible objects. 
+
+\paragraph{Synsets for object terms and WordNet hierarchy generation:} After obtaining an object space for each activity, we take their union and crowdworkers match each one to a WordNet~\cite{wordnet} synset. This eliminates word-sense ambiguity in the knowledge base and creates a hierarchical structure in the overall object space via the WordNet hierarchy. This process yielded 1,538 total WordNet leaf synsets. Based on various property annotations and needs of the activity set, there are also 1,426 custom synsets for a total of 2,964 leaf synsets.
+
+\paragraph{Property annotations:} Each object that is a leaf-level synset of the WordNet hierarchy is associated with the set of object properties in \benchmark, each of which is fully simulatable in \simulator (full list of properties in Table~\ref{tab:supp_props}). The properties define which predicates can apply to the object - e.g. an object having the \texttt{cookable} property means it can be \texttt{cooked} and \texttt{not cooked}. This association is done task-agnostically because objects/states that are irrelevant or undesirable for a specific activity will still provide important learning signals. All properties that apply to many of the 2,964 leaf synsets and therefore require a large-scale annotation are done by either GPT-3~\cite{gpt3} or crowdworkers. GPT-3 is used for all properties (total of eight) for which the Hamming distance and false-positive rate for a sample compared to a human-annotated ground-truth are both less than 10\%. Human annotation is used for five more properties. The remaining properties are either sensitive to the simulator implementation and are therefore annotated manually, or can be inferred from the other annotations and are determined analytically. 
+
+This annotation is done only for leaf-level synsets, then properties of higher-level synsets are inferred from the leaf-level annotations. This prevents definition unsolveability. In more detail: as shown in Fig.~\ref{fig:activity_pipeline}, the hierarchical structure is applied to the object space. This allows activity definition annotators to refer to them instead of leaf-level synsets; for example, a \texttt{PuttingAwayGroceries} definition can have ``five \texttt{edible\_fruit.n.01}s'' rather than ``two \texttt{apple.n.01}s and three \texttt{banana.n.01}s'', allowing more variation in activity instantiation because far more object models are valid. However, 3-D object models are generally only attached to leaf- or near-leaf-level synsets, meaning that a definition may have a higher-level synset with various predicates attached to it, and at simulation time the object model (associated with one of the synset's descendants) must have those states simulated. A problem might occur when e.g. \texttt{container.n.01} is annotated as \texttt{fillable} and the definition calls for a \texttt{container.n.01} to be \texttt{filled} with a \texttt{liquid}, but the actual model that gets sampled into the simulator to satisfy \texttt{container.n.01} is a cloth bag that doesn't support being \texttt{filled} with a \texttt{liquid}. So to avoid this unsolveability, the properties of any non-leaf synset are exactly the \textit{intersection of all its descendants' properties}.
+
+\input{T-properties}
+
+\paragraph{Property parameter annotations:} \bddl separates objects and object states (i.e. terms and predicates), but simulating realistic ``cooking'' or ``filling'' requires information for object-object property tuples, not just objects or object properties alone. For example, in the real world, an \texttt{apple.n.01} and a \texttt{chicken.n.01} do not become cooked at the same temperature, so simply knowing they are both \texttt{cookable} is insufficient. \dataset therefore includes manual annotation of several property parameters that are (object, object property) specific, such as \texttt{cookTemperature} for all \texttt{cookable} objects. 
+
+Examples of object-property pairs and parameters:
+\vspace{-2mm}
+\begin{itemize}[leftmargin=2em]
+    \item Temperature required for \texttt{cookable} object to go from \texttt{(cooked object) = False} to \texttt{(cooked object) = True}
+    \begin{itemize}
+        \item \texttt{crab.n.05}: must reach \textbf{63\textdegree C}
+        \item \texttt{squash.n.02}: must reach \textbf{58\textdegree C}
+         \item \texttt{meatball.n.01}: must reach \textbf{63\textdegree C}
+        \item \texttt{chicken\_leg.n.01}: must reach \textbf{74\textdegree C}
+    \end{itemize}
+    \item Temperature generated by \texttt{heatSource} object. For \texttt{toggleable heatSource}s, this may require \texttt{toggledOn(object) = True}
+    \begin{itemize}
+        \item \texttt{toaster\_oven.n.01}: generates \textbf{204\textdegree C}
+        \item \texttt{ember.n.01}: generates \textbf{1093\textdegree C}
+        \item \texttt{hand\_blower.n.01}: generates \textbf{45\textdegree C}
+        \item \texttt{coffee\_maker.n.01}: generates \textbf{93\textdegree C}
+    \end{itemize}
+\end{itemize}
+
+
+
+\paragraph{Transition rules:} There are many activities that involve complex chemical and physical processes that are beyond the capability of the state-of-the-art simulation technology. For example, blending different fruits into a smoothie or sanding a rusted surface are extremely difficult to simulate, but the agent actions to complete these tasks are still within reach, e.g. placing the fruits inside a blender. Therefore, in ordet to support these type of activities, we create a set of transition rules that will be used by \simulator to bypass the underlying physics but still produce visually realistic physical transitions, e.g. smoothie particles being generated inside the blender after the blender is turned on.
+
+%simulation, but executing them realistically does not require a deep understanding of those. For example, only certain cleansing agents can clean up grease while many more can clean up the dust. Enforcing this constraint through pure simulation is beyond most state-of-the-art simulators, but for any agent (including a human) that has been given the right materials, the processes are very similar. So, we create a set of transition rules activities including cooking, cleaning, and assembly to make such activities possible and ensure that they require realistic agent actions.
+
+Examples of transition rules: 
+\vspace{-2mm}
+\begin{itemize}[leftmargin=2em]
+    \item Composition and decomposition of objects 
+    \begin{itemize}
+        \item Transition rule used in \texttt{make a strawberry slushie}
+        \begin{itemize}
+            \item \textbf{Inputs:} \texttt{strawberry.n.01}, \texttt{ice.n.01}, \texttt{lemon\_juice.n.01}, \texttt{agave.n.01}
+            \item \textbf{Transition machine:} \texttt{blender.n.01}
+            \item \textbf{Outputs:} \texttt{smoothie.n.01}
+        \end{itemize}
+        \item Transition rule used in \texttt{make gazpacho}
+        \begin{itemize}
+            \item \textbf{Inputs:} \texttt{basil.n.03}, \texttt{salt.n.02}, \texttt{black\_pepper.n.02}, \texttt{tomato\_juice.n.01}, \texttt{cucumber.n.02}, \texttt{water.n.06}, \texttt{lemon\_juice.n.01}
+            \item \textbf{Transition machine:} \texttt{saucepan.n.01}
+            \item \textbf{Outputs:} \texttt{gazpacho.n.01}
+        \end{itemize}
+    \end{itemize}
+    \item Realistic cleaning rules
+    \begin{itemize}
+    \item Transition rule used in \texttt{CleanTheExteriorOfYourGarage}
+    \begin{itemize}
+        \item \textbf{Substance covering object:} \texttt{paint.n.01} or \texttt{spray\_paint.n.01}
+        \item \textbf{Objects needed to remove:} \texttt{particleRemover} saturated with (\texttt{solvent.n.01} or \texttt{acetone.n.01})
+    \end{itemize}
+    \item Transition rule used in \texttt{CleanYourRustyGardenTools}
+    \begin{itemize}
+        \item \textbf{Substance covering object:} \texttt{rust.n.01} or \texttt{patina.n.01} or \texttt{incision.n.01} (simulated as particles but exposed to annotators as unary \texttt{scratched} predicate) or \texttt{tarnish.n.01} (simulated as particles but exposed to annotators as unary \texttt{tarnished} predicate)
+        \item \textbf{Objects needed to remove:} \texttt{emery\_paper.n.01} or \texttt{whetstone.n.01}
+    \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Activity definitions in \bddl:} Finally, the object spaces and the relevant properties and predicates they enable are offered to lay annotators to generate \bddl definitions. Annotators build activity definitions using an annotation interface that includes a visual version of \bddl~\cite{srivastava2021behavior} (details on new features in \bddl are in  Sec.~\ref{sec:bddl}). The annotation interface enforces the requirements needed to make definitions logically solvable and well-formed. We collect one definition per activity for a total of 1,000 \bddl activity definitions.
+
+Listings~\ref{lst:bddl3},~\ref{lst:bddl4}, and~\ref{lst:bddl5} show examples of \benchmark activity definitions, while Listing~\ref{lst:bddl1} and~\ref{lst:bddl2} show examples of \oldbenchmark definitions. We see that while the numbers of objects and literals are similar, speaking to the fact that both benchmarks have reached similar scale and detail for the activities they have, \benchmark has far larger and more detailed activity distribution. The \texttt{BakingSugarCookies} activity involves transition rules that turn ingredients in \texttt{:init} to scones in \texttt{:goal}, a process that will require the listed mixer and oven in \simulator. By contrast, cooking in \oldbenchmark was limited to single objects transitioning from \texttt{not cooked} to \texttt{cooked}; other benchmarks are similar or lack cooking entirely. \texttt{CleanYourLaundryRoom} involves specific cleansing agents to clean mold, whereas \oldbenchmark cleaning tasks only had two types of ``dirtiness'' (\texttt{stained} and \texttt{dusty}) and the only rule was to use water in the case of \texttt{stained}. \texttt{CleanTheBottomOfAnIron} also shows rust-specific cleaning (requiring emery paper).
+
+\subsection{Quality assessment of \benchmark annotations}
+\label{sec:annot_qa}
+% TODO 
+
+\begin{table}[h]
+    \centering
+     \resizebox{\textwidth}{!}{  
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        & Article Collection & Object Extraction & Human Properties & GPT-3 / Machine Properties \\ %& Parameter Annotation &  Activity Definition \\
+         \hline
+        Accuracy (Approval Rate)  & 0.974 & 0.968 & 0.990 & 0.988 \\ % & & \\
+        \hline
+        F1-score & 0.984 & 0.990 & 0.912 & 0.930 \\ % & & \\
+        \hline
+        False Discovery Rate & 0.026 & 0.032 & 0.031 & 0.029 \\ % & & \\
+        \hline
+        False Positive Rate & N/A & N/A & 0.002 & 0.003 \\ % & & \\
+        \hline
+    \end{tabular}}
+    \caption{Quality check results for object and object property annotations: for each stage in the annotation pipeline, report human verification results. The F1-score is $\frac{2}{\texttt{precision}^{-1} + \texttt{recall}^{-1}}$. The False Discovery Rate is FDR = FP/(TP+FP) and the False Positive Rate FPR = FP/(TN+FP). The high accuracy and F1-scores and low FDRs and FPRs show that our annotation results are of high quality. }
+    \label{tab:activity_qc}
+\end{table}
+
+\begin{table}[h]
+    \centering
+     \resizebox{10cm}{!}{  
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    %    \hline
+    & \multicolumn{4}{c|}{Activity Definition} \\
+        %\cline{1-8}
+        \hline
+        & Question 1 & Question 2 & Question 3 & Question 4\\ %& Parameter Annotation &  Activity Definition \\
+         \hline
+        Average Rating  & 4.875 & 4.942 & 4.967 & 4.975 \\ % & & \\
+        \hline
+        Standard Deviation & 0.331 & 0.234 & 0.364 & 0.156 \\ % & & \\
+    \hline
+    \end{tabular}}
+    \caption{Quality check results for activity definitions. Q1: Are the objects listed relevant to the definition of the task?, Q2: Do the initial placements/locations of objects make sense?, Q3: Are the actions to perform (“goals”) relevant to the definition of the activity?, Q4: Is this definition reasonable?\\ 
+    Each activity definition was evaluated on a scale of 1-5 for each of the questions, and the average score and standard deviation are presented. The increased granularity still reflects the high quality of our results.}
+    \label{tab:bddl_def_qc}
+\end{table}
+
+Our quality control investigation shows us that all labeling done by crowdworkers and GPT-3 is of the highest quality. Five crowdworkers with an extensive background in data labeling for large machine learning projects, coding, or data verification affirmed the results from earlier crowdworkers. The accuracies for all the labeling tasks were all above 96\%, the F1 scores were above 91\% and the false positive and false discovery rates were between 2-3\% as shown in Table~\ref{tab:activity_qc}. We noticed that the Synset Verification is a bit lower in accuracy than the other labeling tasks. This may be due to subtleties in acceptable synset definitions: for example, a ''reasonably narrow hypernym'' of a word not found in WordNet~\cite{wordnet} is acceptable, such as a "dispenser" for a "soap dispenser", but there may be gray areas regarding what is considered "reasonably narrow" (e.g. would a "hand tool" be reasonable as a replacement for a "soap dispenser"?)
+
+The activity definition process was evaluated with more granularity using a Likert scale and an array of questions. We found that the response values had consistently high averages (very close to the maximum score of 5) and low standard deviations as shown in Table~\ref{tab:activity_qc}. We also found no significant discrepancy for activity definition scores across topics (e.g. tasks related to "cleaning"), showing that the \bddl definitions were rated uniformly across the span of activity categories.
+
+\section{New \bddl features}
+\label{sec:bddl}
+
+\benchmark uses an expanded version of the~\bddl used in \oldbenchmark~\cite{srivastava2021behavior}, in order to support the new set of diverse activities. There are three new features here: 1) representation of substances, 2) three-valued predicates, and 3) composition and decomposition of objects. %, and 4) variable-arity predicates. We now detail the need for each of these, why the~\bddl from \oldbenchmark cannot support them, and the design in this version of~\bddl.
+
+\paragraph{Representation of substances:} \benchmark introduces \textit{substances}, objects that are arbitrarily subdivideable and do not obey clear instance boundaries such as \texttt{water.n.06} or \texttt{flour.n.01}. The lack of instance boundaries is difficult with traditional PDDL/\bddl: for example, if there are two bottles of orange juice where the juice inside one is called \texttt{orange\_juice.n.01\_1} and the juice inside the other is called \texttt{orange\_juice.n.01\_2}, any mixing of the particles makes it near-impossible for the agent to satisfy a \texttt{:goal} condition pertaining to an instance. Even with quantification, a condition like \texttt{exists (orange\_juice.n.01) (filled orange\_juice.n.01 glass.n.01\_3)} is still unfair: if the agent mixes particles from the two different \texttt{orange\_juice} instances such that together they \texttt{filled glass.n.01\_3} but neither instance alone has enough particles in \texttt{glass.n.01\_3} to fill it, the \texttt{:goal} will not be met.
+
+We simply enforce that there is up to one instance of any \texttt{substance} in a definition. The annotator can still control quantity by spawning it in as many containers as desired. Unlike labeling every particle separately, this maintains a compact representation. This does not allow for some of the substances to be different from some (e.g. some of the orange juice is cold and some is hot), but we consider this an acceptable limitation.
+
+Furthermore, particle-based objects can be computationally expensive to simulate. When an annotator uses \texttt{orange\_juice.n.01} only as a container of orange juice and not actually the particles (e.g. in a \texttt{PuttingAwayGroceries} activity), this becomes a waste of computational resources. Therefore, we introduce a custom container synset for every substance that has the same properties and WordNet hierarchy structure as \texttt{bottle.n.01} and instruct annotators to use it if all they want is the container.
+
+\paragraph{Three-valued predicates:} A common issue in \oldbenchmark activities is that success on predicates involving naturally continuous-valued quantities is sudden and arbitrary: cracking a window a little bit suddenly changes it from \texttt{not open} to \texttt{open}, and the activity from undone to done – even though the window is not a typical human conception of ``open’’. PDDL 2.1~\cite{fox2003pddl21} has numerical fluents and derived predicates, which offer continuous states. However, this granularity may not be crucial to the high-level activities in \benchmark, and the concept is also difficult to communicate to lay annotators.
+
+We therefore treat certain predicates as three-valued by having two Boolean predicates where the negations are the same, such as \texttt{filled} and \texttt{empty} (rather than just \texttt{not filled}). The annotators still see one Boolean predicate, in this case \texttt{filled}, and negate it to say the opposite, but we assume that when they negate, they mean something decisively empty. This is a strong assumption but generally safe as people tend not to add expressions that seem like common sense. Wherever we see the predicate negated in the definition, we switch it out with the other predicate. This applies to \texttt{filled}/\texttt{empty}, \texttt{open}/\texttt{closed}, and \texttt{folded}/\texttt{unfolded}.
+
+To ensure that the definition is logically the same after the switch, the underlying~\bddl implementation converts the definition using De Morgan’s Law such that all negations are only applied to atomic formulae before the switch occurs.
+
+% The only logical pitfall is that the switch does not work for all expressions: \texttt{not (exists (sweater.n.01) (folded sweater.n.01))} is not the same as \texttt{(exists (sweater.n.01) (unfolded sweater.n.01))}
+% \texttt{exists (?sweater.n.01) (not (folded sweater.n.01))} is not the same as \texttt{exists (?sweater.n.01) (unfolded sweater.n.01)} – in the first expression, there could be a sweater that is in between \texttt{unfolded} and \texttt{folded}. Instead,  
+
+\paragraph{Composition and decomposition of objects:} In standard PDDL/~\bddl, the objects in \texttt{:objects} are assumed to persist throughout the activity. There is no concept of creating a new object that did not appear in the \texttt{:init} or explicitly destroying an object. 
+
+To enable our transition rules that involve turning some objects into others, we require a representation that will provide the desired information unambiguously. The \texttt{:objects} section cannot be inferred simply from a \texttt{:goal} that has new objects in it, because \texttt{:goal} is not exhaustive. We therefore introduce the \texttt{future} predicate, used in \texttt{:init} on all objects that do not appear in the scene when the agent enters, but must be present for the \texttt{:goal} to be satisfied. All objects in \texttt{future} predicates appear in \texttt{:objects} and they cannot appear in any other literals in \texttt{:init}. This approach takes inspiration from~\cite{wichlacz2019ghost}, which updates a reference to an object (e.g. a wall) as it keeps changing form as more sub-objects (e.g. blocks) are added to it.
+
+% \paragraph{Variable-arity predicates:} Certain predicates can take various numbers of objects while indicating the same underlying concept. For example, in \benchmark, the \texttt{mixed} predicate can take any number of objects: the expressions \texttt{(mixed apple.n.01\_1 apple.n.01\_2 peach.n.03\_1)} and \texttt{(mixed apple.n.01\_1 apple.n.01\_2 peach.n.03\_1 banana.n.01\_1)} give different numbers of objects to \texttt{mixed}, but mean the same thing and are checked the same way in~\simulator. 
+
+% Logic predicates are fixed-arity by default, but work exists to expand to variable-arity predicates~\cite{oliver2004multigrade}. PDDL uses this assumption to specify predicates in its domain that can be used with PDDL actions to create plans. However, because~\bddl is used for benchmarking, it is process-agnostic and does not assume any planning method~\cite{srivastava2021behavior}. Therefore, a domain file does not have any effect in~\bddl, so a variable-arity predicate can be specified (rather than potentially infinite fixed-arity versions) to maintain compactness. This requires no structural changes to~\bddl.
+
+
+
+%\input{all_activity_table}
+
+
+% \begin{table}[h]
+%     \centering
+%     \begin{tabular}{|c|c|c|}
+%         % \hline
+%         %  &  &  \\
+%         %  \hline
+%         %  &  &  \\
+%         % \hline
+%     \end{tabular}
+%     \caption{[Comparative][In main body of text / appendix] A comparison between B1K knoweldgebase and other robotic / commonsense knowledgebases, in terms of number of objects, object properties, and object relations. This shows previous KBs are insufficient and our knowledge engineering effort is well justified. }
+%     \label{tab:activity_cskb}
+% \end{table}
+
+% \begin{figure}[h]
+%     \centering
+%     % \includegraphics[width=0.25\textwidth]{figures/ph.jpg}
+%     \caption{[See appendix] Show concrete BDDL definitions for three representative activities: one easy, one medium, and one difficult. They should be as different (scenes, sets of objects involved, task nature) as possible. Compared to B100 BDDLs. }
+%     \label{fig:activity_definition_examples}
+% \end{figure}

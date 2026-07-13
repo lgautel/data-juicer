@@ -1,0 +1,114 @@
+\section{Simulation}
+
+\subsection{Extended Object States and Logical Predicates in \simulator}
+\label{as:object_states}
+\simulator extends the infrastructure of extended object states and logical predicates from iGibson 2.0~\cite{li2021ig2} to accommodate the diversity and realism of \benchmark.
+
+\subsubsection{Extended object states associated with object category properties}
+For computational efficiency purposes, not all extended object states need to be maintained and updated for every object. For example, \texttt{cookable} objects like apples need to keep track of their \texttt{Temperature}, but probably tables don't need to, at least for the purpose of simulating \benchmark activities. Hence, given the object category property annotation from \dataset (see Table~\ref{tab:supp_props}), \simulator selectively keeps track of a subset of the extended states for objects of each category. The mapping from the object category property to the required object states can be found in Table~\ref{table:obj_cat_prop}.
+\input{T-obj-cat-prop}
+
+\subsubsection{Object model properties}
+We also need to perform physical and semantic annotation for each object model so that they can be realistically simulated and support the evolution of extended object states. Some of the physical properties can be programmatically generated from the 3D assets, such as \texttt{Shape}, \texttt{KinematicStructure} and  \texttt{StableOrientations}, while others need to be annotated (included in \dataset), such as \texttt{Weight}. \texttt{Type} of an object model, which is also derived from the object category property annotation from \dataset (see Table~\ref{tab:supp_props}), determines how the object will be simulated in \simulator. For example, cloths and fluids will be simulated using underlying particle systems. Also, some of the object category property requires additional semantic annotation for each model of that category, e.g. for \texttt{waterSource} objects, \texttt{WaterSourceLink} is required to indicate the exact location to generate water. An exhaustive list of all the object model properties can be found in Table~\ref{table:obj_model_prob}.
+\input{T-obj-model-prop}
+
+\subsubsection{Object states}
+While the object properties mentioned above stay the same during simulation (i.e. an apple is always \texttt{cookable} and a sink always have the same \texttt{WaterSourceLink} defined in its local frame), the object states could change. The underlying physics engine handles the kinematic state changes, such as \texttt{Pose}, \texttt{AABB}, \texttt{JointStates}, \texttt{ParticlePositions} for fluids and cloths, etc. On top of these, \simulator handles the non-kinematic state changes that are essential for logical predicates (described in the next subsection). For example, \simulator update the \texttt{Temperature} of objects at every simulation step by checking if they are near/inside any \texttt{heatSource} or \texttt{coldSource}. An exhaustive list of all the object states can be found in Table~\ref{table:obj_states}.
+\input{T-obj-state}
+
+\subsubsection{Logical predicates as checking functions}
+For each logical predicate that is relevant for \benchmark activities, we define a checking function that maps a given physical state (kinematic and non-kinematic) into a binary logical state that \bddl operates on. For example, \texttt{OnTopOf} is based on the pose of two objects and their contact information whereas \texttt{Cooked} is based on the \texttt{Temperature}. The details of the checking functions for all the logical predicates can be found in Table~\ref{table:obj_pred_checking}.
+
+\input{T-obj-pred-checking}
+
+\subsubsection{Logical predicates as sampling functions}
+For each logical predicate that is relevant for \benchmark activities, we also define a generative function that samples a valid physical state given a binary logical state. This functionality is essential for infinite activity initialization. For example, if the initial conditions of the activity require a plate to be \texttt{OnTopOf} a dining table, there are an infinite number of exact poses of the plate that can satisfy this condition. Our generative functions will find a valid solution and physically put the plate on top of the table. Other examples include setting the \texttt{Temperature} of an object to make it \texttt{Frozen} or the joint configuration of an object to make it \texttt{Open}. The details of the sampling functions for all the logical predicates can be found in Table~\ref{table:obj_pred_checking}.
+
+\input{T-obj-pred-sampling}
+
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=0.95\textwidth]{figures/omnigibson/Omni_Transition_Map.png}
+%     \caption{[In appendix] Transition maps visualization: two cooking recipes and two cleaning formulas. This shows the realism of B1K activity definition. }
+%     \label{fig:activity_transition}
+% \end{figure}
+
+\subsection{AMT Visual Realism Study}
+\label{amt_study_appx}
+
+We conducted an Amazon Mechanical Turk (AMT) study to evaluate \simulator's relative visual realism compared to multiple other simulation environments. We selected 50 representative $1280 \times 720$ images from \simulator, AI2-Thor, ThreeDWorld, Habitat 2.0, and iGibson 2.0, and shuffled them randomly into 50 groups of 5 images, where each group contained a unique image from each simulation environment. For each group, participants were asked to rank the images in terms of visual realism, assigning the most realistic images of the group $1$, and subsequent images $2, ..., 5$. Image shuffling was randomized between participants. When presenting our results, we invert the aggregated mean and standard deviation across 60 participants, such that a score of a $5$ would represent the most visually realistic images.
+
+%Below, we include all 50 images used from each simulation platform.
+Our criteria for selecting the images are the following: (a) we only included photos taken from \textit{fully interactive} scenes for a fair comparison, and (b) rendering must come from within the simulation environment, without customized tuning (i.e. new users can expect this visual quality off-the-shelf with minimal adjustment).
+
+\begin{figure}[t]
+\centering
+\captionsetup[subfigure]{aboveskip=1pt,belowskip=1pt}
+\begin{subfigure}[t]{0.304\textwidth}{%
+\includegraphics[width=\textwidth]{figures/omnigibson/robot_images/third_pov.jpg}}%
+\caption*{\scriptsize3rd Person View}%
+\end{subfigure}%
+\hfill%
+%\subfloat[][\scriptsize RGB]
+\begin{subfigure}[t]{0.17\textwidth}{\includegraphics[width=\textwidth]{figures/omnigibson/robot_images/rgb.jpg}}%
+\caption*{\scriptsize RGB}%
+\end{subfigure}%
+\hfill%
+%\subfloat[][\scriptsize Depth]
+\begin{subfigure}[t]{0.17\textwidth}{\includegraphics[width=\textwidth]{figures/omnigibson/robot_images/depth.jpg}}%
+\caption*{\scriptsize Depth}%
+\end{subfigure}%
+\hfill%
+%\subfloat[][\scriptsize Normals]
+\begin{subfigure}[t]{0.17\textwidth}{\includegraphics[width=\textwidth]{figures/omnigibson/robot_images/normal.jpg}}%
+\caption*{\scriptsize Normals}%
+\end{subfigure}%
+\hfill%
+% \subfloat[][\scriptsize Inst. Segm.]
+\begin{subfigure}[t]{0.17\textwidth}{\includegraphics[width=\textwidth]{figures/omnigibson/robot_images/seg_instance.jpg}}%
+\caption*{\scriptsize Inst. Segm.}%
+\end{subfigure}%
+\captionsetup[figure]{font=small,skip=-2pt}%
+\caption{\textbf{Visual modalities provided by \simulator.} The robot observes the scene (left, 3rd person view) and obtains visual observations from its onboard sensors including RGB images, depth, normals, and instance segmentation. Rendered RGB images are highly realistic, and, combined with the diverse set of visual observations, can be used to train visual policies.}
+\label{fig:sim_modalities}
+\end{figure}
+
+% \include{all_amt_figure}
+
+\subsection{Visual Modalities}
+\simulator provides diverse perceptual modules to capture realistic sensor modalities from an agent's perspective, including RGB, Depth, Semantic Segmentation, Normal, and Optical Flow images, in addition to non-visual modalities such as proprioception and LiDAR scans (Fig.~\ref{fig:sim_modalities}). \simulator also provides varying abstraction levels for agent action spaces, including low-level control, assistive manipulation, and primitive skill execution. Overall, these modules are intended to be useful to the broad embodied AI research community, with the goal of accelerating breakthroughs on \benchmark.
+
+\subsection{Performance Benchmark}
+
+\revision{
+To evaluate the performance of \simulator under different conditions, we performed rigorous speed test in two representative scenes (\texttt{Rs\_int} and \texttt{house\_single\_floor}) with different number of objects on a single-GPU, single-process setup. We adopt the ``idle'' setup from \citet{li2021ig2} and \citet{szot2021habitat}: a robot is placed in the scene (except the last row "- Robot"), and stays still with zero velocity action. At each time step, the simulator runs the physics simulation, extended object state update, and transition machine update loop, and renders a $128\times128$ RGB image. We use action time step of $t_a = \frac{1}{60}\text{s}$ and physics time step of $t_s = \frac{1}{60}\text{s}$. Our benchmark runs on a Ubuntu machine with Intel(R) Core(TM) i7-10700K CPU @ 5.10GHz and one Nvidia GeForce RTX 3080 GPU in a single process setting. The results are summarized in Table~\ref{tab:benchmark}.
+}
+
+\revision{
+\simulator runs at a comparable speed to previous works like iGibson 2.0~\cite{li2021ig2} under similar settings, but with much higher rendering quality thanks to ray-tracing. It maintains a reasonable speed even for a large scene with over 600 objects. \simulator is also highly configurable and provides flexible interface for users to balance between simulation fidelity and speed given their use cases and research interests. If the user isn't interested in fluid or cloth in their tasks, they can turn off these features to harvest performance speedup. Similarly, if the user is only interested in kinematics-only rearrangement tasks, or non-robotics embodied AI applications (e.g. a virtual camera), they can turn off object state update, or remove the robot, respectively. We are actively working on improving aspects that can provide simulation speedups, e.g. in areas like object sleeping, mesh simplification, more efficient object state update. Furthermore, since real-time ray-tracing and fluid/cloth simulation is still an active area of research, we expect the upcoming hardware and software advances from Nvidia will lead to significant performance improvements in these areas.
+}
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{l|cc}
+    \toprule
+    \multicolumn{1}{c|}{\multirow{2}{*}{Eval. Conditions}} & \multicolumn{2}{c}{Scene} \\
+    \multicolumn{1}{c|}{} & \texttt{Rs\_int} (81 objs) & \texttt{house\_single\_floor} (621 objs) \\ \midrule
+    Full Feature Set & $24$ & $11$ \\
+    - Fluid and Cloth & $58$ & $26$ \\
+    - Object State Update & $77$ & $55$ \\ 
+    - Robot & $90$ & $60$ \\ \bottomrule
+    \end{tabular}
+    \caption{\revision{Benchmarking \simulator performance: simulation steps per second (SPS, higher better) in two representative scenes with 81 and 621 objects, under different evaluation conditions.}}
+    \label{tab:benchmark}
+\end{table}
+
+
+
+% \begin{figure}[t]
+%     \centering
+%     \includegraphics[width=0.95\textwidth]{figures/omnigibson/Omni_Visual_Modalities.png}
+%     \caption{[In appendix] Visualization of visual modalities provided by OmniGibson: RGB images, depth, semantic segmentation, instance segmentation, optical flow, and scene graphs.\fei{would be better from a robot perspective}}
+%     \label{fig:sim_modalities}
+% \end{figure}
+

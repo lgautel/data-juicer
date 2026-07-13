@@ -1,0 +1,113 @@
+\section{Experiments: Evaluating Embodied AI Solutions in \benchmark}
+\label{sec:baseline}
+
+
+In our experiments, we aim to answer three questions: How do existing vision-based robot learning algorithms perform in \benchmark, and what assumptions have to be made to improve their success? What elements of the activities are the most problematic for current AI? What are the main sources of the sim-real gap in \benchmark/\simulator? Our goal is to indicate promising research directions to improve AI's performance in \benchmark activities in simulation and, ultimately, in the real world.
+
+%How important is each technical components for training a successful home robot? 4) How could training the agent in a realistic simulated environment help solving real world robot manipulation tasks?
+
+\subsection{Evaluating \benchmark Solutions in \simulator}
+\label{ss:ev_in_sim}
+
+%\paragraph{Activities:} 
+% To gain insights on the difficulties associated to characteristics of the \textbf{activities}, w
+\paragraph{Experimental Setups.} We selected three paradigmatic activities for our experiments: 
+\texttt{CollectTrash}, where the agent gathers empty bottles and cups, and throws them into a trash bin (rigid body manipulation); \texttt{StoreDecoration}, where the agent stores items into a drawer (articulated object manipulation); and \texttt{CleanTable}, where the agent wipes a dirty table with a soaked piece of cloth (manipulation of flexible materials and fluids). 
+% Each activity takes place in a different scene: living rooms of different apartments, and a restaurant. 
+% All three activities are defined using BDDL that provides a sparse final success signal as the reward function to train the policy.
+We evaluate three different baselines based on state-of-the-art reinforcement learning algorithms (RL)~\cite{barto2003recent}: 
+\begin{itemize}
+    \item \rlvmc, a visuomotor control (from image to low-level joint commands) RL solution based on Soft Actor-Critic (SAC)~\cite{haarnoja2018soft};
+    \item \rlprim, a RL solution based on PPO~\cite{schulman2017proximal} that leverages a set of action primitives based on a sampling-based motion planner~\cite{lavalle2006planning,kuffner2000rrt,Jordan.Perez.ea:CSAIL13} (\texttt{pick}, \texttt{place}, \texttt{push}, \texttt{navigate}, \texttt{dip} and \texttt{wipe}). The policy outputs a discrete selection of a primitive applied on an object;
+    \item \rlprimhist, a variant of \rlprim that takes in the history observations (3 steps) as additional inputs to help disentangle similar-looking states.    
+\end{itemize} 
+
+All agents are trained with a sparse task success reward without any reward engineering. Following the metrics proposed in \oldbenchmark~\cite{srivastava2021behavior}, we report the success rate and efficiency metrics (distance traveled, time invested, and disarrangement caused) in Table~\ref{tab:baseline_performance} and~\ref{tab:baseline_metric}, and the success score Q in Table~\ref{tab:baseline_q_score} in Appendix. 
+
+\begin{table}[t]
+    \centering
+    \resizebox{\textwidth}{!}{\begin{tabular}{l|cc|ccc}
+    \toprule
+    \multicolumn{1}{c|}{\multirow{2}{*}{Method}} & \multicolumn{2}{c|}{Policy Features} & \multicolumn{3}{c}{Task success rate} \\
+    \multicolumn{1}{c|}{} & Primitives & History & \texttt{StoreDecoration} & \texttt{CollectTrash} & \texttt{CleanTable} \\ \midrule
+    \rlvmc & \textcolor{red}\faTimes & \textcolor{red}\faTimes & $0.0 \pm 0.0$ & $0.0 \pm 0.0$ & $0.0 \pm 0.0$ \\
+    \rlprim & \textcolor{indiagreen}\faCheck & \textcolor{red}\faTimes & $0.48 \pm 0.06$ & $0.42 \pm 0.02$ & $0.77 \pm 0.08$ \\
+    \rlprimhist & \textcolor{indiagreen}\faCheck & \textcolor{indiagreen}\faCheck & $0.55 \pm 0.05$ & $0.63 \pm 0.03$ & $0.88 \pm 0.02$ \\ \bottomrule
+    \end{tabular}
+    }
+    \caption{Task success rates across three baseline methods. \rlvmc with end-to-end visuomotor control completely fails to solve any of the activities, whereas \rlprim and \rlprimhist with action primitives are able achieve decent performance. Memory of observations helps in longer horizon activities (e.g. \texttt{CollectTrash}).}
+    \label{tab:baseline_performance}
+\end{table}
+
+% RL has demonstrated success in learning mappings from robot's observations to actions to achieve embodied AI tasks~\cite{robomimic2021}. We evaluated a visuomotor control (from image to low-level joint commands) RL solution based on Soft Actor-Critic (SAC)~\cite{haarnoja2018soft} on the aforementioned activities (\rlvmc). Similar to what has been observed with other end-to-end RL algorithms, without costly reward engineering~\cite{fu2018learning}, SAC cannot solve these long-horizon mobile manipulation activities due to problems such as credit assignment~\cite{alipov2021towards}, deep exploration~\cite{yang2021exploration,JMLR:v20:18-339}, and vanishing gradients~\cite{10.1142/S0218488598000094}. To alleviate the challenge of long-horizon, we implemented a set of action primitives based on a sampling-based motion planner~\ref{lavalle2006planning,kuffner2000rrt,Jordan.Perez.ea:CSAIL13}: \textit{Pick}, \textit{Place}, \textit{Push}, \textit{Toggle}, \textit{Navigate}, \textit{Dip} and \textit{Wipe}. We trained a RL agent using Proximal Policy Optimization (PPO)~\cite{schulman2017proximal} in the discrete action space action primitives on objects (\rlprim). Even with the help of action primitives, some \benchmark activities require more 20 steps and several of the phases of the activity look visually similar. We hypothesize that a memory mechanism can help  disentangling these states and identifying the different phases. We evaluated a variant of the primitive-based agent with history of previous actions (\rlprimhist) to analyze the effect of agent's memory on task success.
+
+%\paragraph{Simplifying Physics and Actuation during Training.} 
+Grasping is a challenging research topic on its own. To facilitate our experiments, we adopt an assistive \texttt{pick} primitive that creates a rigid connection between the object and the gripper if grasping is requested when all fingers are in contact with the object, a stricter form of \textit{StickyMitten} used in prior works~\cite{szot2021habitat, ehsani2021manipulathor, li2020hrl4in}. Furthermore, to accelerate training, %Due to the complex scenes and processes involved, \simulator currently achieves around 50 fps. We accelerate planning, simulation and rendering for training, by 
+the action primitives check only the feasibility (e.g., reachability, collisions) of the final configuration, e.g. the grasping pose for \texttt{pick} or the desired location for \texttt{navigate}. If kinematically feasible, the action primitives will directly set the robot state to the final configuration, and continue to simulate from then on. We include an ablation analysis of the effect of these assumptions and simplifications in our evaluation (see Table~\ref{tab:baseline_ablation}).
+%The effect of these assumptions on the model performance is studied in Table.\ref{tab:baseline_ablation}.
+Further details about our training and evaluation setup can be found in Appendix~\ref{sec:baseline_appendix}.
+
+% Activating full-physics grasping (the use of assistive grasping must be explained before, in the conditions of the "normal" run)
+% Activating full-path physics (the use of "teleportation" must be explained before, in the conditions of the "normal" run)
+
+%\subsection{Results}
+\paragraph{Results: Task Completion.} Table~\ref{tab:baseline_performance} contains task success rates across our baseline methods. The extreme long-horizon in our activities causes the visuomotor control (RL-VMC) policy to fail in all three activities, potentially due to problems such as credit assignment~\cite{alipov2021towards}, deep exploration~\cite{yang2021exploration,JMLR:v20:18-339}, and vanishing gradients~\cite{10.1142/S0218488598000094} as reported by prior works.
+Our baselines with time-extended action primitives (\rlprim and \rlprimhist) obtain better success, achieving over 40\% success rates across all three activities. We observe that longer-horizon activities are more challenging: while \texttt{CleanTable} can be accomplished by executing the optimal sequence of 6 primitive steps, \texttt{CollectTrash} requires at least $16$.
+This supports the idea that some form of action-space abstraction must be necessary to solve long-horizon activities of \benchmark, as others reported~\cite{srivastava2021behavior, szot2021habitat,xia2020relmogen}.
+% \paragraph{\benchmark activities are challenging for end-to-end visuo-motor control RL algorithms:} In  we show the experimental results of all baseline methods in the three activities.  With the access to action primitives, \rlprim achieves $>$40\% success rate in all three activities. We observe that the activities with longer-horizon are more challenging, comparing the results of \texttt{clean\_table} (requires at least $6$ primitive steps) to \texttt{collect\_trash} (require at least $16$ primitive steps).
+% \paragraph{Temporal information is crucial for long-horizon \benchmark activities:} 
+When analyzing the role of memory, we observe a sizable performance gain from \rlprim to \rlprimhist, especially in long-horizon activities with aliased observations such as \texttt{CollectTrash}. In this task, when the robot is looking at the trash bin, it needs additional information to know what location has been cleaned already in order to proceed to other locations.
+Our results indicate that memory will play a critical role for embodied AI in long-horizon \benchmark activities.
+% like \texttt{collect\_trash} with up to $\times$3 more improvement than in short-horizon activities like \texttt{store\_halloween}.
+
+\paragraph{Results: Efficiency.} In addition to success, efficiency is also critical in the evaluation of embodied AI: a successful policy in simulation may be infeasible in the real world if it takes a long time or wastes too much energy. In Table~\ref{tab:baseline_metric}, we report the results with three efficiency metrics proposed by Srivastava et al.~\cite{srivastava2021behavior}. We observe that the use of memory (\rlprimhist) improves efficiency across all metrics: distance navigated (Dist.~Nav.), simulated time (Sim.~Time), and kinematic object disarrangement (Kin.~Dis.), i.e., amount of object displacement due to robot motion.%Analysis of additional metrics such as the fraction of activity achieved (Q) can be found in Appendix.
+%\rlvmc has the worst spatial and time efficiency because it cannot learn meaningful behaviors and constantly move around with at no avail. 
+
+We also evaluate to what extent the simplifications we introduce in physics and actuation (grasping, motion execution) during training impact the performance of \rlprim during evaluation when these simplifications are removed. We report the results in Table~\ref{tab:baseline_ablation}. 
+% We evaluate the performance of \rlprim with fully physically-simulated grasping and motion trajectories and reports the results in Table.~\ref{tab:baseline_ablation}. 
+We observe a radical performance drop after enabling fully physics-based grasping during evaluation. Grasping is thus a critical component of any embodied AI task, and researchers should be careful when simplifying its execution during training. While \simulator supports fully physics-based grasping,  designing a \texttt{pick} action primitive for arbitrary objects that leverages fully physics-based grasping is by itself an open research problem that we leave for future work. In contrast, there is much less performance drop after enabling full trajectory motion execution during evaluation. This result supports our hypothesis that it is reasonable to accelerate the training process by assuming that motion planning is likely to provide viable paths in free space during evaluation.
+
+\begin{table}[t]
+\centering
+\begin{minipage}[t]{.41\linewidth}%
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|ccc}%
+\toprule
+\multicolumn{1}{c|}{\multirow{2}{*}{Method}} & \multicolumn{3}{c}{Metrics in \texttt{CollectTrash}} \\
+\multicolumn{1}{c|}{} & Dist. Nav. [m] & Sim. Time [s] & Kin. Dis. [m] \\ \midrule
+\rlvmc & $27.58 \pm 5.95$  & $16.67 \pm 0.00$ & $0.00 \pm 0.00$ \\
+\rlprim & $17.98 \pm 2.35$ & $13.95 \pm 5.14$ & $12.34 \pm 5.01$  \\
+\rlprimhist & $15.33 \pm 2.70$  & $12.48 \pm 3.68$  & $10.82 \pm 3.90$  \\ \bottomrule
+\end{tabular}}
+\caption{Efficiency metrics across three baseline methods. \rlvmc has low spatial and temporal efficiency because it fails to learn, whereas history information helps remove redundant actions and improve efficiency.}
+\label{tab:baseline_metric}%
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{.56\linewidth}%
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{cc|ccc}%
+\toprule
+\multicolumn{2}{c|}{Phys. Realism} & \multicolumn{3}{c}{Task success rate} \\
+Grasping & Full Motion & \texttt{StoreDecoration} & \texttt{CollectTrash} & \texttt{CleanTable} \\ \midrule
+\textcolor{indiagreen}\faCheck & \textcolor{indiagreen}\faCheck & $0.0 \pm 0.0$ & $0.0 \pm 0.0$ & $0.0 \pm 0.0$ \\
+\textcolor{red}\faTimes & \textcolor{indiagreen}\faCheck & $0.46 \pm 0.04$ & $0.36 \pm 0.08$ & $0.73 \pm 0.03$ \\ 
+\textcolor{red}\faTimes & \textcolor{red}\faTimes & $0.48 \pm 0.06$ & $0.42 \pm 0.02$ & $0.77 \pm 0.08$ \\ \bottomrule
+\end{tabular}}
+\caption{Ablation study of \rlprim on the impact of removing the simplifying assumptions of grasping and motion execution during evaluation. We observe a large drop in performance when enabling fully physics-based grasping, but not when enabling full trajectory motion execution.}
+\label{tab:baseline_ablation}
+\end{minipage}
+\vspace{10pt}
+\end{table}
+
+% \begin{enumerate}
+%     \item B1K is a challenging benchmark, solving these 1K activities may require years of effort. Here we make an initial attempt to tackle a few (10) B1K activities, discuss the insight gained, and provide starting code for follow-up research. 
+%     \item Task settings: including how we define reward function based on BDDL activity definition and how we configure the learning agents (Fig.~\ref{fig:baseline_task}).
+%     \item Our baseline methods and assumptions: end-to-end RL (image+proprioception), skill-based RL, and parameterized skill-based RL (both with pre-mapping). We will use visuals to help explain these methods (Fig.~\ref{fig:baseline_methods}).
+%     \item We discuss their performance and insight:
+%         \begin{enumerate}
+%             \item Overall, how well do these methods work and why (Table \ref{tab:baseline_performance})? 
+%             \item The increase in sample efficiency due to skill parameterization.
+%             \item The challenge of sparse reward, including suboptimal policy caused by local minima in the reward function. 
+%             \item The challenge of manipulating deformable objects.
+%         \end{enumerate}
+% \end{enumerate}

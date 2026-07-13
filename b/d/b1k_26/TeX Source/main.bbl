@@ -1,0 +1,441 @@
+\begin{thebibliography}{85}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Deng et~al.(2009)Deng, Dong, Socher, Li, Li, and Fei-Fei]{deng2009imagenet}
+J.~Deng, W.~Dong, R.~Socher, L.-J. Li, K.~Li, and L.~Fei-Fei.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock In \emph{IEEE Conference on Computer Vision and Pattern Recognition}, pages 248--255, 2009.
+
+\bibitem[Lin et~al.(2014)Lin, Maire, Belongie, Hays, Perona, Ramanan, Doll{\'a}r, and Zitnick]{lin2014microsoft}
+T.-Y. Lin, M.~Maire, S.~Belongie, J.~Hays, P.~Perona, D.~Ramanan, P.~Doll{\'a}r, and C.~L. Zitnick.
+\newblock Microsoft coco: Common objects in context.
+\newblock In \emph{European Conference on Computer Vision}, pages 740--755. Springer, 2014.
+
+\bibitem[Everingham et~al.(2010)Everingham, Van~Gool, Williams, Winn, and Zisserman]{everingham2010pascal}
+M.~Everingham, L.~Van~Gool, C.~K. Williams, J.~Winn, and A.~Zisserman.
+\newblock The pascal visual object classes (voc) challenge.
+\newblock \emph{International Journal of Computer Vision}, 88\penalty0 (2):\penalty0 303--338, 2010.
+
+\bibitem[Krishna et~al.(2017)Krishna, Zhu, Groth, Johnson, Hata, Kravitz, Chen, Kalantidis, Li, Shamma, et~al.]{krishna2017visual}
+R.~Krishna, Y.~Zhu, O.~Groth, J.~Johnson, K.~Hata, J.~Kravitz, S.~Chen, Y.~Kalantidis, L.-J. Li, D.~A. Shamma, et~al.
+\newblock Visual genome: Connecting language and vision using crowdsourced dense image annotations.
+\newblock \emph{International Journal of Computer Vision}, 123\penalty0 (1):\penalty0 32--73, 2017.
+
+\bibitem[Geiger et~al.(2012)Geiger, Lenz, and Urtasun]{geiger2012we}
+A.~Geiger, P.~Lenz, and R.~Urtasun.
+\newblock Are we ready for autonomous driving? the kitti vision benchmark suite.
+\newblock In \emph{IEEE Conference on Computer Vision and Pattern Recognition}, pages 3354--3361. IEEE, 2012.
+
+\bibitem[Goyal et~al.(2017)Goyal, Ebrahimi~Kahou, Michalski, Materzynska, Westphal, Kim, Haenel, Fruend, Yianilos, Mueller-Freitag, et~al.]{goyal2017something}
+R.~Goyal, S.~Ebrahimi~Kahou, V.~Michalski, J.~Materzynska, S.~Westphal, H.~Kim, V.~Haenel, I.~Fruend, P.~Yianilos, M.~Mueller-Freitag, et~al.
+\newblock The" something something" video database for learning and evaluating visual common sense.
+\newblock In \emph{Proceedings of the IEEE International Conference on Computer Vision}, pages 5842--5850, 2017.
+
+\bibitem[Sigurdsson et~al.(2018)Sigurdsson, Gupta, Schmid, Farhadi, and Alahari]{sigurdsson2018actor}
+G.~A. Sigurdsson, A.~Gupta, C.~Schmid, A.~Farhadi, and K.~Alahari.
+\newblock Actor and observer: Joint modeling of first and third-person videos.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition}, pages 7396--7404, 2018.
+
+\bibitem[Xiang et~al.(2017)Xiang, Schmidt, Narayanan, and Fox]{xiang2017posecnn}
+Y.~Xiang, T.~Schmidt, V.~Narayanan, and D.~Fox.
+\newblock Posecnn: A convolutional neural network for 6d object pose estimation in cluttered scenes.
+\newblock \emph{arXiv preprint arXiv:1711.00199}, 2017.
+
+\bibitem[Mart\'in-Mart\'in et~al.(2021)Mart\'in-Mart\'in, Patel, Rezatofighi, Shenoi, Gwak, Frankel, Sadeghian, and Savarese]{martin2021jrdb}
+R.~Mart\'in-Mart\'in, M.~Patel, H.~Rezatofighi, A.~Shenoi, J.~Gwak, E.~Frankel, A.~Sadeghian, and S.~Savarese.
+\newblock Jrdb: A dataset and benchmark of egocentric robot visual perception of humans in built environments.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 2021.
+
+\bibitem[Caba~Heilbron et~al.(2015)Caba~Heilbron, Escorcia, Ghanem, and Carlos~Niebles]{caba2015activitynet}
+F.~Caba~Heilbron, V.~Escorcia, B.~Ghanem, and J.~Carlos~Niebles.
+\newblock Activitynet: A large-scale video benchmark for human activity understanding.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition}, pages 961--970, 2015.
+
+\bibitem[Gurari et~al.(2018)Gurari, Li, Stangl, Guo, Lin, Grauman, Luo, and Bigham]{gurari2018vizwiz}
+D.~Gurari, Q.~Li, A.~J. Stangl, A.~Guo, C.~Lin, K.~Grauman, J.~Luo, and J.~P. Bigham.
+\newblock Vizwiz grand challenge: Answering visual questions from blind people.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition}, pages 3608--3617, 2018.
+
+\bibitem[Marcinkiewicz(1994)]{marcinkiewicz1994building}
+M.~A. Marcinkiewicz.
+\newblock Building a large annotated corpus of english: The penn treebank.
+\newblock \emph{Using Large Corpora}, page 273, 1994.
+
+\bibitem[Wang et~al.(2018)Wang, Singh, Michael, Hill, Levy, and Bowman]{wang2018glue}
+A.~Wang, A.~Singh, J.~Michael, F.~Hill, O.~Levy, and S.~R. Bowman.
+\newblock Glue: A multi-task benchmark and analysis platform for natural language understanding.
+\newblock \emph{arXiv preprint arXiv:1804.07461}, 2018.
+
+\bibitem[Rajpurkar et~al.(2016)Rajpurkar, Zhang, Lopyrev, and Liang]{rajpurkar2016squad}
+P.~Rajpurkar, J.~Zhang, K.~Lopyrev, and P.~Liang.
+\newblock Squad: 100,000+ questions for machine comprehension of text.
+\newblock \emph{arXiv preprint arXiv:1606.05250}, 2016.
+
+\bibitem[Socher et~al.(2013)Socher, Perelygin, Wu, Chuang, Manning, Ng, and Potts]{socher2013recursive}
+R.~Socher, A.~Perelygin, J.~Wu, J.~Chuang, C.~D. Manning, A.~Y. Ng, and C.~Potts.
+\newblock Recursive deep models for semantic compositionality over a sentiment treebank.
+\newblock In \emph{Proceedings of the Conference on Empirical Methods in Natural Language Processing}, pages 1631--1642, 2013.
+
+\bibitem[Antol et~al.(2015)Antol, Agrawal, Lu, Mitchell, Batra, Zitnick, and Parikh]{antol2015vqa}
+S.~Antol, A.~Agrawal, J.~Lu, M.~Mitchell, D.~Batra, C.~L. Zitnick, and D.~Parikh.
+\newblock Vqa: Visual question answering.
+\newblock In \emph{Proceedings of the IEEE International Conference on Computer Vision}, pages 2425--2433, 2015.
+
+\bibitem[Batra et~al.(2020)Batra, Chang, Chernova, Davison, Deng, Koltun, Levine, Malik, Mordatch, Mottaghi, Savva, and Su]{batra2020rearrangement}
+D.~Batra, A.~X. Chang, S.~Chernova, A.~J. Davison, J.~Deng, V.~Koltun, S.~Levine, J.~Malik, I.~Mordatch, R.~Mottaghi, M.~Savva, and H.~Su.
+\newblock Rearrangement: A challenge for embodied ai.
+\newblock \emph{arXiv preprint arXiv:2011.01975}, 2020.
+
+\bibitem[Weihs et~al.(2021)Weihs, Deitke, Kembhavi, and Mottaghi]{weihs2021visual}
+L.~Weihs, M.~Deitke, A.~Kembhavi, and R.~Mottaghi.
+\newblock Visual room rearrangement.
+\newblock \emph{arXiv preprint arXiv:2103.16544}, 2021.
+
+\bibitem[Gan et~al.(2021)Gan, Zhou, Schwartz, Alter, Bhandwaldar, Gutfreund, Yamins, DiCarlo, McDermott, Torralba, et~al.]{gan2021threedworld}
+C.~Gan, S.~Zhou, J.~Schwartz, S.~Alter, A.~Bhandwaldar, D.~Gutfreund, D.~L. Yamins, J.~J. DiCarlo, J.~McDermott, A.~Torralba, et~al.
+\newblock The threedworld transport challenge: A visually guided task-and-motion planning benchmark for physically realistic embodied ai.
+\newblock \emph{arXiv preprint arXiv:2103.14025}, 2021.
+
+\bibitem[Puig et~al.(2018)]{puig2018virtualhome}
+X.~Puig et~al.
+\newblock Virtualhome: Simulating household activities via programs.
+\newblock In \emph{IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 2018.
+
+\bibitem[Shridhar et~al.(2020)Shridhar, Thomason, Gordon, Bisk, Han, Mottaghi, Zettlemoyer, and Fox]{shridhar2020alfred}
+M.~Shridhar, J.~Thomason, D.~Gordon, Y.~Bisk, W.~Han, R.~Mottaghi, L.~Zettlemoyer, and D.~Fox.
+\newblock Alfred: A benchmark for interpreting grounded instructions for everyday tasks.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on Computer Vision and Pattern Recognition}, pages 10740--10749, 2020.
+
+\bibitem[Xia et~al.(2020)Xia, Shen, Li, Kasimbeg, Tchapmi, Toshev, Mart{\'i}n-Mart{\'i}n, and Savarese]{xia2020interactive}
+F.~Xia, W.~B. Shen, C.~Li, P.~Kasimbeg, M.~E. Tchapmi, A.~Toshev, R.~Mart{\'i}n-Mart{\'i}n, and S.~Savarese.
+\newblock Interactive gibson benchmark: A benchmark for interactive navigation in cluttered environments.
+\newblock \emph{IEEE Robotics and Automation Letters}, 5\penalty0 (2):\penalty0 713--720, 2020.
+
+\bibitem[Yu et~al.(2020)Yu, Quillen, He, Julian, Hausman, Finn, and Levine]{yu2020meta}
+T.~Yu, D.~Quillen, Z.~He, R.~Julian, K.~Hausman, C.~Finn, and S.~Levine.
+\newblock Meta-world: A benchmark and evaluation for multi-task and meta reinforcement learning.
+\newblock In \emph{Conference on Robot Learning}, pages 1094--1100. PMLR, 2020.
+
+\bibitem[James et~al.(2020)James, Ma, Rovick~Arrojo, and Davison]{james2019rlbench}
+S.~James, Z.~Ma, D.~Rovick~Arrojo, and A.~J. Davison.
+\newblock Rlbench: The robot learning benchmark \& learning environment.
+\newblock \emph{IEEE Robotics and Automation Letters}, 2020.
+
+\bibitem[Savva et~al.(2019)Savva, Kadian, Maksymets, Zhao, Wijmans, Jain, Straub, Liu, Koltun, Malik, et~al.]{savva2019habitat}
+M.~Savva, A.~Kadian, O.~Maksymets, Y.~Zhao, E.~Wijmans, B.~Jain, J.~Straub, J.~Liu, V.~Koltun, J.~Malik, et~al.
+\newblock Habitat: A platform for embodied ai research.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on Computer Vision}, pages 9339--9347, 2019.
+
+\bibitem[Szot et~al.(2021)Szot, Clegg, Undersander, Wijmans, Zhao, Turner, Maestre, Mukadam, Chaplot, Maksymets, et~al.]{szot2021habitat}
+A.~Szot, A.~Clegg, E.~Undersander, E.~Wijmans, Y.~Zhao, J.~Turner, N.~Maestre, M.~Mukadam, D.~S. Chaplot, O.~Maksymets, et~al.
+\newblock Habitat 2.0: Training home assistants to rearrange their habitat.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~34, 2021.
+
+\bibitem[Srivastava et~al.(2022)Srivastava, Li, Lingelbach, Mart{\'i}n-Mart{\'i}n, Xia, Vainio, Lian, Gokmen, Buch, Liu, et~al.]{srivastava2021behavior}
+S.~Srivastava, C.~Li, M.~Lingelbach, R.~Mart{\'i}n-Mart{\'i}n, F.~Xia, K.~E. Vainio, Z.~Lian, C.~Gokmen, S.~Buch, K.~Liu, et~al.
+\newblock Behavior: Benchmark for everyday household activities in virtual, interactive, and ecological environments.
+\newblock In \emph{Conference on Robot Learning}, pages 477--490. PMLR, 2022.
+
+\bibitem[Zhu et~al.(2020)Zhu, Wong, Mandlekar, and Mart{\'i}n-Mart{\'i}n]{zhu2020robosuite}
+Y.~Zhu, J.~Wong, A.~Mandlekar, and R.~Mart{\'i}n-Mart{\'i}n.
+\newblock robosuite: A modular simulation framework and benchmark for robot learning.
+\newblock \emph{arXiv preprint arXiv:2009.12293}, 2020.
+
+\bibitem[Tassa et~al.(2018)Tassa, Doron, Muldal, Erez, Li, Casas, Budden, Abdolmaleki, Merel, Lefrancq, et~al.]{tassa2018deepmind}
+Y.~Tassa, Y.~Doron, A.~Muldal, T.~Erez, Y.~Li, D.~d.~L. Casas, D.~Budden, A.~Abdolmaleki, J.~Merel, A.~Lefrancq, et~al.
+\newblock Deepmind control suite.
+\newblock \emph{arXiv preprint arXiv:1801.00690}, 2018.
+
+\bibitem[Brockman et~al.(2016)Brockman, Cheung, Pettersson, Schneider, Schulman, Tang, and Zaremba]{brockman2016openai}
+G.~Brockman, V.~Cheung, L.~Pettersson, J.~Schneider, J.~Schulman, J.~Tang, and W.~Zaremba.
+\newblock Openai gym.
+\newblock \emph{arXiv preprint arXiv:1606.01540}, 2016.
+
+\bibitem[Littman et~al.(2021)Littman, Ajunwa, Berger, Boutilier, Currie, Doshi-Velez, Hadfield, Horowitz, Isbell, Kitano, et~al.]{littman2021gathering}
+M.~L. Littman, I.~Ajunwa, G.~Berger, C.~Boutilier, M.~Currie, F.~Doshi-Velez, G.~Hadfield, M.~C. Horowitz, C.~Isbell, H.~Kitano, et~al.
+\newblock Gathering strength, gathering storms: The one hundred year study on artificial intelligence ({AI100}) 2021 study panel report.
+\newblock Technical report, Stanford University, 2021.
+
+\bibitem[Riedl(2019)]{riedl2019human}
+M.~O. Riedl.
+\newblock Human-centered artificial intelligence and machine learning.
+\newblock \emph{Human Behavior and Emerging Technologies}, 1\penalty0 (1):\penalty0 33--36, 2019.
+
+\bibitem[Xu(2019)]{xu2019toward}
+W.~Xu.
+\newblock Toward human-centered ai: a perspective from human-computer interaction.
+\newblock \emph{Interactions}, 26\penalty0 (4):\penalty0 42--46, 2019.
+
+\bibitem[Shneiderman(2020)]{shneiderman2020bridging}
+B.~Shneiderman.
+\newblock Bridging the gap between ethics and practice: guidelines for reliable, safe, and trustworthy human-centered ai systems.
+\newblock \emph{ACM Transactions on Interactive Intelligent Systems (TiiS)}, 10\penalty0 (4):\penalty0 1--31, 2020.
+
+\bibitem[Kitano et~al.(1997)Kitano, Asada, Kuniyoshi, Noda, Osawa, and Matsubara]{kitano1997robocup}
+H.~Kitano, M.~Asada, Y.~Kuniyoshi, I.~Noda, E.~Osawa, and H.~Matsubara.
+\newblock Robocup: A challenge problem for ai.
+\newblock \emph{AI magazine}, 18\penalty0 (1):\penalty0 73--73, 1997.
+
+\bibitem[Wisspeintner et~al.(2009)Wisspeintner, Van Der~Zant, Iocchi, and Schiffer]{wisspeintner2009robocup}
+T.~Wisspeintner, T.~Van Der~Zant, L.~Iocchi, and S.~Schiffer.
+\newblock Robocup{@}home: Scientific competition and benchmarking for domestic service robots.
+\newblock \emph{Interaction Studies}, 10\penalty0 (3):\penalty0 392--426, 2009.
+
+\bibitem[Iocchi et~al.(2015)Iocchi, Holz, Ruiz-del Solar, Sugiura, and Van Der~Zant]{iocchi2015robocup}
+L.~Iocchi, D.~Holz, J.~Ruiz-del Solar, K.~Sugiura, and T.~Van Der~Zant.
+\newblock Robocup@ home: Analysis and results of evolving competitions for domestic and service robots.
+\newblock \emph{Artificial Intelligence}, 229:\penalty0 258--281, 2015.
+
+\bibitem[Buehler et~al.(2009)Buehler, Iagnemma, and Singh]{buehler2009darpa}
+M.~Buehler, K.~Iagnemma, and S.~Singh.
+\newblock \emph{The DARPA Urban Challenge: Autonomous Vehicles in City Traffic}, volume~56.
+\newblock springer, 2009.
+
+\bibitem[Krotkov et~al.(2017)Krotkov, Hackett, Jackel, Perschbacher, Pippine, Strauss, Pratt, and Orlowski]{krotkov2017darpa}
+E.~Krotkov, D.~Hackett, L.~Jackel, M.~Perschbacher, J.~Pippine, J.~Strauss, G.~Pratt, and C.~Orlowski.
+\newblock The darpa robotics challenge finals: Results and perspectives.
+\newblock \emph{Journal of Field Robotics}, 34\penalty0 (2):\penalty0 229--240, 2017.
+
+\bibitem[Correll et~al.(2016)Correll, Bekris, Berenson, Brock, Causo, Hauser, Okada, Rodriguez, Romano, and Wurman]{correll2016analysis}
+N.~Correll, K.~E. Bekris, D.~Berenson, O.~Brock, A.~Causo, K.~Hauser, K.~Okada, A.~Rodriguez, J.~M. Romano, and P.~R. Wurman.
+\newblock Analysis and observations from the first amazon picking challenge.
+\newblock \emph{IEEE Transactions on Automation Science and Engineering}, 15\penalty0 (1):\penalty0 172--188, 2016.
+
+\bibitem[Eppner et~al.(2017)Eppner, H{\"o}fer, Jonschkowski, Mart{\'i}n-Mart{\'i}n, Sieverling, Wall, and Brock]{eppner2017lessons}
+C.~Eppner, S.~H{\"o}fer, R.~Jonschkowski, R.~Mart{\'i}n-Mart{\'i}n, A.~Sieverling, V.~Wall, and O.~Brock.
+\newblock Lessons from the amazon picking challenge: four aspects of building robotic systems.
+\newblock In \emph{Proceedings of the 26th International Joint Conference on Artificial Intelligence}, pages 4831--4835, 2017.
+
+\bibitem[Roa et~al.(2021)Roa, Dogar, Vivas, Morales, Correll, Gorner, Rosell, Foix, Memmesheimer, Ferro, et~al.]{roa2021mobile}
+M.~A. Roa, M.~Dogar, C.~Vivas, A.~Morales, N.~Correll, M.~Gorner, J.~Rosell, S.~Foix, R.~Memmesheimer, F.~Ferro, et~al.
+\newblock Mobile manipulation hackathon: Moving into real world applications.
+\newblock \emph{IEEE Robotics \& Automation Magazine}, pages 2--14, 2021.
+
+\bibitem[Heiden et~al.(2021)Heiden, Macklin, Narang, Fox, Garg, and Ramos]{heiden2021disect}
+E.~Heiden, M.~Macklin, Y.~Narang, D.~Fox, A.~Garg, and F.~Ramos.
+\newblock Disect: A differentiable simulation engine for autonomous robotic cutting.
+\newblock \emph{arXiv preprint arXiv:2105.12244}, 2021.
+
+\bibitem[Urakami et~al.(2019)Urakami, Hodgkinson, Carlin, Leu, Rigazio, and Abbeel]{urakami2019doorgym}
+Y.~Urakami, A.~Hodgkinson, C.~Carlin, R.~Leu, L.~Rigazio, and P.~Abbeel.
+\newblock Doorgym: A scalable door opening environment and baseline agent.
+\newblock \emph{arXiv preprint arXiv:1908.01887}, 2019.
+
+\bibitem[Lin et~al.(2020)Lin, Wang, Olkin, and Held]{lin2020softgym}
+X.~Lin, Y.~Wang, J.~Olkin, and D.~Held.
+\newblock Softgym: Benchmarking deep reinforcement learning for deformable object manipulation.
+\newblock In \emph{Conference on Robot Learning}, 2020.
+
+\bibitem[{Nvidia, Corp.}(2022)]{physx}
+{Nvidia, Corp.}
+\newblock Physx.
+\newblock \url{https://developer.nvidia.com/physx-sdk}, 2022.
+\newblock Accessed: 2022-06-10.
+
+\bibitem[Schulman et~al.(2017)Schulman, Wolski, Dhariwal, Radford, and Klimov]{schulman2017proximal}
+J.~Schulman, F.~Wolski, P.~Dhariwal, A.~Radford, and O.~Klimov.
+\newblock Proximal policy optimization algorithms.
+\newblock \emph{arXiv preprint arXiv:1707.06347}, 2017.
+
+\bibitem[Haarnoja et~al.(2018)Haarnoja, Zhou, Abbeel, and Levine]{haarnoja2018soft}
+T.~Haarnoja, A.~Zhou, P.~Abbeel, and S.~Levine.
+\newblock Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor.
+\newblock In \emph{International Conference on Machine Learning}, pages 1861--1870. PMLR, 2018.
+
+\bibitem[Jordan and Perez(2013)]{Jordan.Perez.ea:CSAIL13}
+M.~Jordan and A.~Perez.
+\newblock Optimal bidirectional rapidly-exploring random trees.
+\newblock Technical Report MIT-CSAIL-TR-2013-021, Computer Science and Artificial Intelligence Laboratory, Massachusetts Institute of Technology, Cambridge, MA, 2013.
+
+\bibitem[{U.S. Bureau of Labor Statistics}(2019)]{atus}
+{U.S. Bureau of Labor Statistics}.
+\newblock {American Time Use Survey}.
+\newblock \url{https://www.bls.gov/tus/}, 2019.
+
+\bibitem[{European Commission}(2010)]{hetus}
+{European Commission}.
+\newblock Harmonised european time use surveys.
+\newblock \url{https://ec.europa.eu/eurostat/web/time-use-surveys}, 2010.
+
+\bibitem[Gershuny et~al.(2020)Gershuny, Vega-Rapun, and Lamote]{mtus}
+J.~Gershuny, M.~Vega-Rapun, and J.~Lamote.
+\newblock Multinational time use study.
+\newblock \url{https://www.timeuse.org/mtus}, 2020.
+
+\bibitem[{wikiHow, Inc.}(2021)]{wikihow}
+{wikiHow, Inc.}
+\newblock wikihow.
+\newblock \url{https://www.wikihow.com}, 2021.
+\newblock Accessed: 2021-06-16.
+
+\bibitem[Xiang et~al.(2020)Xiang, Qin, Mo, Xia, Zhu, Liu, Liu, Jiang, Yuan, Wang, et~al.]{xiang2020sapien}
+F.~Xiang, Y.~Qin, K.~Mo, Y.~Xia, H.~Zhu, F.~Liu, M.~Liu, H.~Jiang, Y.~Yuan, H.~Wang, et~al.
+\newblock {SAPIEN}: A simulated part-based interactive environment.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 11097--11107, 2020.
+
+\bibitem[Mu et~al.(2021)Mu, Ling, Xiang, Yang, Li, Tao, Huang, Jia, and Su]{mu2021maniskill}
+T.~Mu, Z.~Ling, F.~Xiang, D.~Yang, X.~Li, S.~Tao, Z.~Huang, Z.~Jia, and H.~Su.
+\newblock Maniskill: Generalizable manipulation skill benchmark with large-scale demonstrations.
+\newblock \emph{arXiv preprint arXiv:2107.14483}, 2021.
+
+\bibitem[Fu et~al.(2022)Fu, Xu, Xue, Yang, Ye, Huang, Xue, Wang, and Lu]{fu2022rfuniverse}
+H.~Fu, W.~Xu, H.~Xue, H.~Yang, R.~Ye, Y.~Huang, Z.~Xue, Y.~Wang, and C.~Lu.
+\newblock Rfuniverse: A physics-based action-centric interactive environment for everyday household tasks.
+\newblock \emph{arXiv preprint arXiv:2202.00199}, 2022.
+
+\bibitem[Miller(1995)]{wordnet}
+G.~A. Miller.
+\newblock Wordnet: a lexical database for english.
+\newblock \emph{Communications of the ACM}, 38\penalty0 (11):\penalty0 39--41, 1995.
+
+\bibitem[Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal, Neelakantan, Shyam, Sastry, Askell, et~al.]{gpt3}
+T.~Brown, B.~Mann, N.~Ryder, M.~Subbiah, J.~D. Kaplan, P.~Dhariwal, A.~Neelakantan, P.~Shyam, G.~Sastry, A.~Askell, et~al.
+\newblock Language models are few-shot learners.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~33, pages 1877--1901, 2020.
+
+\bibitem[Li et~al.(2021)Li, Xia, Mart{\'i}n-Mart{\'i}n, Lingelbach, Srivastava, Shen, Vainio, Gokmen, Dharan, Jain, Kurenkov, Liu, Gweon, Wu, Fei-Fei, and Savarese]{li2021ig2}
+C.~Li, F.~Xia, R.~Mart{\'i}n-Mart{\'i}n, M.~Lingelbach, S.~Srivastava, B.~Shen, K.~E. Vainio, C.~Gokmen, G.~Dharan, T.~Jain, A.~Kurenkov, K.~Liu, H.~Gweon, J.~Wu, L.~Fei-Fei, and S.~Savarese.
+\newblock igibson 2.0: Object-centric simulation for robot learning of everyday household tasks.
+\newblock In \emph{Annual Conference on Robot Learning}, 2021.
+
+\bibitem[Barto and Mahadevan(2003)]{barto2003recent}
+A.~G. Barto and S.~Mahadevan.
+\newblock Recent advances in hierarchical reinforcement learning.
+\newblock \emph{Discrete Event Dynamic Systems}, 13\penalty0 (1):\penalty0 41--77, 2003.
+
+\bibitem[LaValle(2006)]{lavalle2006planning}
+S.~M. LaValle.
+\newblock \emph{Planning Algorithms}.
+\newblock Cambridge University Press, 2006.
+
+\bibitem[Kuffner and LaValle(2000)]{kuffner2000rrt}
+J.~J. Kuffner and S.~M. LaValle.
+\newblock Rrt-connect: An efficient approach to single-query path planning.
+\newblock In \emph{Proceedings IEEE International Conference on Robotics and Automation}, volume~2, pages 995--1001. IEEE, 2000.
+
+\bibitem[Ehsani et~al.(2021)Ehsani, Han, Herrasti, VanderBilt, Weihs, Kolve, Kembhavi, and Mottaghi]{ehsani2021manipulathor}
+K.~Ehsani, W.~Han, A.~Herrasti, E.~VanderBilt, L.~Weihs, E.~Kolve, A.~Kembhavi, and R.~Mottaghi.
+\newblock Manipulathor: A framework for visual object manipulation.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on Computer Vision and Pattern Recognition}, pages 4497--4506, 2021.
+
+\bibitem[Li et~al.(2020)Li, Xia, Mart{\'i}n-Mart{\'i}n, and Savarese]{li2020hrl4in}
+C.~Li, F.~Xia, R.~Mart{\'i}n-Mart{\'i}n, and S.~Savarese.
+\newblock Hrl4in: Hierarchical reinforcement learning for interactive navigation with mobile manipulators.
+\newblock In \emph{Conference on Robot Learning}, pages 603--616. PMLR, 2020.
+
+\bibitem[Alipov et~al.(2021)Alipov, Simmons-Edler, Putintsev, Kalinin, and Vetrov]{alipov2021towards}
+V.~Alipov, R.~Simmons-Edler, N.~Putintsev, P.~Kalinin, and D.~Vetrov.
+\newblock Towards practical credit assignment for deep reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:2106.04499}, 2021.
+
+\bibitem[Yang et~al.(2021)Yang, Tang, Bai, Liu, Hao, Meng, and Liu]{yang2021exploration}
+T.~Yang, H.~Tang, C.~Bai, J.~Liu, J.~Hao, Z.~Meng, and P.~Liu.
+\newblock Exploration in deep reinforcement learning: a comprehensive survey.
+\newblock \emph{arXiv preprint arXiv:2109.06668}, 2021.
+
+\bibitem[Osband et~al.(2019)Osband, Roy, Russo, and Wen]{JMLR:v20:18-339}
+I.~Osband, B.~V. Roy, D.~J. Russo, and Z.~Wen.
+\newblock Deep exploration via randomized value functions.
+\newblock \emph{Journal of Machine Learning Research}, 20\penalty0 (124):\penalty0 1--62, 2019.
+
+\bibitem[Hochreiter(1998)]{10.1142/S0218488598000094}
+S.~Hochreiter.
+\newblock The vanishing gradient problem during learning recurrent neural nets and problem solutions.
+\newblock \emph{Int. J. Uncertain. Fuzziness Knowl.-Based Syst.}, 6\penalty0 (2):\penalty0 107–116, 1998.
+
+\bibitem[Xia et~al.(2020)Xia, Li, Mart{\'i}n-Mart{\'i}n, Litany, Toshev, and Savarese]{xia2020relmogen}
+F.~Xia, C.~Li, R.~Mart{\'i}n-Mart{\'i}n, O.~Litany, A.~Toshev, and S.~Savarese.
+\newblock {ReLMoGen}: Leveraging motion generation in reinforcement learning for mobile manipulation.
+\newblock In \emph{IEEE International Conference on Robotics and Automation (ICRA)}. IEEE, 2020.
+
+\bibitem[Redmon and Farhadi(2018)]{redmon2018yolov3}
+J.~Redmon and A.~Farhadi.
+\newblock Yolov3: An incremental improvement.
+\newblock \emph{arXiv preprint arXiv:1804.02767}, 2018.
+
+\bibitem[Bjelonic(2016--2018)]{bjelonicYolo2018}
+M.~Bjelonic.
+\newblock {YOLO ROS}: Real-time object detection for {ROS}.
+\newblock \url{https://github.com/leggedrobotics/darknet_ros}, 2016--2018.
+
+\bibitem[Thrun et~al.(2005)Thrun, Burgard, and Fox]{thrun2005probabilistic}
+S.~Thrun, W.~Burgard, and D.~Fox.
+\newblock \emph{Probabilistic Robotics}.
+\newblock MIT Press, 2005.
+
+\bibitem[Fan et~al.(2021)Fan, Wang, Huang, Yu, Fei-Fei, Zhu, and Anandkumar]{fan2021secant}
+L.~Fan, G.~Wang, D.-A. Huang, Z.~Yu, L.~Fei-Fei, Y.~Zhu, and A.~Anandkumar.
+\newblock Secant: Self-expert cloning for zero-shot generalization of visual policies.
+\newblock \emph{arXiv preprint arXiv:2106.09678}, 2021.
+
+\bibitem[Koupaee and Wang(2018)]{koupaee2018wikihow}
+M.~Koupaee and W.~Y. Wang.
+\newblock Wikihow: A large scale text summarization dataset.
+\newblock \emph{arXiv preprint arXiv:1810.09305}, 2018.
+
+\bibitem[Likert(1932)]{likert1932technique}
+R.~Likert.
+\newblock A technique for the measurement of attitudes.
+\newblock \emph{Archives of psychology}, 1932.
+
+\bibitem[Montgomery(2013)]{stats2013montgomery}
+D.~C. Montgomery.
+\newblock \emph{Design and analysis of experiments}.
+\newblock John Wiley \& Sons, Inc., Hoboken, NJ, eighth edition, 2013.
+
+\bibitem[Paolacci et~al.(2010)Paolacci, Chandler, and Ipeirotis]{paolacci2010running}
+G.~Paolacci, J.~Chandler, and P.~G. Ipeirotis.
+\newblock Running experiments on amazon mechanical turk.
+\newblock \emph{Judgment and Decision making}, 5\penalty0 (5):\penalty0 411--419, 2010.
+
+\bibitem[Center(2016)]{pew2016mturkdemog}
+P.~R. Center.
+\newblock Research in the crowdsourcing age, a case study.
+\newblock Technical report, Washington, D.C., July 2016.
+\newblock URL \url{https://www.pewresearch.org/internet/2016/07/11/research-in-the-crowdsourcing-age-a-case-study/}.
+
+\bibitem[Akbik et~al.(2018)Akbik, Blythe, and Vollgraf]{akbik2018coling}
+A.~Akbik, D.~Blythe, and R.~Vollgraf.
+\newblock Contextual string embeddings for sequence labeling.
+\newblock In \emph{{COLING} 2018, 27th International Conference on Computational Linguistics}, pages 1638--1649, 2018.
+
+\bibitem[Fox and Long(2003)]{fox2003pddl21}
+M.~Fox and D.~Long.
+\newblock {PDDL}2.1: An extension to {PDDL} for expressing temporal planning domains.
+\newblock \emph{Journal of Artificial Intelligence Research}, 20:\penalty0 61--124, dec 2003.
+\newblock \doi{10.1613/jair.1129}.
+\newblock URL \url{https://doi.org/10.1613%2Fjair.1129}.
+
+\bibitem[Wichlacz et~al.(2019)Wichlacz, \'{A}lvaro Torralba, and Hoffmann]{wichlacz2019ghost}
+J.~Wichlacz, \'{A}lvaro Torralba, and J.~Hoffmann.
+\newblock Construction-planning models in minecraft.
+\newblock In \emph{Proceedings of the 2nd ICAPS Workshop on Hierarchical Planning (HPlan 2019)}, pages 1--5, 2019.
+
+\bibitem[{TurboSquid, Inc.}(2022)]{turbosquid}
+{TurboSquid, Inc.}
+\newblock Turbosquid.
+\newblock \url{https://www.turbosquid.com/}, 2022.
+\newblock Accessed: 2022-06-24.
+
+\bibitem[{Niantic, Inc.}(2022)]{scaniverse}
+{Niantic, Inc.}
+\newblock Scaniverse.
+\newblock \url{https://scaniverse.com}, 2022.
+\newblock Accessed: 2022-06-24.
+
+\bibitem[Quigley et~al.(2009)Quigley, Conley, Gerkey, Faust, Foote, Leibs, Wheeler, Ng, et~al.]{quigley2009ros}
+M.~Quigley, K.~Conley, B.~Gerkey, J.~Faust, T.~Foote, J.~Leibs, R.~Wheeler, A.~Y. Ng, et~al.
+\newblock Ros: an open-source robot operating system.
+\newblock In \emph{ICRA workshop on open source software}, volume~3, page~5. Kobe, Japan, 2009.
+
+\bibitem[Baboolall et~al.(2019)Baboolall, Pinder, and Stewart]{mckinsey2019automation}
+D.~Baboolall, D.~Pinder, and S.~Stewart.
+\newblock How automation could affect employment for women in the united kingdom and minorities in the united states.
+\newblock \emph{McKinsey Digital}, 2019.
+\newblock URL \url{tinyurl.com/h883dm9n}.
+
+\end{thebibliography}

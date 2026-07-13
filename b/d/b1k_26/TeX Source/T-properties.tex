@@ -1,0 +1,243 @@
+%\begin{table}[t]
+% \centering
+% \resizebox{\textwidth}{!}{%
+{\scriptsize
+\centering
+\begin{longtable}{|l|p{.20\textwidth}|p{.25\textwidth}|p{.28\textwidth}|}
+        \hline
+        \textbf{Object property} & \textbf{Annotation method} & \textbf{Prompt to annotator} & \textbf{Example objects}
+        \\\hline
+        \texttt{assembleable} & 
+            manual &
+            N/A & 
+             \texttt{desk.n.01},  \texttt{table.n.02}
+        \\\hline
+        % \texttt{boilable} & 
+        %     prog. (all \texttt{liquid}) &
+        %     N/A & 
+        %      \texttt{champagne.n.01},  \texttt{beef\_broth.n.01}
+        % \\\hline
+        \texttt{breakable} & 
+            human &
+            %  Mark if the object can \\be broken into smaller pieces \\by a human dropping it \\on the floor without a tool.\end{tabular} &
+            Mark if the object can be broken into smaller pieces by a human dropping it on the floor without a tool.  & 
+              \texttt{wine\_bottle.n.01}, \texttt{room\_light.n.01} 
+        \\\hline
+        % \texttt{cleaningTool} & 
+        %     GPT-3 &
+        %     %  Is a [object] designed \\to clean things?\end{tabular} & 
+        %     Is a [object] designed to clean things? &
+        %      \texttt{scrub\_brush.n.01}, \texttt{pipe\_cleaner.n.01}
+        % \\\hline
+        \texttt{cloth} & 
+            manual &
+            N/A & 
+             \texttt{hammock.n.02}, \texttt{canvas.n.01} 
+        \\\hline
+        \texttt{coldSource} & 
+            GPT-3 &
+            Is [object] a source of cold? & 
+             \texttt{refrigerator.n.01}, \texttt{ice.n.01}
+        \\\hline
+        \texttt{cookable} & 
+            GPT-3 &
+            Can a [object] be cooked? & 
+             \texttt{biscuit.n.01},
+            \texttt{pizza.n.01}
+        \\\hline
+        \texttt{deformable} & 
+             prog. (all \texttt{softBody}, \texttt{cloth}, \texttt{rope}) &
+            N/A & 
+              \texttt{tortilla.n.01},  \texttt{clay.n.01} 
+        \\\hline
+        \texttt{diceable} & 
+             prog. (all \texttt{sliceable}'s derivative synsets &
+            N/A & 
+              \texttt{half\_\_apricot.n.01},  \texttt{half\_\_brisket.n.01} 
+        \\\hline
+        \texttt{drapeable} & 
+             prog. (all \texttt{cloth}, \texttt{rope} &
+            N/A & 
+              \texttt{dress.n.01},  \texttt{bath\_towel.n.01} 
+        \\\hline
+        \texttt{fillable} & 
+             manual &
+            N/A & 
+              \texttt{stockpot.n.01},  \texttt{bucket.n.01} 
+        \\\hline
+        \texttt{fireSource} & 
+            GPT-3 &
+            %  Is a [object] designed \\to create fire?\end{tabular} & 
+            Is a [object] designed to create fire? & 
+             \texttt{lighter.n.01}, \texttt{sparkler.n.01} 
+        \\\hline
+        \texttt{flammable} & 
+            human &
+            %  Mark if the object can \\catch fire (i.e. burn with \\a flame). For example, \\'wood' and 'gasoline' are \\\textbf{flammable}.\end{tabular}  & 
+            Mark if the object can catch fire (i.e. burn with a flame). &
+             \texttt{candle.n.01}, \texttt{mail.n.01}
+        \\\hline
+        \texttt{foldable} & 
+             prog. (all \texttt{cloth}, \texttt{softBody}) &
+            N/A & 
+             \texttt{tortilla.n.01}, \texttt{jean\_jacket.n.01} 
+        \\\hline
+        \texttt{freezable} & 
+             prog. (all \texttt{heatable}) &
+            N/A & 
+             \texttt{olive\_oil.n.01}, \mbox{\texttt{ginger\_beer.n.01}}
+        \\\hline
+        \texttt{heatable} & 
+            prog. (all rigid bodies) &
+            N/A & 
+             \texttt{oil.n.01}, \texttt{fish\_knife.n.01} 
+        \\\hline
+        \texttt{heatSource} & 
+            GPT-3 &
+            Is a [object] a source of heat? & 
+             \texttt{oven.n.01}, \texttt{toaster.n.01} 
+        \\\hline
+        \texttt{liquid} & 
+            GPT-3 &
+            Is a [object] a liquid? & 
+             \texttt{gasoline.n.01}, \mbox{\texttt{liquid\_soap.n.01}} 
+        \\\hline
+        \texttt{macroPhysicalSubstance} & 
+            manual &
+            N/A & 
+             \texttt{grated\_cheese.n.01}, \texttt{blueberry.n.02} 
+        \\\hline
+        \texttt{meltable} & 
+            manual &
+            N/A & 
+             \texttt{cheese.n.01}, \texttt{chocolate.n.02} 
+        \\\hline
+        \texttt{microPhysicalSubstance} & 
+            manual &
+            N/A & 
+             \texttt{brown\_sugar.n.01}, \texttt{cinnamon.n.03} 
+        \\\hline
+        \texttt{mixingTool} & 
+            manual &
+            N/A & 
+             \texttt{putty\_knife.n.01}, \texttt{teaspoon.n.02} 
+        \\\hline
+        \texttt{needsOrientation} & 
+            manual &
+            N/A & 
+             \texttt{cumin\_\_shaker.n.01}, \texttt{salt\_\_shaker.n.01} 
+        \\\hline
+        \texttt{openable} & 
+            human &
+            %  Mark if the object is \\designed to be opened.\end{tabular}  & 
+            Mark if the object is designed to be opened. &
+             \texttt{mixer.n.04}, \texttt{keg.n.01} 
+        \\\hline
+        \texttt{particleApplier} & 
+            manual &
+            %  Mark if the object is \\designed to be opened.\end{tabular}  & 
+            N/A &
+             \texttt{pepper\_mill.n.01}, \texttt{detergent\_\_atomizer.n.01} 
+        \\\hline
+        \texttt{particleRemover} & 
+            GPT-3 &
+            %  Mark if the object is \\designed to be opened.\end{tabular}  & 
+            Can a [object] absorb liquid? &
+             \texttt{scrub\_brush.n.01}, \texttt{broom.n.01} 
+        \\\hline
+        \texttt{particleSource} & 
+            manual (on top of \texttt{particleApplier} &
+            %  Mark if the object is \\designed to be opened.\end{tabular}  & 
+            N/A &
+             \texttt{sink.n.01}
+        \\\hline
+        \texttt{particleSink} & 
+            manual (on top of \texttt{particleRemover} &
+            %  Mark if the object is \\designed to be opened.\end{tabular}  & 
+            N/A &
+             \texttt{sink.n.01}
+        \\\hline
+        % \texttt{overcookable} & 
+        %      prog. (all \texttt{cookable}) &
+        %     N/A & 
+        %      \texttt{gazpacho.n.01}, \texttt{jam.n.01}
+        % \\\hline
+        % \texttt{physicalSubstance} & 
+        %     manual &
+        %     N/A & 
+        %      \texttt{flour.n.01}, \texttt{salt.n.02} 
+        % \\\hline
+        \texttt{rigidBody} & 
+            manual &
+            N/A & 
+             \texttt{tomato.n.01}, \texttt{desk.n.01} 
+        \\\hline
+        \texttt{rope} & 
+            manual &
+            N/A & 
+             \texttt{ribbon.n.01}, \texttt{fairy\_light.n.01} 
+        \\\hline
+        \texttt{sliceable} & 
+            GPT-3 &
+            %  Can a [object] be sliced \\easily by a human \\with a knife?\end{tabular} & 
+            Can a [object] be sliced easily by a human with a knife? &
+             \texttt{sweet\_corn.n.01}, \mbox{\texttt{sandwich.n.01}} 
+        \\\hline
+        \texttt{slicingTool} & 
+            GPT-3 &
+            Can a [object] slice an apple? & 
+             \texttt{blade.n.09}, \texttt{razor.n.01}
+        \\\hline
+        % \texttt{soakable} & 
+        %     GPT-3 &
+        %     Can a [object] absorb liquid? & 
+        %      \texttt{sponge.n.01}, \texttt{tea\_bag.n.01}
+        % \\\hline
+        \texttt{softBody} & 
+            manual &
+            N/A & 
+             \texttt{dough.n.01}, \texttt{pillow.n.01} 
+        \\\hline
+        \texttt{substance} & 
+             prog. (all \texttt{liquid}, \texttt{vis.Subst.}, \texttt{phys.Subst.}) &
+            N/A & 
+             \texttt{water.n.06}, \texttt{milk.n.01} 
+        \\\hline
+        \texttt{toggleable} & 
+            human &
+            %  The object can be switched \\between a finite number \\of \textit{discrete} states and is \\designed to do so.\end{tabular} & 
+            The object can be switched between a finite number of \textit{discrete} states and is designed to do so. &
+            %  \texttt{hot\_tub.n.01}, \\ \texttt{light\_bulb.n.01}\end{tabular} \\
+            \texttt{hot\_tub.n.01}, \texttt{light\_bulb.n.01} 
+        \\\hline
+        \texttt{unfoldable} & 
+            prog. (all \texttt{foldable}) &
+            N/A & 
+             \texttt{tissue.n.02}, \texttt{foil.n.01} 
+        \\\hline
+        \texttt{visualSubstance} & 
+            manual &
+            N/A & 
+             \texttt{coriander.n.02}, \mbox{\texttt{cocoa\_powder.n.01}}
+        \\\hline
+        \texttt{waterCook} & 
+            manual (special case of \texttt{cookable} &
+            N/A & 
+             \texttt{chickpea.n.01}, \mbox{\texttt{white\_rice.n.01}}
+        \\\hline
+        % \texttt{waterSource} & 
+        %     manual &
+        %     N/A & 
+        %     \texttt{sink.n.01} 
+        % \\\hline
+        % \texttt{wetable} & 
+        %     prog. (all non-\texttt{substance} &
+        %     N/A & 
+        %      \texttt{lasagna.n.01}, \texttt{ashtray.n.01}
+        % \\\hline
+    % \end{tabular}
+    \caption{Properties annotated for \benchmark for each object category and included in the \dataset knowledge base}
+    \label{tab:supp_props}
+\end{longtable}
+}
+%\end{table}

@@ -1,0 +1,52 @@
+\begin{table}[!htbp]
+\begin{center}
+%\resizebox{\textwidth}{!}
+{\scriptsize%
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ | m{4cm} | m{9cm} | } 
+\hline
+\textbf{Object State} & \textbf{Description and Update Rules} \\ 
+\hline
+\texttt{Pose} & 6 DoF pose (position and orientation) of the object in world reference frame, updated by the underlying physics engine.\\ 
+\hline
+\texttt{AABB} & Axis-aligned bounding box (coordinates of two opposite corners) of the object in the world reference frame, updated by the underlying physics engine.\\ 
+\hline
+\texttt{JointStates} & State of all internal DoFs of the (articulated) object for the structure defined by \texttt{KinematicStructure}, updated by the underlying physics engine.\\ 
+\hline
+\texttt{ParticlePositions} & Positions of all the underlying particles for cloth and fluid, updated by the underlying physics engine.\\ 
+\hline
+\texttt{InContactObjs} & List of all objects in physical contact with the object, updated by the underlying physics engine.\\ 
+\hline
+\texttt{ConnectedObjs} & List of all objects that are connected to the object, either via a fixed joint for rigid bodies or via an attachment for cloth and deformables.\\ 
+\hline
+\texttt{InSamePositiveVerticalAxisObjs} & List of all objects in the positive vertical axis drawn from the object's center of mass, updated by shooting a ray upwards in the positive z-axis and gather the objects hit by the ray.\\ 
+\hline
+\texttt{InSameNegativeVerticalAxisObjs} & List of all objects in the negative vertical axis drawn from the object's center of mass, updated by shooting a ray downwards in the negative z-axis and gather the objects hit by the ray.\\ 
+\hline
+\texttt{InSameHorizontalPlaneObjs} & List of all objects in the horizontal plane drawn from the object's center of mass, updated by shooting a number of ray in the x-y plane and gather the objects hit by the rays.\\ 
+\hline
+\texttt{Temperature}, $T$ & Object's current temperature in $^\circ$C, updated by detecting if the object is affected by any heat source or heat sink.\\ 
+\hline
+\texttt{MaxTemperature}, $T_\textit{max}$ & Maximum temperature of the object reached historically during this simulation run, updated by keeping track of all the \texttt{Temperature} in the history.\\ 
+\hline
+\texttt{SoakedLevel}, $w$ & Amount of liquid absorbed by the object corresponding to the number of liquid particles contacted, updated by detecting if the object is in contact with any liquid particle. This is maintained for every type of \texttt{liquid} separately. \\ 
+\hline
+\texttt{CoveredLevel}, $c$ & Amount of \texttt{visualSubstance} that covers the object, updated by detecting if the particles of the \texttt{visualSubstance} are in contact with anything that can potentially remove them from the object, e.g. \texttt{cleaningTool}. This is maintained for every type of \texttt{visualSubstance} separately. \\ 
+\hline
+% \texttt{DustinessLevel}, $d$ & Fraction of the initial amount of dust particles that remain on the object's surface, updated by detecting if the particles are in contact with any \texttt{CleaningTool}.\\ 
+% \hline
+% \texttt{StainLevel}, $s$ & Fraction of the initial amount of stain particles that remain on the object's surface, updated by detecting if the particles are in contact with any \texttt{Soaked} \texttt{CleaningTool}.\\ 
+% \hline
+\texttt{ToggledState}, $\textit{TS}$ & Binary state indicating if the object is currently on or off, updated by detecting if the agent is in contact with the \texttt{TogglingLink}.\\ 
+\hline
+\texttt{SlicedState}, $\textit{SS}$ & Binary state indicating whether the object has been sliced (irreversible), updated by detecting if the object is in contact with any \texttt{SlicingTool} that exerts a force above a certain threshold $F_\mathit{sliced}$. We assume as default force threshold of $F_\mathit{sliced} = \SI{10}{\newton}$, a value that can be configured per object category and model.\\ 
+\hline
+\texttt{BrokenState}, $\textit{BS}$ & Binary state indicating if the object is broken, updated by detecting if the object has a contact force with any other object above a certain threshold $F_\mathit{broken}$, a value that can be configured per object category and model.\\ 
+\hline
+\end{tabular}
+}
+\vspace{3pt}
+\caption{Object states maintained by \simulator. Adapted from~\cite{li2021ig2}.}
+\label{table:obj_states}
+\end{center}
+\end{table}
