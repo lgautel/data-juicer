@@ -115,6 +115,7 @@ Tests for `_au` operators live in `tests_au/`, mirroring the `tests/` structure.
 
 # 编码规范
 
+* 尽量利用`data_juicer`已有的功能与模块.
 * 要遵守"扩展大于修改的原则".
 * 新加的功能和代码要放在 `data_juicer/_au/` 里, 该文件夹中的目录要参考 `data_juicer/` 的目录设定, 所有定制化的扩展代码都写在 `data_juicer/_au/` 中的相应目录里.
 * 测试用例和验收脚本要放在 `tests_au/` 里, 该文件夹中的目录要参考  `tests/` 的目录设定, 后续所有定制化的扩展代码的测试代码都写在 `tests_au/` 中的相应目录里.
