@@ -1,0 +1,66 @@
+# Check 3: Video Quality Filtering Pipeline
+# Qwen-RobotManip data.tex lines 251-256
+project_name: 'accept-video-quality-filtering'
+dataset_path: 'tests_au/ops/filter/outputs/lerobot_episodes.jsonl'
+export_path: 'tests_au/ops/filter/outputs/check3_result.jsonl'
+np: 1
+executor_type: default
+keep_stats_in_res_ds: true
+text_keys: 'id'
+
+custom_operator_paths:
+  - 'data_juicer/_au'
+
+process:
+  # Step 2: Keyframe detection (gripper closure + velocity peaks)
+  - robot_key_frame_detector_mapper:
+      signal_source: 'top_level'
+      top_level_state_key: 'states'
+      top_level_action_key: 'actions'
+      gripper_dims: null
+      gripper_field: null
+      gripper_delta_threshold: 5.0
+      gripper_close_direction: 'decrease'
+      state_velocity_percentile: 95.0
+      keyframe_window: 3
+      report_field: 'key_frame_report'
+
+  # Step 3: Static segment detection (state signal only, no video)
+  - robot_static_segment_detector_mapper:
+      signal_source: 'top_level'
+      top_level_state_key: 'states'
+      state_motion_threshold: 0.001
+      window_size: 5
+      min_static_run: 10
+      require_joint_evidence: false
+      edge_only: true
+      edge_margin_ratio: 0.15
+      quality_report_field: 'frame_quality_report'
+      keyframe_report_field: 'key_frame_report'
+      removal_mask_field: 'video_quality_removal_mask'
+      report_field: 'static_segment_report'
+
+  # Step 4: Frame removal safety check
+  - robot_frame_removal_safety_filter:
+      signal_source: 'top_level'
+      top_level_state_key: 'states'
+      top_level_action_key: 'actions'
+      removal_mask_field: 'video_quality_removal_mask'
+      max_action_jump_mad_scale: 5.0
+      max_removed_ratio: 0.5
+      min_remaining_frames: 20
+      report_field: 'frame_removal_safety_report'
+      stats_export_path: 'tests_au/ops/filter/outputs/check3_stats.jsonl'
+
+  # Step 5: Frame removal
+  - robot_frame_removal_mapper:
+      signal_source: 'top_level'
+      top_level_state_key: 'states'
+      top_level_action_key: 'actions'
+      removal_mask_field: 'video_quality_removal_mask'
+      timestamp_key: 'timestamp'
+      frame_index_key: 'frame_index'
+      safety_check_field: 'frame_removal_safe'
+      skip_if_unsafe: true
+      recompute_actions: false
+      report_field: 'frame_removal_report'

@@ -5,6 +5,7 @@
 > **发表**: Conference on Robot Learning (CoRL), 2024
 > **arXiv**: [2403.09227](https://arxiv.org/abs/2403.09227)
 > **官网**: [behavior.stanford.edu](https://behavior.stanford.edu)
+> **2026Behavior-1K主页**: [2026 BEHAVIOR Challenge](https://behavior.stanford.edu/challenge/index.html)
 > **代码**: [github.com/StanfordVL/BEHAVIOR-1K](https://github.com/StanfordVL/BEHAVIOR-1K)  (1,600+ Stars, 16,178 commits, v3.9.0)
 > **仿真器**: OmniGibson (基于 NVIDIA Omniverse + PhysX 5)
 

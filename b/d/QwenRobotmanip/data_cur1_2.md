@@ -122,6 +122,33 @@ flowchart TB
     blocks --> detect["per-block detection"]
 ```
 
+这段话是在定一个**工程约定**：过滤算子要从样本里拿出 `states`/`actions` 这类时序信号时，**不要用通配符路径去猜**，而是用一个显式枚举告诉它“数据长什么样”。
+
+#### 在说什么
+
+要做“突变检测”之类的 Filter，必须先从样本里抽出 `(T, D)` 的轨迹数组。现实里，这些信号的存放位置并不统一，所以文档做了**决策 2**：
+
+- 不用类似 `*.states` / `meta.*.actions` 这种字符串通配去解析路径（难维护、也容易误匹配）。
+- 改成配置项 `signal_source`，只允许三种明确取值，各自对应一种真实数据结构。
+
+#### 三种来源分别是什么
+
+| 枚举值 | 含义 | 典型长什么样 |
+|---|---|---|
+| `hand_action_tags` | H2R（人手→机器人）管道产物 | `meta.hand_action_tags` 是 clip 列表；每个 clip 再按左右手拆成 `{states, actions, valid_frame_ids, joints_world}` |
+| `top_level` | 样本顶层就有信号 | `sample["states"]`、`sample["actions"]` 直接是二维数组 |
+| `meta_field` | 塞在 `__dj__meta__` 某个自定义字段里 | 比如某个统一 80 维向量字段，存 `(T, D)` |
+
+后面的 mermaid 图也是这个意思：先看 `signal_source`，再按分支取数据，最后统一变成“若干个 signal block”，再做逐块检测。
+
+#### 为什么要这样定
+
+- **可预期**：配置写成 `signal_source: hand_action_tags`，一看就知道去哪取。
+- **可覆盖真实数据**：这三种正好对应你们现有的主要落盘形态。
+- **避免通配符坑**：通配符路径看起来灵活，但嵌套结构一深（尤其 `hand_action_tags` 那种 list→hand_type→fields），解析规则会变得又脆又难测。
+
+一句话：这是在说“信号从哪读，别让程序猜，配置里用枚举写死三种合法来源”。
+
 ### 2.4 决策 3：执行器与注册方式
 
 - **首次落地固定用本地执行器** `executor_type: default`。自定义算子通过 `custom_operator_paths` 注册，其加载逻辑：
@@ -995,6 +1022,84 @@ dj-analyze --config b/d/QwenRobotmanip/dj_custom_ops/stage1_accept.yaml
 | `recompute_actions_on_remove` | bool | `False` | frame_remove 且 8 维 states 时重算 7 维 delta |
 
 > 常用组合：`min_frames=4`、`savgol_window=11`、`savgol_polyorder=3`；生产用 `threshold_mode=mad`、λ 从 6.0 起调；验收/回归用 `threshold_mode=manual` 保证复现。
+
+#### `check_dims` 与 `exempt_dims`
+
+`exempt_dims` 的作用很简单：**指定哪些维度完全不参与突变检测**，典型是夹爪、padding 这类离散/常量通道。
+
+#### 为什么需要它
+
+机器人轨迹常是 `(T, D)`，例如 8 维 state：
+
+| 维号 | 含义 | 是否适合做“突变检测” |
+|---|---|---|
+| 0,1,2 | xyz 位置 | 适合（连续） |
+| 3,4,5 | roll/pitch/yaw | 适合（连续，但可能要 `angular_dims` 解卷绕） |
+| 6 | padding（常为 0） | 不适合 |
+| 7 | gripper 开合 | 不适合（阶跃式离散，本就会“突然变化”） |
+
+夹爪从开到关，在数值上看就是一个大跳变。若把它也拿去算残差/加速度/jerk，会被误判成“轨迹突变”，整段 episode 容易被误杀。  
+所以配置里常见：
+
+```yaml
+exempt_dims: [6, 7]   # padding / gripper
+```
+
+#### 起作用的逻辑
+
+实现分两步：
+
+**1. 初始化时转成集合**
+
+```python
+self.exempt_dims = set(exempt_dims) if exempt_dims else set()
+```
+
+**2. `_select_dims(D)` 决定真正检测哪些维**
+
+大致顺序是：
+
+1. 先取全部维度 `0..D-1`
+2. 再应用 `check_dims`（`include` / `exclude`）
+3. **最后再减去 `exempt_dims`**
+
+```148:160:data_juicer/_au/ops/filter/robot_sudden_change_filter.py
+    def _select_dims(self, D: int) -> list:
+        """按 check_dims / exempt_dims 计算真正参与检测的维度索引。"""
+        dims = list(range(D))
+        if self.check_dims:
+            if "include" in self.check_dims:
+                ...
+            if "exclude" in self.check_dims:
+                ...
+        if self.exempt_dims:
+            dims = [d for d in dims if d not in self.exempt_dims]
+        return dims
+```
+
+**3. 检测时只对选出的维做平滑与异常判定**
+
+```python
+dims = self._select_dims(D)
+xs = x[:, dims].copy()   # 只拷这些维
+# 后续中值滤波 / SG / MAD / 残差检测都只在 xs 上做
+```
+
+被 `exempt_dims` 跳过的维：
+- 不算突变
+- 不影响 `flagged_frame_ids`
+- 也不影响 episode 丢弃判决
+
+#### 和 `check_dims` 的差别
+
+| 参数 | 角色 |
+|---|---|
+| `check_dims` | 通用“只查哪些 / 不查哪些”白黑名单 |
+| `exempt_dims` | 语义更专一的“永久豁免”（夹爪、padding 等）；**最后再滤一次，优先级更高** |
+
+例如即使写了 `check_dims: {include: [0,1,2,3,4,5,6,7]}`，只要有 `exempt_dims: [6,7]`，最终仍只检测 `[0,1,2,3,4,5]`。
+
+一句话：`exempt_dims` 是为了告诉检测器——**这些维本身就该跳变/常量，别当噪声当异常**。
 
 ### 6.2 三种接法示范
 
