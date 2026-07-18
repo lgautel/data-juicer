@@ -2586,6 +2586,289 @@ Qwen-RobotManip 是 2026 年机器人操控基础模型领域的标杆性工作 
 
 ---
 
+# 附
+
+## 附一:如何讲本体信息注入模型
+
+### QwenRobotmanip这样做
+模型**不是靠猜**，而是通过几条显式/半显式信号知道“这个样本是哪种本体”。核心有三层：
+
+##### 1. 最直接：Embodiment Prompt 里的平台名
+
+训练时每条样本会带结构化提示，其中第一项就是本体标识，例如：
+
+- `robot_aloha`
+- `robot_franka`
+
+另外还有 `instruction / speed / fps / camera view direction`。  
+训练时会以约 **15%** 概率随机丢掉 `embodiment`（以及 speed、fps），逼模型在缺少平台名时也能工作；但默认情况下，**平台名就是告诉模型“这是哪个本体”的主标签**。
+
+**QwenRobotmanip的embed prompt如下**
+
+论文里给的就是一段**键值式纯文本**，喂给 VLM 当条件输入。完整示例长这样：
+
+```text
+embodiment: robot_aloha
+instruction: Take the toy off the table and put it on the mat.
+speed: 1000
+fps: 30
+camera view direction: arm side
+```
+
+五个字段的含义：
+
+| 字段 | 例子 | 含义 |
+|---|---|---|
+| `embodiment` | `robot_aloha` / `robot_franka` | 机器人平台名 |
+| `instruction` | 任务自然语言 | 要做什么 |
+| `speed` | `1000` | episode 长度（按 **500 步一档**离散化，所以常是 500、1000…） |
+| `fps` | `30` | 输入序列采样帧率 |
+| `camera view direction` | `arm side` 或 `opposite side` | 相机相对机械臂在同侧还是对侧 |
+
+训练时还会以 **15%** 概率随机丢掉 `embodiment`、`speed`、`fps` 中的若干字段，让模型在缺信息时也能工作。  
+消融里这种结构化写法（约 65.9%）好于自然语言软描述和可学习 soft prompt。
+
+##### 2. 动作头内部：末端执行器类型嵌入（adaLN）
+
+DiT 动作头还会吃一个更粗粒度的类别码本，例如：
+
+| 类别 | 含义 |
+|---|---|
+| `single-arm` | 单臂 |
+| `dual-arm-left` / `dual-arm-right` | 双臂左右 |
+| `egocentric-head` | 自中心人手 |
+| `mobile-base` | 移动底盘 |
+
+它和去噪时间步、相机参数是否可用一起相加，经 **adaLN** 调制网络，让同一套 DiT 按不同体态切换动作先验。  
+这回答的是“**当前 token 是哪种执行器角色**”，比平台名更偏形态类别。
+
+##### 3. 隐式结构：80 维槽位 + 逐维 mask
+
+所有本体都塞进统一 80 维状态/动作向量，但：
+
+- 不同本体**占用不同槽位**（单臂只用右臂区、双臂左右都填、底盘用尾部维……）
+- 未用维度零填充，并用 **per-dimension slot mask** 从 loss 里排除
+- 归一化百分位数也是**按体态类型分别统计**的
+
+所以即使不看文字标签，模型也能从“哪些维有有效值、哪些是 padding”读出形态差异。
+
+---
+
+**一句话**：样本属于哪个本体，主要靠 **Embodiment Prompt 的 `embodiment` 字段显式告诉模型**；同时再用 **EEF 类型嵌入** 和 **80 维槽位/mask** 把形态差异写进表示与条件化路径。三者一起，而不是只靠视觉自己推断。
+
+### Emb prompt 能否增删改一些信息
+
+当前 Qwen 的 Embodiment Prompt 已覆盖「谁 / 做什么 / 多快 / 从哪边看」。从实用部署与跨本体冲突来看，缺口主要在：**动作语义、观测配置、执行器形态、控制时序细节**。下面按「建议加什么 → 为什么实用 → 启发出处」列想法（**广度优先**；每条都带出处）。
+
+---
+
+##### 现状（对照）
+
+现有 5 字段：
+
+```text
+embodiment / instruction / speed / fps / camera view direction
+```
+
+论文示例见 [Yuan et al., 2026, model.tex](b/d/QwenRobotmanip/TeX_Source/chapter/model.tex)。动作侧另有 adaLN 的 EEF 类型嵌入与相机参数可用性标志，**不在文本 Prompt 里**。
+
+草稿注释里还曾出现过 `subtask` 字段（同文件注释块），正式版删了——说明作者已意识到「任务粒度」有价值，但未落地。
+
+---
+
+##### 建议增补（按实用优先级）
+
+###### P0：几乎必加——否则同一数字含义不同
+
+**1. `action_rep`：绝对 / 相对(delta) / 速度**
+
+```text
+action_rep: relative_delta   # absolute | relative_delta | velocity
+```
+
+- **实用点**：Open X-Embodiment 明确说各数据集未统一坐标系，且允许绝对/相对/速度混用，**同一动作向量对不同机器人含义完全不同**（[Padalkar et al., OXE/RT-X, 2023](https://arxiv.org/abs/2310.08864)）。不声明会逼模型靠 embodiment 名“死记”语义，换机就崩。
+- **启发**：NVIDIA GR00T 把这写成一等公民 `ActionRepresentation.RELATIVE/ABSOLUTE`，夹爪甚至可单独用 ABSOLUTE（[Isaac GR00T modality config](https://nvidia-isaac-gr00t.mintlify.app/concepts/modality-configs)）。
+
+**2. `action_space`：关节空间 vs 末端执行器空间**
+
+```text
+action_space: eef_pose   # joint | eef_pose | mixed
+```
+
+- **实用点**：联合训练时 joint 与 EEF 数值尺度、动力学完全不同；X-VLA 用 `action_mode: joint | ee6d | auto` 专门分流（[LeRobot X-VLA docs](https://huggingface.co/docs/lerobot/main/en/xvla)）；GR00T 有 `ActionType.EEF / NON_EEF`。
+- **启发**：同上 + RDT 统一空间里按物理量填槽（[Liu et al., RDT-1B, 2024](https://arxiv.org/abs/2410.07864)）。
+
+**3. `control_hz`：控制器真实频率（与 `fps` 拆开）**
+
+```text
+control_hz: 50
+fps: 10          # 观测采样
+```
+
+- **实用点**：`fps` 是视觉采样；`control_hz` 是发指令频率。二者不等时，speed/chunk 语义会漂。RDT **显式把 control frequency 作为输入条件**（[RDT-1B](https://huggingface.co/robotics-diffusion-transformer/rdt-1b)）；RT-1 典型 3Hz（[OXE/RT-1 实践说明](https://claru.ai/models/rt-1)）；π0 强调最高约 50Hz（[Black et al., π₀, 2024](https://arxiv.org/abs/2410.24164)）。
+- **启发**：RDT 的 \(c\) 控制频率条件；π0 的高频 chunk 控制。
+
+**4. `coord_frame`：动作定义在哪个坐标系**
+
+```text
+coord_frame: camera   # base | camera | gripper | world
+```
+
+- **实用点**：Qwen 主推相机系 delta，但若数据混合物中仍有 base-frame 来源，必须在 Prompt 声明，否则与视觉对齐哲学打架。
+- **启发**：OXE 承认未对齐坐标帧（[OXE](https://arxiv.org/html/2310.08864v7)）；相机系 grounding 见 OC-VLA / cVLA（[OC-VLA, 2025](https://arxiv.org/pdf/2508.13103)、[cVLA, 2025](https://arxiv.org/pdf/2507.02190)）；Qwen 自身相机系设计（[Yuan et al., 2026](b/d/QwenRobotmanip/note.md)）。
+
+---
+
+###### P1：强烈建议——部署与安全相关
+
+**5. `camera_layout`：有哪些相机槽、是否缺失**
+
+```text
+camera_layout: wrist_left,wrist_right,base   # 或 none / missing_wrist
+```
+
+- **实用点**：π0 对空相机槽做 padding（[π0 HF blog](https://huggingface.co/blog/pi0)）；Octo 用 `pad_mask_dict["image_wrist"]=False` 标记无腕部相机数据集（[Octo FAQ/repo](https://github.com/octo-models/octo)）。文本里写清比只靠视觉“猜有几路相机”稳。
+- **启发**：Octo 的模态级 pad mask；π0 的相机槽 padding。
+
+**6. `gripper_type`：平行夹爪 / 吸盘 / 灵巧手 / 无**
+
+```text
+gripper_type: parallel_jaw   # suction | dexterous | none
+```
+
+- **实用点**：夹爪通道常是离散开合，与连续关节不同；X-VLA 对 gripper 用 BCE、对关节用 MSE（[X-VLA](https://huggingface.co/docs/lerobot/main/en/xvla)）；GR00T 建议 gripper 用 ABSOLUTE。Prompt 声明可减少“把夹爪当连续突变”的误用。
+- **启发**：GR00T ActionConfig 对 gripper 的特殊处理；X-VLA 分通道损失。
+
+**7. `morphology_class`：比平台名更粗的运动学类**
+
+```text
+morphology_class: bimanual_static   # single_arm | bimanual_mobile | mobile_holonomic | ...
+embodiment: robot_arx_aloha          # 细粒度仍保留
+```
+
+- **实用点**：π0 把「Mobile Trossen & mobile ARX」因**运动学相似**归为一类训练（[π₀ paper](https://arxiv.org/html/2410.24164v4)）。细粒度 `robot_xxx` 利于记忆，粗粒度类利于迁移到未见同构机型。
+- **启发**：π0 的 embodiment grouping；HPT 强调异构本体要对齐到共享表示（[Wang et al., HPT, NeurIPS 2024](https://arxiv.org/abs/2409.20537)）。
+
+**8. `active_slots` / DoF 掩码摘要**
+
+```text
+active_slots: right_arm_joints,right_eef,right_gripper
+```
+
+- **实用点**：OpenVLA/OXE 部署要按机器人做 un-normalize；无效维必须 mask（[OpenVLA model card](https://huggingface.co/openvla/openvla-7b)）。Qwen 已有 80 维 slot mask 在损失里；**文本再声明一次**便于人读、调试和安全联锁（“别驱动不存在的左臂”）。
+- **启发**：OXE/RT-X 缺失维置零 + 归一化；Qwen 的 per-dimension slot mask。
+
+**9. `units`：单位约定（极易踩坑）**
+
+```text
+units: meters,radians,gripper_01
+```
+
+- **实用点**：厘米/米、度/弧度混用是跨数据集最常见 silent bug；Prompt 里显式写出成本极低、排查收益极高（工程实践，非单一论文发明，但与 OXE「粗对齐但仍异构」问题同根，见 [OXE](https://arxiv.org/abs/2310.08864)）。
+
+---
+
+###### P2：值得加——提升长程与多源混合
+
+**10. `subtask`：当前子目标（草稿里有过）**
+
+```text
+subtask: grasp the cup handle
+instruction: put the cup on the plate
+```
+
+- **实用点**：长程任务需要阶段性条件；ECoT 类管线本身就在造中间推理（Qwen note_data §6.2）。
+- **启发**：Qwen `model.tex` 注释中的 subtask 设计；ECoT 传统（Brohan/RT 系与后续 embodied CoT 工作）。
+
+**11. `data_source` / 数据集 ID**
+
+```text
+data_source: bridge_v2
+```
+
+- **实用点**：X-VLA 为**每个数据源**学 soft prompt，专门吃异构（[X-VLA, OpenReview](https://openreview.net/forum?id=kt51kZH4aG)）。文本版 `data_source` 可与 soft prompt 互补，或在无 soft prompt 时做弱替代。
+- **启发**：X-VLA soft-prompt-per-source。
+
+**12. `base_type`：固定座 / 非完整移动 / 完整移动**
+
+```text
+base_type: fixed   # nonholonomic | holonomic
+```
+
+- **实用点**：π0 区分 nonholonomic Mobile ALOHA 与 holonomic Fibocom，动作维数不同（14 vs 17）（[π₀](https://arxiv.org/html/2410.24164v4)）。
+- **启发**：π0 embodiment 细分。
+
+**13. `cam_calib`：内外参是否可信（文本侧重复 adaLN 标志）**
+
+```text
+cam_calib: known   # unknown | partial
+```
+
+- **实用点**：Qwen 已在 adaLN 注入相机标志；写入 Prompt 可让 VLM 语义侧也知道“别过度依赖几何”。无标定部署正是 CamVLA 等动机（[CamVLA, 2026](https://arxiv.org/html/2607.05396)）。
+- **启发**：Qwen 相机可用标志；CamVLA 的 calibration-free 设定。
+
+**14. `obs_history_len` / `action_chunk_len`**
+
+```text
+obs_history_len: 2
+action_chunk_len: 16
+```
+
+- **实用点**：Octo 预训练 history=2、chunk=4（[Octo](https://arxiv.org/abs/2405.12213)）；GR00T 配置显式 `delta_indices` 预测视界。不同数据集 chunk 长度不同时，模型需要知道“一次要吐多长”。
+- **启发**：Octo history/chunk；GR00T modality delta_indices。
+
+---
+
+###### P3：可选 / 研究向——不一定进文本 Prompt
+
+| 想法 | 更适合放哪 | 出处 |
+|---|---|---|
+| 每本体 soft prompt 向量 | 可学习 embedding，非纯文本 | X-VLA |
+| 本体专用 stem/head | 架构模块而非 Prompt | HPT |
+| 焦距/FOV 数值写进文本 | 或用 raymap/CaPE 注入注意力 | Pose-VLA raymap（[Pose-VLA](https://arxiv.org/html/2602.19710v2)）；PRoPE/CaPE 系 |
+| goal image 条件 | 与 language 并列的另一路条件 | Octo 的 goal image + 随机 dropout |
+
+---
+
+##### 一张「扩写后」的实用模板（示意）
+
+```text
+embodiment: robot_aloha
+morphology_class: bimanual_static
+gripper_type: parallel_jaw
+action_space: eef_pose
+action_rep: relative_delta
+coord_frame: camera
+control_hz: 50
+fps: 10
+speed: 1000
+camera_layout: wrist_left,wrist_right,base
+camera view direction: arm side
+cam_calib: known
+active_slots: left_arm,right_arm,grippers
+units: meters,radians,gripper_01
+instruction: Take the toy off the table and put it on the mat.
+subtask: lift the toy
+```
+
+训练仍可沿用 Qwen 的 **15% field dropout**（[Yuan et al., 2026]），建议优先丢弃细粒度 ID（`embodiment`、`data_source`），**少丢或不丢** `action_rep` / `coord_frame` / `units`（语义安全相关）。
+
+---
+
+##### 怎么取舍（实用原则）
+
+1. **Prompt 只写“改变动作/观测语义的离散标签”**；连续几何（完整外参矩阵）继续走 CaPE/adaLN，别塞进长字符串。
+2. **先补 P0**：`action_rep`、`action_space`、`control_hz`、`coord_frame`——对应 OXE 已公开承认却未在文本侧声明的异构冲突。
+3. **粗类 + 细 ID 并存**：π0 的 morph class + `robot_xxx`，兼顾迁移与特化。
+4. **与现有机制分工**：EEF 类型嵌入、slot mask、归一化统计仍可并行；Prompt 负责**可读、可审计、可 dropout 的语义开关**。
+
+如果你希望，我可以下一步按「只改文档建议」或「给出字段 schema + dropout 策略草案」写成一小节落地规格（仍带引用表）。
+
+
+---
+
+# 附录
+
 ## 附录 A：相机内参（Intrinsics）与外参（Extrinsics）科普
 
 > 本附录面向初学者，配合图示和直觉性举例，帮助理解机器人学中相机标定的两组核心参数。这些概念在 Qwen-RobotManip 的"运动对齐"（§4.2）和 CaPE（Camera Positional Encoding）中被直接使用。
