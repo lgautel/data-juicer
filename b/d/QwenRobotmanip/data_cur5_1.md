@@ -310,19 +310,19 @@ classDiagram
 
 ```mermaid
 flowchart LR
-    IN["sample (states / actions + robot_type)"] --> Q0{"pose_layout 为空?"}
-    Q0 -->|是| PT0["原样返回 (纯 pass-through)"]
-    Q0 -->|否| RES["_resolve_correction<br/>(按来源/embodiment 取 R_corr)"]
+    IN["sample: states / actions + robot_type"] --> Q0{"pose_layout 为空?"}
+    Q0 -->|"是"| PT0["原样返回: 纯 pass-through"]
+    Q0 -->|"否"| RES["_resolve_correction<br/>按来源/embodiment 取 R_corr"]
     RES --> Q1{"R_corr 为 None?"}
-    Q1 -->|是 (未知 embodiment)| PT1["原样返回"]
-    Q1 -->|否| LOOP["遍历 state / action 目标数组"]
+    Q1 -->|"是: 未知 embodiment"| PT1["原样返回"]
+    Q1 -->|"否"| LOOP["遍历 state / action 目标数组"]
     LOOP --> B0{"切片越界?"}
-    B0 -->|是 (关节空间数据)| PTB["该数组 pass-through"]
-    B0 -->|否| RP["_rot_from_repr → 旋转矩阵 M (T,3,3)"]
+    B0 -->|"是: 关节空间数据"| PTB["该数组 pass-through"]
+    B0 -->|"否"| RP["_rot_from_repr 到旋转矩阵 M Tx3x3"]
     RP --> DEC{"is_delta?"}
-    DEC -->|no 绝对| ABS["M' = R_corr·M ; p' = p·R_corrᵀ"]
-    DEC -->|yes delta| DLT["M' = R_corr·M·R_corrᵀ ; Δt' = Δt·R_corrᵀ"]
-    ABS --> BACK["_rot_to_repr → 写回切片"]
+    DEC -->|"no 绝对"| ABS["M' = R_corr * M ; p' = p * R_corr^T"]
+    DEC -->|"yes delta"| DLT["M' = R_corr * M * R_corr^T ; dt' = dt * R_corr^T"]
+    ABS --> BACK["_rot_to_repr 写回切片"]
     DLT --> BACK
     BACK --> OUT["改写后的 state/action + meta 报告"]
 ```
