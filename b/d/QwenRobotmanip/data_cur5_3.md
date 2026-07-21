@@ -302,6 +302,38 @@ flowchart LR
     s5h --> camd["下游 camera-frame delta"]
 ```
 
+### 6.5 哪些维度随 $R_{corr}$ 变化：逐分量结论 + FK 自洽性证明
+
+$R_{corr}$ 是对**基座系 $\{B\}$ 坐标轴朝向约定**的一次纯旋转（原点不动）。一个分量是否随之改变，只取决于两点：**它是否为空间向量/朝向**、**它是否表达在基座系里**。据此逐分量核对 [`model.tex` L42–48](./TeX_Source/chapter/model.tex) 的 80 维结构：
+
+| 分量（每臂 29 维） | 维度 | 是否随 $R_{corr}$ 变 | 原因 |
+|---|---|---|---|
+| 关节位置 joint positions | 7 | ❌ 不变 | 关节空间标量配置，不表达在 $\{B\}$ 里 |
+| **末端位姿 EEF pose** | **9** | ✅ **变** | $\{B\}$ 下的空间位置+朝向（§5.2/5.3 公式） |
+| 夹爪 gripper state | 1 | ❌ 不变 | 标量开合度 |
+| 灵巧手关节 hand joints | 12 | ❌ 不变 | 关节空间 |
+| 尾部预留 22 维（如移动基座速度，[`model.tex` L48](./TeX_Source/chapter/model.tex)） | 22 | ⚠️ 视语义 | 若为 $\{B\}$ 系空间向量（如线速度）则变 $v'=R_{corr}v$；若为标量（如轮速）则不变 |
+
+**结论**：80 维里**只有「末端位姿」这 9 维需要改**，关节/夹爪/灵巧手维度原样不动——这正对应论文把该阶段命名为 "Base Frame and **End-Effector Orientation** Alignment"（[`data.tex` L229](./TeX_Source/chapter/data.tex)）、且只提 "transform all **end-effector poses**"（[`data.tex` L232](./TeX_Source/chapter/data.tex)）的原因。
+
+**为何关节不变仍能保持几何自洽（FK 证明）**：关节 $q$ 与末端位姿由正运动学（FK）绑定，FK 以基座为根：
+
+$$
+{}^{B}\mathbf{T}_{ee} = \mathrm{FK}(q).
+$$
+
+把基座系重新定向 $\{B\}\to\{B'\}$（${}^{B'}_{B}R=R_{corr}$）后：
+
+$$
+{}^{B'}\mathbf{T}_{ee} = R_{corr}\,{}^{B}\mathbf{T}_{ee} = R_{corr}\,\mathrm{FK}(q) = \mathrm{FK}'(q).
+$$
+
+末端位姿左乘 $R_{corr}$（即 §5.2 公式），FK 这个映射本身也随基座定向一起转（$\mathrm{FK}'=R_{corr}\circ\mathrm{FK}$），而**关节配置 $q$ 全程不变**，等式两边仍然相等。因此「关节不动、末端左乘 $R_{corr}$」是唯一能维持 FK 一致性的做法——若反过来去改关节角，FK 关系就会被破坏。
+
+**与 Stage 4 的区分**：会改动**关节**值的是 Stage 4（FK 一致性，[`data.tex` L224–225](./TeX_Source/chapter/data.tex)，修正关节角符号约定等），与 Stage 5「只动末端、不动关节」是两件不同的事，不要混淆。
+
+**数值直觉**：某数据集基座系把「前向」记成 +y，取 $R_{corr}=R_z(-90^\circ)$：末端位置 $p=(0,0.3,0.1)\Rightarrow p'=(0.3,0,0.1)$；同一帧的 7 个关节角、夹爪开合、12 个灵巧手关节数值**一字不变**；用这组关节角在「重新定向后的 FK」下算出的末端，正好等于 $p'$。
+
 ---
 
 ## 7. data-juicer 选型与 $R_{corr}$ 使用规范
