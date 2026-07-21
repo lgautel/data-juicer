@@ -19,6 +19,7 @@ Qwen3.5 / SGLang 接受的视频输入形式(见 README Video Input / sglang loa
   /mnt/r/VENV/dj/bin/python explain_triple_cam_videos.py --episode 0 --no-thinking
   /mnt/r/VENV/dj/bin/python explain_triple_cam_videos.py --episode episode_000001.mp4 --url-mode base64
   /mnt/r/VENV/dj/bin/python explain_triple_cam_videos.py --dry-run --keep-transcoded /tmp/qwen35_vids
+  /home/luogang/VENV/sglng/bin/python explain_triple_cam_videos.py --no-thinking
 """
 
 from __future__ import annotations
@@ -34,7 +35,8 @@ from pathlib import Path
 from openai import OpenAI
 
 DEFAULT_VIDEO_ROOT = Path(
-    "/mnt/r/DATA/pre_train_v1/post_train/stack_bowls_three/videos/chunk-000"
+    # "/mnt/r/DATA/pre_train_v1/post_train/stack_bowls_three/videos/chunk-000"
+     "/home/luogang/share/zwy/Projects/DATA/RoboTwin-Clean/stack_bowls_three/videos/chunk-000/"
 )
 CAMERA_KEYS = (
     "observation.images.cam_high",

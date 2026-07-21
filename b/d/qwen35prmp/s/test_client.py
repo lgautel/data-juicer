@@ -2,9 +2,10 @@
 """通过 OpenAI 兼容接口测试 SGLang 提供的 Qwen3.5-4B 服务.
 
 先用 serve_qwen35_sglang.sh 启动服务, 然后运行:
-    /mnt/r/VENV/dj/bin/python test_client.py
-    /mnt/r/VENV/dj/bin/python test_client.py --no-thinking
-    /mnt/r/VENV/dj/bin/python test_client.py --prompt "用一句话介绍你自己"
+    /home/luogang/VENV/sglng/bin/python test_client.py
+    /home/luogang/VENV/sglng/bin/python test_client.py --no-thinking
+    /home/luogang/VENV/sglng/bin/python test_client.py --prompt "用一句话介绍你自己"
+    /home/luogang/VENV/sglng/bin/python test_client.py --no-thinking --prompt "The COBOT MAGIC of AgileX Robotics, a body-wide remote teleoperation system based on Mobile ALOHA, equipped with two 6-DoF robotic arm and 3 cameras. Shorten this sentence."
 
 采样参数遵循 Qwen3.5-4B/README.md 的 Best Practices 建议.
 """

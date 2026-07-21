@@ -8,9 +8,12 @@
 
 用法(需先启动 SGLang 服务 ./serve_qwen35_sglang.sh):
   /mnt/r/VENV/dj/bin/python explain_triple_cam_frames.py
+  /home/luogang/VENV/sglng/bin/python explain_triple_cam_frames.py
   /mnt/r/VENV/dj/bin/python explain_triple_cam_frames.py --episode episode_000000.mp4 --time 1.5
   /mnt/r/VENV/dj/bin/python explain_triple_cam_frames.py --episode 3 --frame-index 100 --no-thinking
   /mnt/r/VENV/dj/bin/python explain_triple_cam_frames.py --save-dir /tmp/qwen35_frames --dry-run
+  /home/luogang/VENV/sglng/bin/python explain_triple_cam_frames.py  --save-dir ./ --no-thinking
+  /home/luogang/VENV/sglng/bin/python explain_triple_cam_frames.py --no-thinking
 """
 
 from __future__ import annotations
@@ -18,14 +21,18 @@ from __future__ import annotations
 import argparse
 import base64
 import os
+import shutil
 import subprocess
+import sys
 import tempfile
+from functools import lru_cache
 from pathlib import Path
 
 from openai import OpenAI
 
 DEFAULT_VIDEO_ROOT = Path(
-    "/mnt/r/DATA/pre_train_v1/post_train/stack_bowls_three/videos/chunk-000"
+    # "/mnt/r/DATA/pre_train_v1/post_train/stack_bowls_three/videos/chunk-000"
+    "/home/luogang/share/zwy/Projects/DATA/RoboTwin-Clean/stack_bowls_three/videos/chunk-000/"
 )
 CAMERA_KEYS = (
     "observation.images.cam_high",
@@ -38,13 +45,15 @@ CAMERA_LABELS = {
     "observation.images.cam_right_wrist": "right wrist camera",
 }
 DEFAULT_PROMPT = (
-    "Below are three synchronized camera views of the same AGILE X robot manipulation task "
+    "Below are three synchronized camera views of the same robot manipulation task "
     "at the same moment, in the following order:\n"
-    "1) high camera \n"
-    "2) left wrist camera \n"
-    "3) right wrist camera \n\n"
+    "1) Picture 1, high camera \n"
+    "2) Picture 2, left wrist camera \n"
+    "3) Picture 3, right wrist camera \n\n"
+    "The robot is a ALOHA with two 6-DoF arms and three cameras. "
     "The manipulation task is 'Stack the blue bowl with slightly rounded base from the base up to the top'. "
-    "Based on these three images, explain the current scene shortly."
+    "Based on these three images, explain the current scene shortly. And to complete the task, what should the robot do next. "
+    "**Answer it in 200 words!**"
     # "Based on these three images, explain the current scene: how the objects on "
     # "the table are arranged, the approximate pose of the robot's two arms, and "
     # "what action is likely being performed at this moment. Answer concisely."
@@ -139,9 +148,47 @@ def resolve_episode_name(video_root: Path, episode: str) -> str:
     return name
 
 
+@lru_cache(maxsize=2)
+def _resolve_ffmpeg_tool(name: str) -> str:
+    """定位 ffmpeg/ffprobe 可执行文件.
+
+    查找顺序:
+      1. 环境变量 FFPROBE / FFMPEG
+      2. PATH (含已 activate 的 venv/bin)
+      3. sys.prefix/bin (venv 根, uv 下 sys.executable.resolve() 会指到真实解释器目录)
+      4. sys.executable 所在目录(未 resolve 的 symlink 路径, 通常即 venv/bin)
+    """
+    env_key = "FFPROBE" if name == "ffprobe" else "FFMPEG"
+    env_val = os.getenv(env_key)
+    if env_val and Path(env_val).is_file() and os.access(env_val, os.X_OK):
+        return env_val
+
+    found = shutil.which(name)
+    if found:
+        return found
+
+    candidates = [
+        Path(sys.prefix) / "bin" / name,
+        Path(sys.executable).parent / name,
+    ]
+    venv = os.getenv("VIRTUAL_ENV")
+    if venv:
+        candidates.insert(0, Path(venv) / "bin" / name)
+
+    for cand in candidates:
+        if cand.is_file() and os.access(cand, os.X_OK):
+            return str(cand)
+
+    raise FileNotFoundError(
+        f"找不到 {name}。请安装 ffmpeg(含 ffprobe) 到 {Path(sys.prefix) / 'bin'}/, "
+        f"或设置环境变量 {env_key}=/path/to/{name}"
+    )
+
+
 def _ffprobe_value(path: Path, entries: str, stream: bool = True) -> str:
+    ffprobe = _resolve_ffmpeg_tool("ffprobe")
     cmd = [
-        "ffprobe",
+        ffprobe,
         "-v",
         "error",
         "-select_streams",
@@ -155,7 +202,7 @@ def _ffprobe_value(path: Path, entries: str, stream: bool = True) -> str:
     if not stream:
         # duration 在 format 层更稳妥
         cmd = [
-            "ffprobe",
+            ffprobe,
             "-v",
             "error",
             "-show_entries",
@@ -236,7 +283,7 @@ def extract_frame_jpeg_bytes(path: Path, time_sec: float, quality: int = 90) -> 
     try:
         # -ss 放在 -i 前做输入 seek, 对三路同时间点抽帧更高效
         cmd = [
-            "ffmpeg",
+            _resolve_ffmpeg_tool("ffmpeg"),
             "-hide_banner",
             "-loglevel",
             "error",
@@ -272,7 +319,7 @@ def build_multimodal_content(prompt: str, images_b64: list[tuple[str, str]]) -> 
     content: list[dict] = []
     for idx, (cam_key, b64) in enumerate(images_b64, start=1):
         label = CAMERA_LABELS.get(cam_key, cam_key)
-        content.append({"type": "text", "text": f"Picture {idx}: {label}."})
+        content.append({"type": "text", "text": f"{label}."})
         content.append(
             {
                 "type": "image_url",
@@ -328,10 +375,10 @@ def main() -> None:
 
     if args.no_thinking:
         sampling = dict(temperature=0.7, top_p=0.8, presence_penalty=1.5)
-        extra_body = {"top_k": 20, "chat_template_kwargs": {"enable_thinking": False}}
+        extra_body = {"top_k": 20, "chat_template_kwargs": {"enable_thinking": False, "do_vision_count":True}}
     else:
         sampling = dict(temperature=1.0, top_p=0.95, presence_penalty=1.5)
-        extra_body = {"top_k": 20}
+        extra_body = {"top_k": 20, "chat_template_kwargs": {"enable_thinking": True, "do_vision_count":True}}
 
     client = OpenAI(base_url=args.base_url, api_key=args.api_key)
     print(f"[请求] {args.base_url} model={args.model} "
